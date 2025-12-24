@@ -33,8 +33,29 @@ public class Usuario {
         usuario.setLogin(login);
         usuario.setSenha(senha);
         usuario.setDataAtualizacao(LocalDateTime.now());
+        usuario.setTipoDeUsuario(tipoDeUsuario);
 
         return  usuario;
+    }
+
+    public void setEnderecoEmail(String enderecoEmail) {
+        enderecoEmailValido(enderecoEmail);
+        this.enderecoEmail = enderecoEmail;
+    }
+
+    public void setLogin(String login) {
+        validaUsuario(login);
+        this.login = login;
+    }
+
+    public void setSenha(String senha) {
+        validaSenha(senha);
+        this.senha = senha;
+    }
+
+    public void setTipoDeUsuario(String tipoDeUsuario) {
+        validaTipoUsuario(tipoDeUsuario);
+        this.tipoDeUsuario = tipoDeUsuario;
     }
 
     private static void validaTipoUsuario(String tipoDeUsuario) {

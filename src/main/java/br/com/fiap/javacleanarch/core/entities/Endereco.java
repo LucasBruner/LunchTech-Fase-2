@@ -7,18 +7,18 @@ import lombok.Setter;
 @Setter
 public class Endereco {
     private String logradouro;
-    private String numero;
+    private int numero;
     private String bairro;
     private String cidade;
     private String estado;
-    private String cep;
+    private int cep;
 
-    private static Endereco create(String logradouro,
-                                   String numero,
+    public static Endereco create(String logradouro,
+                                   int numero,
                                    String bairro,
                                    String cidade,
                                    String estado,
-                                   String cep) {
+                                   int cep) {
 
         Endereco endereco = new Endereco();
         endereco.setLogradouro(logradouro);
