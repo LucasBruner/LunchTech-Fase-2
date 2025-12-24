@@ -1,10 +1,10 @@
 package br.com.fiap.javacleanarch.core.interfaces;
 
-import br.com.fiap.javacleanarch.core.dto.EstudanteDTO;
-import br.com.fiap.javacleanarch.core.dto.NovoEstudanteDTO;
+import br.com.fiap.javacleanarch.core.dto.NovoUsuarioDTO;
+import br.com.fiap.javacleanarch.core.dto.UsuarioDTO;
 
 public interface IDataSource {
-    EstudanteDTO obterEstudantePorNome(String nomeEstudante);
+    UsuarioDTO obterUsuarioPorLogin(String login);
 
-    EstudanteDTO incluirNovoEstudante(NovoEstudanteDTO novoEstudante);
+    UsuarioDTO incluirNovoUsuario(NovoUsuarioDTO novoUsuarioDTO);
 }

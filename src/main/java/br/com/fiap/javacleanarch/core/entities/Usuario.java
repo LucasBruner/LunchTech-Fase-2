@@ -25,7 +25,7 @@ public class Usuario {
         validaTipoUsuario(tipoDeUsuario);
         enderecoEmailValido(enderecoEmail);
         validaSenha(senha);
-        validaUsuario(login);
+        validaLogin(login);
 
         Usuario usuario = new Usuario();
         usuario.setNome(nome);
@@ -38,13 +38,31 @@ public class Usuario {
         return  usuario;
     }
 
+    public static Usuario create(String nomeUsuario,
+                                 String enderecoEmail,
+                                 String login,
+                                 String tipoDeUsuario) {
+        validaLogin(login);
+        enderecoEmailValido(enderecoEmail);
+        validaTipoUsuario(tipoDeUsuario);
+
+        Usuario usuario = new Usuario();
+
+        usuario.setNome(nomeUsuario);
+        usuario.setEnderecoEmail(enderecoEmail);
+        usuario.setLogin(login);
+        usuario.setTipoDeUsuario(tipoDeUsuario);
+
+        return usuario;
+    }
+
     public void setEnderecoEmail(String enderecoEmail) {
         enderecoEmailValido(enderecoEmail);
         this.enderecoEmail = enderecoEmail;
     }
 
     public void setLogin(String login) {
-        validaUsuario(login);
+        validaLogin(login);
         this.login = login;
     }
 
@@ -80,7 +98,7 @@ public class Usuario {
         }
     }
 
-    private static void validaUsuario(String login) {
+    private static void validaLogin(String login) {
         if(login.isEmpty()) {
             throw new IllegalArgumentException("Login inválido");
         }
