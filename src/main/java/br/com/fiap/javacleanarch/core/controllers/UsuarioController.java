@@ -3,7 +3,9 @@ package br.com.fiap.javacleanarch.core.controllers;
 import br.com.fiap.javacleanarch.core.dto.NovoUsuarioDTO;
 import br.com.fiap.javacleanarch.core.dto.UsuarioDTO;
 import br.com.fiap.javacleanarch.core.exceptions.UsuarioJaExisteException;
+import br.com.fiap.javacleanarch.core.gateway.UsuarioGateway;
 import br.com.fiap.javacleanarch.core.interfaces.IDataSource;
+import br.com.fiap.javacleanarch.core.presenters.UsuarioPresenter;
 import br.com.fiap.javacleanarch.core.usecases.CadastrarUsuarioUseCase;
 
 public class UsuarioController {
@@ -25,6 +27,7 @@ public class UsuarioController {
         try {
             var usuario = useCaseNovoUsuario.run(novoUsuarioDTO);
             var usuarioPresenter = UsuarioPresenter.toDto(usuario);
+
             return usuarioPresenter;
         } catch (UsuarioJaExisteException e) {
             return null;
