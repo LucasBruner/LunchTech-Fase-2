@@ -61,14 +61,14 @@ public class UsuarioGateway implements IUsuarioGateway {
         UsuarioDTO usuarioCriado = this.dataSource.incluirNovoUsuario(novoUsuarioDTO);
         var tipoUsuario = TipoUsuario.create(usuarioCriado.tipoDeUsuario());
 
-        var enderecoUsuario = Endereco.create(usuarioCriado.endereco().logradouro(),
-                usuarioCriado.endereco().numero(),
-                usuarioCriado.endereco().bairro(),
-                usuarioCriado.endereco().cidade(),
-                usuarioCriado.endereco().estado(),
-                usuarioCriado.endereco().cep());
+        var enderecoUsuario = buscarValoresEndereco(usuarioCriado.endereco());
 
-        return Usuario.create(usuarioCriado.nomeUsuario(), usuarioCriado.enderecoEmail(), usuarioCriado.login(), tipoUsuario, enderecoUsuario);
+        return Usuario.create(usuarioCriado.nomeUsuario(),
+                usuarioCriado.enderecoEmail(),
+                usuarioCriado.login(),
+                tipoUsuario,
+                enderecoUsuario
+        );
     }
 
     @Override
@@ -79,9 +79,10 @@ public class UsuarioGateway implements IUsuarioGateway {
                 .map(usuarioDTO -> Usuario.create(usuarioDTO.nomeUsuario(),
                         usuarioDTO.enderecoEmail(),
                         usuarioDTO.login(),
-                        TipoUsuario.create(usuarioDTO.tipoDeUsuario())))
+                        TipoUsuario.create(usuarioDTO.tipoDeUsuario()),
+                        buscarValoresEndereco(usuarioDTO.endereco())
+                        ))
                 .toList();
-        //validar se precisa retornar o endereco
     }
 
     @Override
@@ -106,20 +107,14 @@ public class UsuarioGateway implements IUsuarioGateway {
                 usuarioAlteracao.getTipoDeUsuario().getTipoUsuario(),
                 enderecoUsuario);
 
-        UsuarioDTO usuarioCriado = this.dataSource.alterarUsuario(usuarioAlteracaoDTO);
+        UsuarioDTO usuarioAlterado = this.dataSource.alterarUsuario(usuarioAlteracaoDTO);
 
-        final Endereco enderecoUsuarioAlterado = Endereco.create(usuarioCriado.endereco().logradouro(),
-                usuarioCriado.endereco().numero(),
-                usuarioCriado.endereco().bairro(),
-                usuarioCriado.endereco().cidade(),
-                usuarioCriado.endereco().estado(),
-                usuarioCriado.endereco().cep());
+        final Endereco enderecoUsuarioAlterado = buscarValoresEndereco(usuarioAlterado.endereco());
 
-
-        return Usuario.create(usuarioCriado.nomeUsuario(),
-                usuarioCriado.enderecoEmail(),
-                usuarioCriado.login(),
-                TipoUsuario.create(usuarioCriado.tipoDeUsuario()),
+        return Usuario.create(usuarioAlterado.nomeUsuario(),
+                usuarioAlterado.enderecoEmail(),
+                usuarioAlterado.login(),
+                TipoUsuario.create(usuarioAlterado.tipoDeUsuario()),
                 enderecoUsuarioAlterado
                 );
     }
@@ -158,5 +153,14 @@ public class UsuarioGateway implements IUsuarioGateway {
                 usuarioValido.login(),
                 usuarioValido.senha(),
                 TipoUsuario.create(usuarioValido.tipoDeUsuario()));
+    }
+
+    private Endereco buscarValoresEndereco(EnderecoDTO enderecoDTO) {
+        return Endereco.create(enderecoDTO.logradouro(),
+                enderecoDTO.numero(),
+                enderecoDTO.bairro(),
+                enderecoDTO.cidade(),
+                enderecoDTO.estado(),
+                enderecoDTO.cep());
     }
 }
