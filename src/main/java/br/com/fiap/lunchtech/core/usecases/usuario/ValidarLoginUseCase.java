@@ -1,7 +1,8 @@
 package br.com.fiap.lunchtech.core.usecases.usuario;
 
-import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteracaoDTO;
+import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
 import br.com.fiap.lunchtech.core.entities.Usuario;
+import br.com.fiap.lunchtech.core.exceptions.LoginInvalidoException;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioComEmailJaCadastradoException;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioJaExisteException;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioGateway;
@@ -17,7 +18,13 @@ public class ValidarLoginUseCase {
         return new ValidarLoginUseCase(usuarioGateway);
     }
 
-    public void run(String Login) {
-
+    public void run(UsuarioSenhaDTO usuarioLogin) {
+        Usuario usuarioValido = usuarioGateway.validarLogin(usuarioLogin.login());
+        
+        if (usuarioValido == null ||
+                !usuarioLogin.login().equals(usuarioValido.getLogin()) ||
+                !usuarioLogin.senha().equals(usuarioValido.getSenha())) {
+            throw new LoginInvalidoException("Usuário ou senha incorretos");
+        }
     }
 }

@@ -2,6 +2,7 @@ package br.com.fiap.lunchtech.core.gateway;
 
 import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteracaoDTO;
+import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAutenticadoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
 import br.com.fiap.lunchtech.core.entities.Usuario;
@@ -99,5 +100,20 @@ public class UsuarioGateway implements IUsuarioGateway {
         this.dataSource.alterarSenhaUsuario(usuarioSenhaDTO);
 
         return Usuario.create(usuarioSenhaDTO.login(), usuarioSenhaDTO.senha());
+    }
+
+    @Override
+    public Usuario validarLogin(String login) {
+        UsuarioAutenticadoDTO usuarioValido = this.dataSource.buscarDadosUsuarioPorLogin(login);
+
+        if(usuarioValido == null) {
+            throw new UsuarioNaoEncontradoException("Login incorreto!");
+        }
+
+        return Usuario.create(usuarioValido.nomeUsuario(),
+                usuarioValido.enderecoEmail(),
+                usuarioValido.login(),
+                usuarioValido.senha(),
+                usuarioValido.tipoDeUsuario());
     }
 }
