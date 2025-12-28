@@ -16,7 +16,7 @@ public class ValidarLoginUseCase {
         return new ValidarLoginUseCase(usuarioGateway);
     }
 
-    public void run(UsuarioSenhaDTO usuarioLogin) {
+    public boolean run(UsuarioSenhaDTO usuarioLogin) {
         Usuario usuarioValido = usuarioGateway.buscarDadosLogin(usuarioLogin.login());
         
         if (usuarioValido == null ||
@@ -24,5 +24,6 @@ public class ValidarLoginUseCase {
                 !usuarioLogin.senha().equals(usuarioValido.getSenha())) {
             throw new LoginInvalidoException("Usuário ou senha incorretos");
         }
+        return true;
     }
 }
