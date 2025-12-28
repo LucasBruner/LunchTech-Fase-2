@@ -58,6 +58,17 @@ public class Usuario {
         return usuario;
     }
 
+    public static Usuario create(String login, String senha) {
+        validaLogin(login);
+        validaSenha(senha);
+
+        Usuario usuario = new Usuario();
+        usuario.setLogin(login);
+        usuario.setSenha(senha);
+
+        return usuario;
+    }
+
     public void setEnderecoEmail(String enderecoEmail) {
         enderecoEmailValido(enderecoEmail);
         this.enderecoEmail = enderecoEmail;
