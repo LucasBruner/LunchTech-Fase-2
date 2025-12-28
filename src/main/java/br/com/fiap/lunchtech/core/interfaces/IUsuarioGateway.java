@@ -19,5 +19,5 @@ public interface IUsuarioGateway {
 
     Usuario alterarSenha(Usuario usuarioAlteracao);
 
-    Usuario validarLogin(String login);
+    Usuario buscarDadosLogin(String login);
 }

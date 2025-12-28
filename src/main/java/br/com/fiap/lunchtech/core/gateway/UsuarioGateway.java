@@ -103,7 +103,7 @@ public class UsuarioGateway implements IUsuarioGateway {
     }
 
     @Override
-    public Usuario validarLogin(String login) {
+    public Usuario buscarDadosLogin(String login) {
         UsuarioAutenticadoDTO usuarioValido = this.dataSource.buscarDadosUsuarioPorLogin(login);
 
         if(usuarioValido == null) {
