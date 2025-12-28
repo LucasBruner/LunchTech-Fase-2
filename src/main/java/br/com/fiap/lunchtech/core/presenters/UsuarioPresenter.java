@@ -1,4 +1,4 @@
-package br.com.fiap.lunchtech.core.presenters.usuario;
+package br.com.fiap.lunchtech.core.presenters;
 
 import br.com.fiap.lunchtech.core.dto.endereco.EnderecoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteradoDTO;
