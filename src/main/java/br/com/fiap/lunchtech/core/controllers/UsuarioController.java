@@ -76,10 +76,10 @@ public class UsuarioController {
         return usuarioPresenter;
     }
 
-    public void validarLoginUsuario(UsuarioSenhaDTO usuarioSenhaDTO) {
+    public boolean validarLoginUsuario(UsuarioSenhaDTO usuarioSenhaDTO) {
         var usuarioGateway = UsuarioGateway.create(this.dataStorageSource);
         var useCaseValidarLogin = ValidarLoginUseCase.create(usuarioGateway);
 
-        useCaseValidarLogin.run(usuarioSenhaDTO);
+        return useCaseValidarLogin.run(usuarioSenhaDTO);
     }
 }

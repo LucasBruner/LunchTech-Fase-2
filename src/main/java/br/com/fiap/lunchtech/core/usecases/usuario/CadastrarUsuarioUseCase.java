@@ -1,6 +1,7 @@
 package br.com.fiap.lunchtech.core.usecases.usuario;
 
 import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
+import br.com.fiap.lunchtech.core.entities.Endereco;
 import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioComEmailJaCadastradoException;
@@ -31,11 +32,19 @@ public class CadastrarUsuarioUseCase {
             throw new UsuarioComEmailJaCadastradoException("Esse e-mail já está sendo utilizado por outro usuário.");
         }
 
+        Endereco endereco = Endereco.create(novoUsuarioDTO.endereco().logradouro(),
+                novoUsuarioDTO.endereco().numero(),
+                novoUsuarioDTO.endereco().bairro(),
+                novoUsuarioDTO.endereco().cidade(),
+                novoUsuarioDTO.endereco().estado(),
+                novoUsuarioDTO.endereco().cep());
+
         Usuario novoUsuario = Usuario.create(novoUsuarioDTO.nomeUsuario(),
-        novoUsuarioDTO.enderecoEmail(),
-        novoUsuarioDTO.login(),
-        novoUsuarioDTO.senha(),
-        TipoUsuario.create(novoUsuarioDTO.tipoDeUsuario()));
+                novoUsuarioDTO.enderecoEmail(),
+                novoUsuarioDTO.login(),
+                novoUsuarioDTO.senha(),
+                TipoUsuario.create(novoUsuarioDTO.tipoDeUsuario()),
+                endereco);
 
         Usuario usuario = usuarioGateway.incluir(novoUsuario);
 

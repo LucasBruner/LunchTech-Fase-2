@@ -3,7 +3,6 @@ package br.com.fiap.lunchtech.core.gateway;
 import br.com.fiap.lunchtech.core.dto.endereco.EnderecoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteracaoDTO;
-import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAutenticadoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
 import br.com.fiap.lunchtech.core.entities.Endereco;
@@ -142,17 +141,13 @@ public class UsuarioGateway implements IUsuarioGateway {
 
     @Override
     public Usuario buscarDadosLogin(String login) {
-        UsuarioAutenticadoDTO usuarioValido = this.dataSource.buscarDadosUsuarioPorLogin(login);
+        UsuarioSenhaDTO usuarioValido = this.dataSource.buscarDadosUsuarioPorLogin(login);
 
         if(usuarioValido == null) {
             throw new UsuarioNaoEncontradoException("Login incorreto!");
         }
 
-        return Usuario.create(usuarioValido.nomeUsuario(),
-                usuarioValido.enderecoEmail(),
-                usuarioValido.login(),
-                usuarioValido.senha(),
-                TipoUsuario.create(usuarioValido.tipoDeUsuario()));
+        return Usuario.create(usuarioValido.login(), usuarioValido.senha());
     }
 
     private Endereco buscarValoresEndereco(EnderecoDTO enderecoDTO) {
