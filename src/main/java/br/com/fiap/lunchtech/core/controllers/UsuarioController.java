@@ -2,7 +2,7 @@ package br.com.fiap.lunchtech.core.controllers;
 
 import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
-import br.com.fiap.lunchtech.core.gateway.usuario.UsuarioGateway;
+import br.com.fiap.lunchtech.core.gateway.UsuarioGateway;
 import br.com.fiap.lunchtech.core.interfaces.IDataSource;
 import br.com.fiap.lunchtech.core.presenters.usuario.UsuarioPresenter;
 import br.com.fiap.lunchtech.core.usecases.usuario.BuscarUsuariosPorNomeUseCase;

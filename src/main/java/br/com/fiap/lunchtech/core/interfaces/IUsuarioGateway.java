@@ -10,4 +10,12 @@ public interface IUsuarioGateway {
     Usuario incluir(Usuario novoUsuario);
 
     List<Usuario> buscarPorNome(String nomeUsuario);
+
+    boolean buscarPorEmail(String emailUsuario);
+
+    Usuario alterar(Usuario usuarioAlteracao);
+
+    void deletar(String login);
+
+    Usuario alterarSenha(Usuario usuarioAlteracao);
 }
