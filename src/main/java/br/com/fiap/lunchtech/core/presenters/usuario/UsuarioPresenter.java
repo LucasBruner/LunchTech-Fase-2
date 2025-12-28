@@ -1,5 +1,6 @@
 package br.com.fiap.lunchtech.core.presenters.usuario;
 
+import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteradoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 
@@ -10,5 +11,9 @@ public class UsuarioPresenter {
                 usuario.getEnderecoEmail(),
                 usuario.getLogin(),
                 usuario.getTipoDeUsuario());
+    }
+
+    public static UsuarioAlteradoDTO mostrarUsuarioAlterado(Usuario usuario) {
+        return new UsuarioAlteradoDTO(usuario.getLogin());
     }
 }
