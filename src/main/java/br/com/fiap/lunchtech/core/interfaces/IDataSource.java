@@ -2,6 +2,7 @@ package br.com.fiap.lunchtech.core.interfaces;
 
 import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteracaoDTO;
+import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAutenticadoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
 
@@ -21,4 +22,6 @@ public interface IDataSource {
     void deletarUsuario(String login);
 
     void alterarSenhaUsuario(UsuarioSenhaDTO usuarioSenhaDTO);
+
+    UsuarioAutenticadoDTO buscarDadosUsuarioPorLogin(String login);
 }

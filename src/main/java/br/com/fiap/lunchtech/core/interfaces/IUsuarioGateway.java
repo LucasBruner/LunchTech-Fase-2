@@ -18,4 +18,6 @@ public interface IUsuarioGateway {
     void deletar(String login);
 
     Usuario alterarSenha(Usuario usuarioAlteracao);
+
+    Usuario buscarDadosLogin(String login);
 }
