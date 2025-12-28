@@ -5,6 +5,7 @@ import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAutenticadoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
+import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioNaoEncontradoException;
 import br.com.fiap.lunchtech.core.interfaces.IDataSource;
@@ -30,10 +31,12 @@ public class UsuarioGateway implements IUsuarioGateway {
             throw new UsuarioNaoEncontradoException("Login incorreto!");
         }
 
+        var tipoUsuario = TipoUsuario.create(usuarioDTO.tipoDeUsuario());
+
         return Usuario.create(usuarioDTO.nomeUsuario(),
                 usuarioDTO.enderecoEmail(),
                 usuarioDTO.login(),
-                usuarioDTO.tipoDeUsuario());
+                tipoUsuario);
     }
 
     @Override
@@ -43,11 +46,12 @@ public class UsuarioGateway implements IUsuarioGateway {
                 novoUsuario.getEnderecoEmail(),
                 novoUsuario.getLogin(),
                 novoUsuario.getSenha(),
-                novoUsuario.getTipoDeUsuario());
+                novoUsuario.getTipoDeUsuario().getTipoUsuario());
 
         UsuarioDTO usuarioCriado = this.dataSource.incluirNovoUsuario(novoUsuarioDTO);
+        var tipoUsuario = TipoUsuario.create(usuarioCriado.tipoDeUsuario());
 
-        return Usuario.create(usuarioCriado.nomeUsuario(), usuarioCriado.enderecoEmail(), usuarioCriado.login(), usuarioCriado.tipoDeUsuario());
+        return Usuario.create(usuarioCriado.nomeUsuario(), usuarioCriado.enderecoEmail(), usuarioCriado.login(), tipoUsuario);
     }
 
     @Override
@@ -58,7 +62,7 @@ public class UsuarioGateway implements IUsuarioGateway {
                 .map(usuarioDTO -> Usuario.create(usuarioDTO.nomeUsuario(),
                         usuarioDTO.enderecoEmail(),
                         usuarioDTO.login(),
-                        usuarioDTO.tipoDeUsuario()))
+                        TipoUsuario.create(usuarioDTO.tipoDeUsuario())))
                 .toList();
     }
 
@@ -74,11 +78,11 @@ public class UsuarioGateway implements IUsuarioGateway {
         final UsuarioAlteracaoDTO usuarioAlteracaoDTO = new UsuarioAlteracaoDTO(usuarioAlteracao.getNome(),
                 usuarioAlteracao.getEnderecoEmail(),
                 usuarioAlteracao.getLogin(),
-                usuarioAlteracao.getTipoDeUsuario());
+                usuarioAlteracao.getTipoDeUsuario().getTipoUsuario());
 
         UsuarioDTO usuarioCriado = this.dataSource.alterarUsuario(usuarioAlteracaoDTO);
 
-        return Usuario.create(usuarioCriado.nomeUsuario(), usuarioCriado.enderecoEmail(), usuarioCriado.login(), usuarioCriado.tipoDeUsuario());
+        return Usuario.create(usuarioCriado.nomeUsuario(), usuarioCriado.enderecoEmail(), usuarioCriado.login(), TipoUsuario.create(usuarioCriado.tipoDeUsuario()));
     }
 
     @Override
@@ -114,6 +118,6 @@ public class UsuarioGateway implements IUsuarioGateway {
                 usuarioValido.enderecoEmail(),
                 usuarioValido.login(),
                 usuarioValido.senha(),
-                usuarioValido.tipoDeUsuario());
+                TipoUsuario.create(usuarioValido.tipoDeUsuario()));
     }
 }

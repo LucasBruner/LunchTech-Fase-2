@@ -10,7 +10,7 @@ public class UsuarioPresenter {
         return new UsuarioDTO(usuario.getNome(),
                 usuario.getEnderecoEmail(),
                 usuario.getLogin(),
-                usuario.getTipoDeUsuario());
+                usuario.getTipoDeUsuario().getTipoUsuario());
     }
 
     public static UsuarioAlteradoDTO mostrarUsuarioAlterado(Usuario usuario) {

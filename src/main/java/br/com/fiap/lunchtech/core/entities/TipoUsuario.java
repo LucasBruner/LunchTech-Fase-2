@@ -1,0 +1,32 @@
+package br.com.fiap.lunchtech.core.entities;
+
+import br.com.fiap.lunchtech.core.exceptions.UsuarioComInformacaoInvalidaException;
+import lombok.Getter;
+
+@Getter
+public class TipoUsuario {
+    private String tipoUsuario;
+
+    public static TipoUsuario create(String tipoUsuario) {
+        validaTipoUsuario(tipoUsuario);
+
+        TipoUsuario tipoDeUsuario = new TipoUsuario();
+        tipoDeUsuario.setTipoUsuario(tipoUsuario);
+
+        return tipoDeUsuario;
+    }
+
+    private static void validaTipoUsuario(String tipoDeUsuario) {
+        boolean isValid = "DONO_RESTAURANTE".equalsIgnoreCase(tipoDeUsuario)
+                || "CLIENTE".equalsIgnoreCase(tipoDeUsuario);
+
+        if (!isValid) {
+            throw new UsuarioComInformacaoInvalidaException("Tipo de usuário inválido");
+        }
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        validaTipoUsuario(tipoUsuario);
+        this.tipoUsuario = tipoUsuario.toUpperCase();
+    }
+}
