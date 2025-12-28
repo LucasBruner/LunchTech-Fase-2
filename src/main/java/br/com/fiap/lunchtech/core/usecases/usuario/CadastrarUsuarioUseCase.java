@@ -1,6 +1,7 @@
 package br.com.fiap.lunchtech.core.usecases.usuario;
 
 import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
+import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioComEmailJaCadastradoException;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioJaExisteException;
@@ -34,7 +35,7 @@ public class CadastrarUsuarioUseCase {
         novoUsuarioDTO.enderecoEmail(),
         novoUsuarioDTO.login(),
         novoUsuarioDTO.senha(),
-        novoUsuarioDTO.tipoDeUsuario());
+        TipoUsuario.create(novoUsuarioDTO.tipoDeUsuario()));
 
         Usuario usuario = usuarioGateway.incluir(novoUsuario);
 

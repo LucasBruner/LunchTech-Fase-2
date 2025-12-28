@@ -15,15 +15,14 @@ public class Usuario {
     private String login;
     private String senha;
     private LocalDateTime dataAtualizacao;
-    private String tipoDeUsuario;
+    private TipoUsuario tipoDeUsuario;
 
     public static Usuario create(String nome,
                                  String enderecoEmail,
                                  String login,
                                  String senha,
-                                 String tipoDeUsuario) {
+                                 TipoUsuario tipoDeUsuario) {
 
-        validaTipoUsuario(tipoDeUsuario);
         enderecoEmailValido(enderecoEmail);
         validaSenha(senha);
         validaLogin(login);
@@ -42,10 +41,9 @@ public class Usuario {
     public static Usuario create(String nomeUsuario,
                                  String enderecoEmail,
                                  String login,
-                                 String tipoDeUsuario) {
+                                 TipoUsuario tipoDeUsuario) {
         validaLogin(login);
         enderecoEmailValido(enderecoEmail);
-        validaTipoUsuario(tipoDeUsuario);
         validaNomeUsuario(nomeUsuario);
 
         Usuario usuario = new Usuario();
@@ -84,23 +82,9 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public void setTipoDeUsuario(String tipoDeUsuario) {
-        validaTipoUsuario(tipoDeUsuario);
-        this.tipoDeUsuario = tipoDeUsuario;
-    }
-
     public void setNome(String nome) {
         validaNomeUsuario(nome);
         this.nome = nome;
-    }
-
-    private static void validaTipoUsuario(String tipoDeUsuario) {
-        boolean isValid = "DONO_RESTAURANTE".equals(tipoDeUsuario)
-                || "CLIENTE".equals(tipoDeUsuario);
-
-        if (!isValid) {
-            throw new UsuarioComInformacaoInvalidaException("Tipo de usuário inválido");
-        }
     }
 
     private static void enderecoEmailValido(String email) {
