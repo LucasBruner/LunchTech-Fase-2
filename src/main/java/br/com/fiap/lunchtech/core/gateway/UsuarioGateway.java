@@ -1,10 +1,12 @@
 package br.com.fiap.lunchtech.core.gateway;
 
+import br.com.fiap.lunchtech.core.dto.endereco.EnderecoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAutenticadoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
+import br.com.fiap.lunchtech.core.entities.Endereco;
 import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioNaoEncontradoException;
@@ -42,16 +44,31 @@ public class UsuarioGateway implements IUsuarioGateway {
     @Override
     public Usuario incluir(Usuario novoUsuario) {
 
+        final EnderecoDTO enderecoDTO = new EnderecoDTO(novoUsuario.getEndereco().getLogradouro(),
+                novoUsuario.getEndereco().getNumero(),
+                novoUsuario.getEndereco().getBairro(),
+                novoUsuario.getEndereco().getCidade(),
+                novoUsuario.getEndereco().getEstado(),
+                novoUsuario.getEndereco().getCep());
+
         final NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO(novoUsuario.getNome(),
-                novoUsuario.getEnderecoEmail(),
+                novoUsuario.getEmail(),
                 novoUsuario.getLogin(),
                 novoUsuario.getSenha(),
-                novoUsuario.getTipoDeUsuario().getTipoUsuario());
+                novoUsuario.getTipoDeUsuario().getTipoUsuario(),
+                enderecoDTO);
 
         UsuarioDTO usuarioCriado = this.dataSource.incluirNovoUsuario(novoUsuarioDTO);
         var tipoUsuario = TipoUsuario.create(usuarioCriado.tipoDeUsuario());
 
-        return Usuario.create(usuarioCriado.nomeUsuario(), usuarioCriado.enderecoEmail(), usuarioCriado.login(), tipoUsuario);
+        var enderecoUsuario = Endereco.create(usuarioCriado.endereco().logradouro(),
+                usuarioCriado.endereco().numero(),
+                usuarioCriado.endereco().bairro(),
+                usuarioCriado.endereco().cidade(),
+                usuarioCriado.endereco().estado(),
+                usuarioCriado.endereco().cep());
+
+        return Usuario.create(usuarioCriado.nomeUsuario(), usuarioCriado.enderecoEmail(), usuarioCriado.login(), tipoUsuario, enderecoUsuario);
     }
 
     @Override
@@ -64,6 +81,7 @@ public class UsuarioGateway implements IUsuarioGateway {
                         usuarioDTO.login(),
                         TipoUsuario.create(usuarioDTO.tipoDeUsuario())))
                 .toList();
+        //validar se precisa retornar o endereco
     }
 
     @Override
@@ -75,14 +93,35 @@ public class UsuarioGateway implements IUsuarioGateway {
     @Override
     public Usuario alterar(Usuario usuarioAlteracao) {
 
+        final EnderecoDTO enderecoUsuario = new EnderecoDTO(usuarioAlteracao.getEndereco().getLogradouro(),
+                usuarioAlteracao.getEndereco().getNumero(),
+                usuarioAlteracao.getEndereco().getBairro(),
+                usuarioAlteracao.getEndereco().getCidade(),
+                usuarioAlteracao.getEndereco().getEstado(),
+                usuarioAlteracao.getEndereco().getCep());
+
         final UsuarioAlteracaoDTO usuarioAlteracaoDTO = new UsuarioAlteracaoDTO(usuarioAlteracao.getNome(),
-                usuarioAlteracao.getEnderecoEmail(),
+                usuarioAlteracao.getEmail(),
                 usuarioAlteracao.getLogin(),
-                usuarioAlteracao.getTipoDeUsuario().getTipoUsuario());
+                usuarioAlteracao.getTipoDeUsuario().getTipoUsuario(),
+                enderecoUsuario);
 
         UsuarioDTO usuarioCriado = this.dataSource.alterarUsuario(usuarioAlteracaoDTO);
 
-        return Usuario.create(usuarioCriado.nomeUsuario(), usuarioCriado.enderecoEmail(), usuarioCriado.login(), TipoUsuario.create(usuarioCriado.tipoDeUsuario()));
+        final Endereco enderecoUsuarioAlterado = Endereco.create(usuarioCriado.endereco().logradouro(),
+                usuarioCriado.endereco().numero(),
+                usuarioCriado.endereco().bairro(),
+                usuarioCriado.endereco().cidade(),
+                usuarioCriado.endereco().estado(),
+                usuarioCriado.endereco().cep());
+
+
+        return Usuario.create(usuarioCriado.nomeUsuario(),
+                usuarioCriado.enderecoEmail(),
+                usuarioCriado.login(),
+                TipoUsuario.create(usuarioCriado.tipoDeUsuario()),
+                enderecoUsuarioAlterado
+                );
     }
 
     @Override

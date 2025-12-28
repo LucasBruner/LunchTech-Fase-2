@@ -11,29 +11,32 @@ import java.time.LocalDateTime;
 @Setter
 public class Usuario {
     private String nome;
-    private String enderecoEmail;
+    private String email;
     private String login;
     private String senha;
     private LocalDateTime dataAtualizacao;
     private TipoUsuario tipoDeUsuario;
+    private Endereco endereco;
 
     public static Usuario create(String nome,
-                                 String enderecoEmail,
+                                 String email,
                                  String login,
                                  String senha,
-                                 TipoUsuario tipoDeUsuario) {
+                                 TipoUsuario tipoDeUsuario,
+                                 Endereco enderecoUsuario) {
 
-        enderecoEmailValido(enderecoEmail);
+        enderecoEmailValido(email);
         validaSenha(senha);
         validaLogin(login);
 
         Usuario usuario = new Usuario();
         usuario.setNome(nome);
-        usuario.setEnderecoEmail(enderecoEmail);
+        usuario.setEmail(email);
         usuario.setLogin(login);
         usuario.setSenha(senha);
         usuario.setDataAtualizacao(LocalDateTime.now());
         usuario.setTipoDeUsuario(tipoDeUsuario);
+        usuario.setEndereco(enderecoUsuario);
 
         return  usuario;
     }
@@ -41,7 +44,8 @@ public class Usuario {
     public static Usuario create(String nomeUsuario,
                                  String enderecoEmail,
                                  String login,
-                                 TipoUsuario tipoDeUsuario) {
+                                 TipoUsuario tipoDeUsuario,
+                                 Endereco enderecoUsuario) {
         validaLogin(login);
         enderecoEmailValido(enderecoEmail);
         validaNomeUsuario(nomeUsuario);
@@ -49,9 +53,10 @@ public class Usuario {
         Usuario usuario = new Usuario();
 
         usuario.setNome(nomeUsuario);
-        usuario.setEnderecoEmail(enderecoEmail);
+        usuario.setEmail(enderecoEmail);
         usuario.setLogin(login);
         usuario.setTipoDeUsuario(tipoDeUsuario);
+        usuario.setEndereco(enderecoUsuario);
 
         return usuario;
     }
@@ -67,9 +72,46 @@ public class Usuario {
         return usuario;
     }
 
-    public void setEnderecoEmail(String enderecoEmail) {
+    public static Usuario create(String nomeUsuario,
+                                 String email,
+                                 String login,
+                                 TipoUsuario tipoUsuario) {
+        validaLogin(login);
+        enderecoEmailValido(email);
+        validaNomeUsuario(nomeUsuario);
+
+        Usuario usuario = new Usuario();
+        usuario.setNome(nomeUsuario);
+        usuario.setEmail(email);
+        usuario.setLogin(login);
+        usuario.setTipoDeUsuario(tipoUsuario);
+
+        return usuario;
+    }
+
+    public static Usuario create(String nomeUsuario,
+                                 String enderecoEmail,
+                                 String login,
+                                 String senha,
+                                 TipoUsuario tipoUsuario) {
+        validaLogin(login);
         enderecoEmailValido(enderecoEmail);
-        this.enderecoEmail = enderecoEmail;
+        validaSenha(senha);
+        validaNomeUsuario(nomeUsuario);
+
+        Usuario usuario = new Usuario();
+        usuario.setNome(nomeUsuario);
+        usuario.setEmail(enderecoEmail);
+        usuario.setLogin(login);
+        usuario.setSenha(senha);
+        usuario.setTipoDeUsuario(tipoUsuario);
+
+        return usuario;
+    }
+
+    public void setEmail(String email) {
+        enderecoEmailValido(email);
+        this.email = email;
     }
 
     public void setLogin(String login) {
