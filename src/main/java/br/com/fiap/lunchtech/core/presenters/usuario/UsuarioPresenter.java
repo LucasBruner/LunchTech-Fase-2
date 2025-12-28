@@ -1,6 +1,6 @@
-package br.com.fiap.lunchtech.core.presenters;
+package br.com.fiap.lunchtech.core.presenters.usuario;
 
-import br.com.fiap.lunchtech.core.dto.UsuarioDTO;
+import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 
 public class UsuarioPresenter {
@@ -11,5 +11,4 @@ public class UsuarioPresenter {
                 usuario.getLogin(),
                 usuario.getTipoDeUsuario());
     }
-
 }

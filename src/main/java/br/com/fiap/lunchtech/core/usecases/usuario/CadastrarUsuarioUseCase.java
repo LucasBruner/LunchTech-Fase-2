@@ -1,6 +1,6 @@
-package br.com.fiap.lunchtech.core.usecases;
+package br.com.fiap.lunchtech.core.usecases.usuario;
 
-import br.com.fiap.lunchtech.core.dto.NovoUsuarioDTO;
+import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioJaExisteException;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioGateway;

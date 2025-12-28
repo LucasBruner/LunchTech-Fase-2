@@ -1,7 +1,7 @@
 package br.com.fiap.lunchtech.core.interfaces;
 
-import br.com.fiap.lunchtech.core.dto.NovoUsuarioDTO;
-import br.com.fiap.lunchtech.core.dto.UsuarioDTO;
+import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
+import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 
 import java.util.List;
 

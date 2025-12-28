@@ -1,12 +1,12 @@
 package br.com.fiap.lunchtech.core.controllers;
 
-import br.com.fiap.lunchtech.core.dto.NovoUsuarioDTO;
-import br.com.fiap.lunchtech.core.dto.UsuarioDTO;
-import br.com.fiap.lunchtech.core.gateway.UsuarioGateway;
+import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
+import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
+import br.com.fiap.lunchtech.core.gateway.usuario.UsuarioGateway;
 import br.com.fiap.lunchtech.core.interfaces.IDataSource;
-import br.com.fiap.lunchtech.core.presenters.UsuarioPresenter;
-import br.com.fiap.lunchtech.core.usecases.BuscarUsuariosPorNomeUseCase;
-import br.com.fiap.lunchtech.core.usecases.CadastrarUsuarioUseCase;
+import br.com.fiap.lunchtech.core.presenters.usuario.UsuarioPresenter;
+import br.com.fiap.lunchtech.core.usecases.usuario.BuscarUsuariosPorNomeUseCase;
+import br.com.fiap.lunchtech.core.usecases.usuario.CadastrarUsuarioUseCase;
 
 import java.util.List;
 
