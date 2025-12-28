@@ -3,7 +3,7 @@ package br.com.fiap.javacleanarch.core.gateway;
 import br.com.fiap.javacleanarch.core.dto.NovoUsuarioDTO;
 import br.com.fiap.javacleanarch.core.dto.UsuarioDTO;
 import br.com.fiap.javacleanarch.core.entities.Usuario;
-import br.com.fiap.javacleanarch.core.exceptions.EstudanteNaoEncontradoException;
+import br.com.fiap.javacleanarch.core.exceptions.UsuarioNaoEncontradoException;
 import br.com.fiap.javacleanarch.core.interfaces.IDataSource;
 import br.com.fiap.javacleanarch.core.interfaces.IUsuarioGateway;
 
@@ -22,7 +22,7 @@ public class UsuarioGateway implements IUsuarioGateway {
         UsuarioDTO usuarioDTO = this.dataSource.obterUsuarioPorLogin(login);
 
         if(usuarioDTO == null) {
-            throw new EstudanteNaoEncontradoException("Login incorreto!");
+            throw new UsuarioNaoEncontradoException("Login incorreto!");
         }
 
         return Usuario.create(usuarioDTO.nomeUsuario(),
