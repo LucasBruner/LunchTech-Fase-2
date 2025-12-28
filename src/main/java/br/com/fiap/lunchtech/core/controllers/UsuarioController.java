@@ -7,7 +7,7 @@ import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
 import br.com.fiap.lunchtech.core.gateway.UsuarioGateway;
 import br.com.fiap.lunchtech.core.interfaces.IDataSource;
-import br.com.fiap.lunchtech.core.presenters.usuario.UsuarioPresenter;
+import br.com.fiap.lunchtech.core.presenters.UsuarioPresenter;
 import br.com.fiap.lunchtech.core.usecases.usuario.AlterarSenhaUseCase;
 import br.com.fiap.lunchtech.core.usecases.usuario.AlterarUsuarioUseCase;
 import br.com.fiap.lunchtech.core.usecases.usuario.BuscarUsuariosPorNomeUseCase;
