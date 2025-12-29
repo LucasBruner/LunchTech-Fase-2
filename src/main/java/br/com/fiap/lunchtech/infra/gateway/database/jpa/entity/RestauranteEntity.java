@@ -35,7 +35,6 @@ public class RestauranteEntity {
             unique = true)
     private EnderecoEntity endereco;
 
-    //    private Cardapio cardapio;
     @OneToMany(mappedBy = "restaurante")
     private List<CardapioEntity> itensCardapio;
 }
