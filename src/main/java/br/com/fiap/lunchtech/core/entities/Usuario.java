@@ -23,10 +23,6 @@ public class Usuario {
                                  TipoUsuario tipoDeUsuario,
                                  Endereco enderecoUsuario) {
 
-        enderecoEmailValido(email);
-        validaSenha(senha);
-        validaLogin(login);
-
         Usuario usuario = new Usuario();
         usuario.setNome(nome);
         usuario.setEmail(email);
@@ -44,10 +40,6 @@ public class Usuario {
                                  String login,
                                  TipoUsuario tipoDeUsuario,
                                  Endereco enderecoUsuario) {
-        validaLogin(login);
-        enderecoEmailValido(enderecoEmail);
-        validaNomeUsuario(nomeUsuario);
-
         Usuario usuario = new Usuario();
 
         usuario.setNome(nomeUsuario);
@@ -60,10 +52,8 @@ public class Usuario {
     }
 
     public static Usuario create(String login, String senha) {
-        validaLogin(login);
-        validaSenha(senha);
-
         Usuario usuario = new Usuario();
+
         usuario.setLogin(login);
         usuario.setSenha(senha);
 
@@ -74,11 +64,8 @@ public class Usuario {
                                  String email,
                                  String login,
                                  TipoUsuario tipoUsuario) {
-        validaLogin(login);
-        enderecoEmailValido(email);
-        validaNomeUsuario(nomeUsuario);
-
         Usuario usuario = new Usuario();
+
         usuario.setNome(nomeUsuario);
         usuario.setEmail(email);
         usuario.setLogin(login);
@@ -107,36 +94,36 @@ public class Usuario {
         return usuario;
     }
 
-    public void setEmail(String email) {
+    private void setEmail(String email) {
         enderecoEmailValido(email);
         this.email = email;
     }
 
-    public void setLogin(String login) {
+    private void setLogin(String login) {
         validaLogin(login);
         this.login = login;
     }
 
-    public void setSenha(String senha) {
+    private void setSenha(String senha) {
         validaSenha(senha);
         this.senha = senha;
     }
 
-    public void setNome(String nome) {
+    private void setNome(String nome) {
         validaNomeUsuario(nome);
         this.nome = nome;
     }
 
-    public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+    private void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
     }
 
-    public void setTipoDeUsuario(TipoUsuario tipoDeUsuario) {
+    private void setTipoDeUsuario(TipoUsuario tipoDeUsuario) {
         validaTipoUsuario(tipoDeUsuario);
         this.tipoDeUsuario = tipoDeUsuario;
     }
 
-    public void setEndereco(Endereco endereco) {
+    private void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
 
