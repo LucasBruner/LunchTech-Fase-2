@@ -1,10 +1,8 @@
 package br.com.fiap.lunchtech.core.entities;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class Restaurante {
     private String nome;
     private String tipoCozinha;
@@ -19,10 +17,8 @@ public class Restaurante {
                                      Endereco endereco,
                                      Cardapio cardapio,
                                      Usuario donoRestaurante) {
-
-        validaUsuario(donoRestaurante);
-
         Restaurante restaurante = new Restaurante();
+
         restaurante.setNome(nome);
         restaurante.setTipoCozinha(tipoCozinha);
         restaurante.setHorarioFuncionamento(horarioFuncionamento);
@@ -30,7 +26,7 @@ public class Restaurante {
         restaurante.setCardapio(cardapio);
         restaurante.setDonoRestaurante(donoRestaurante);
 
-        return null;
+        return restaurante;
     }
 
     private static void validateNome(String nome) {
@@ -39,12 +35,12 @@ public class Restaurante {
         }
     }
 
-    public void setNome(String nome) {
+    private void setNome(String nome) {
         validateNome(nome);
         this.nome = nome;
     }
 
-    public void setDonoRestaurante(Usuario donoRestaurante) {
+    private void setDonoRestaurante(Usuario donoRestaurante) {
         validaUsuario(donoRestaurante);
         this.donoRestaurante = donoRestaurante;
     }
@@ -55,4 +51,19 @@ public class Restaurante {
         }
     }
 
+    private void setTipoCozinha(String tipoCozinha) {
+        this.tipoCozinha = tipoCozinha;
+    }
+
+    private void setHorarioFuncionamento(String horarioFuncionamento) {
+        this.horarioFuncionamento = horarioFuncionamento;
+    }
+
+    private void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    private void setCardapio(Cardapio cardapio) {
+        this.cardapio = cardapio;
+    }
 }
