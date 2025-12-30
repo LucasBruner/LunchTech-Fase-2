@@ -7,7 +7,7 @@ import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
 
 import java.util.List;
 
-public interface IDataSource {
+public interface IUsuarioDataSource {
     UsuarioDTO obterUsuarioPorLogin(String login);
 
     UsuarioDTO incluirNovoUsuario(NovoUsuarioDTO novoUsuarioDTO);

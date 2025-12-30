@@ -6,7 +6,7 @@ import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteradoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
 import br.com.fiap.lunchtech.core.gateway.UsuarioGateway;
-import br.com.fiap.lunchtech.core.interfaces.IDataSource;
+import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
 import br.com.fiap.lunchtech.core.presenters.UsuarioPresenter;
 import br.com.fiap.lunchtech.core.usecases.usuario.AlterarSenhaUseCase;
 import br.com.fiap.lunchtech.core.usecases.usuario.AlterarUsuarioUseCase;
@@ -19,13 +19,13 @@ import java.util.List;
 
 public class UsuarioController {
 
-    private final IDataSource dataStorageSource;
+    private final IUsuarioDataSource dataStorageSource;
 
-    private UsuarioController(IDataSource dataSource) {
+    private UsuarioController(IUsuarioDataSource dataSource) {
         this.dataStorageSource = dataSource;
     }
 
-    public static UsuarioController create(IDataSource dataSource) {
+    public static UsuarioController create(IUsuarioDataSource dataSource) {
         return new UsuarioController(dataSource);
     }
 

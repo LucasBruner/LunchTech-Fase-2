@@ -6,14 +6,16 @@ import lombok.Getter;
 public class Restaurante {
     private String nome;
     private String tipoCozinha;
-    private String horarioFuncionamento;
+    private String horarioFuncionamentoInicio;
+    private String horarioFuncionamentoFim;
     private Endereco endereco;
     private Cardapio cardapio;
     private Usuario donoRestaurante;
 
     public static Restaurante create(String nome,
                                      String tipoCozinha,
-                                     String horarioFuncionamento,
+                                     String horarioFuncionamentoInicio,
+                                     String horarioFuncionamentoFim,
                                      Endereco endereco,
                                      Cardapio cardapio,
                                      Usuario donoRestaurante) {
@@ -21,7 +23,8 @@ public class Restaurante {
 
         restaurante.setNome(nome);
         restaurante.setTipoCozinha(tipoCozinha);
-        restaurante.setHorarioFuncionamento(horarioFuncionamento);
+        restaurante.setHorarioFuncionamentoInicio(horarioFuncionamentoInicio);
+        restaurante.setHorarioFuncionamentoFim(horarioFuncionamentoFim);
         restaurante.setEndereco(endereco);
         restaurante.setCardapio(cardapio);
         restaurante.setDonoRestaurante(donoRestaurante);
@@ -55,8 +58,12 @@ public class Restaurante {
         this.tipoCozinha = tipoCozinha;
     }
 
-    private void setHorarioFuncionamento(String horarioFuncionamento) {
-        this.horarioFuncionamento = horarioFuncionamento;
+    private void setHorarioFuncionamentoInicio(String horarioFuncionamentoInicio) {
+        this.horarioFuncionamentoInicio = horarioFuncionamentoInicio;
+    }
+
+    private void setHorarioFuncionamentoFim(String horarioFuncionamentoFim) {
+        this.horarioFuncionamentoFim = horarioFuncionamentoFim;
     }
 
     private void setEndereco(Endereco endereco) {

@@ -5,5 +5,5 @@ public record EnderecoDTO(String logradouro,
                           String bairro,
                           String cidade,
                           String estado,
-                          int cep) {
+                          String cep) {
 }
