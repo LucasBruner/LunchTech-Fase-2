@@ -9,18 +9,18 @@ import br.com.fiap.lunchtech.core.entities.Endereco;
 import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioNaoEncontradoException;
-import br.com.fiap.lunchtech.core.interfaces.IDataSource;
+import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioGateway;
 
 import java.util.List;
 
 public class UsuarioGateway implements IUsuarioGateway {
-    private IDataSource dataSource;
-    public UsuarioGateway(IDataSource dataStorageSource) {
+    private IUsuarioDataSource dataSource;
+    public UsuarioGateway(IUsuarioDataSource dataStorageSource) {
         this.dataSource = dataStorageSource;
     }
 
-    public static UsuarioGateway create(IDataSource dataStorageSource) {
+    public static UsuarioGateway create(IUsuarioDataSource dataStorageSource) {
         return new UsuarioGateway(dataStorageSource);
     }
 
