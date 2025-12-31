@@ -1,6 +1,5 @@
 package br.com.fiap.lunchtech.core.usecases.cardapio;
 
-import br.com.fiap.lunchtech.core.dto.cardapio.CardapioAlteracaoDTO;
 import br.com.fiap.lunchtech.core.entities.Cardapio;
 import br.com.fiap.lunchtech.core.interfaces.ICardapioGateway;
 

@@ -4,7 +4,7 @@ import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteracaoDTO;
 import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioComEmailJaCadastradoException;
-import br.com.fiap.lunchtech.core.exceptions.UsuarioJaExisteException;
+import br.com.fiap.lunchtech.core.exceptions.UsuarioNaoEncontradoException;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioGateway;
 
 public class AlterarUsuarioUseCase {
@@ -21,8 +21,8 @@ public class AlterarUsuarioUseCase {
     public Usuario run (UsuarioAlteracaoDTO usuarioAlteracaoDTO) {
         Usuario usuarioExistente = usuarioGateway.buscarPorLogin(usuarioAlteracaoDTO.login());
 
-        if (usuarioExistente != null) {
-            throw new UsuarioJaExisteException("Usuário já possuí registro na base!");
+        if (usuarioExistente == null) {
+            throw new UsuarioNaoEncontradoException("Usuário não encontrado para a ação solicitada!");
         }
 
         boolean emailJaCadastrado = usuarioGateway.buscarPorEmail(usuarioAlteracaoDTO.enderecoEmail());
