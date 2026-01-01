@@ -16,6 +16,7 @@ import java.util.List;
 
 public class UsuarioGateway implements IUsuarioGateway {
     private IUsuarioDataSource dataSource;
+
     public UsuarioGateway(IUsuarioDataSource dataStorageSource) {
         this.dataSource = dataStorageSource;
     }

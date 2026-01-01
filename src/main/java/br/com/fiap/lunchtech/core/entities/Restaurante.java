@@ -2,20 +2,22 @@ package br.com.fiap.lunchtech.core.entities;
 
 import lombok.Getter;
 
+import java.util.Date;
+
 @Getter
 public class Restaurante {
     private String nome;
     private String tipoCozinha;
-    private String horarioFuncionamentoInicio;
-    private String horarioFuncionamentoFim;
+    private Date horarioFuncionamentoInicio;
+    private Date horarioFuncionamentoFim;
     private Endereco endereco;
     private Cardapio cardapio;
     private Usuario donoRestaurante;
 
     public static Restaurante create(String nome,
                                      String tipoCozinha,
-                                     String horarioFuncionamentoInicio,
-                                     String horarioFuncionamentoFim,
+                                     Date horarioFuncionamentoInicio,
+                                     Date horarioFuncionamentoFim,
                                      Endereco endereco,
                                      Cardapio cardapio,
                                      Usuario donoRestaurante) {
@@ -38,6 +40,24 @@ public class Restaurante {
         }
     }
 
+    public static Restaurante create(String nomeRestaurante,
+                                     String tipoCozinha,
+                                     Date horarioFuncionamentoInicio,
+                                     Date horarioFuncionamentoFim,
+                                     Endereco enderecoRestaurante,
+                                     Usuario donoRestaurante) {
+        Restaurante restaurante = new Restaurante();
+
+        restaurante.setNome(nomeRestaurante);
+        restaurante.setTipoCozinha(tipoCozinha);
+        restaurante.setHorarioFuncionamentoInicio(horarioFuncionamentoInicio);
+        restaurante.setHorarioFuncionamentoFim(horarioFuncionamentoFim);
+        restaurante.setEndereco(enderecoRestaurante);
+        restaurante.setDonoRestaurante(donoRestaurante);
+
+        return restaurante;
+    }
+
     private void setNome(String nome) {
         validateNome(nome);
         this.nome = nome;
@@ -58,11 +78,11 @@ public class Restaurante {
         this.tipoCozinha = tipoCozinha;
     }
 
-    private void setHorarioFuncionamentoInicio(String horarioFuncionamentoInicio) {
+    private void setHorarioFuncionamentoInicio(Date horarioFuncionamentoInicio) {
         this.horarioFuncionamentoInicio = horarioFuncionamentoInicio;
     }
 
-    private void setHorarioFuncionamentoFim(String horarioFuncionamentoFim) {
+    private void setHorarioFuncionamentoFim(Date horarioFuncionamentoFim) {
         this.horarioFuncionamentoFim = horarioFuncionamentoFim;
     }
 

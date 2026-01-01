@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.util.regex.Pattern;
 
+
 @Getter
 public class Endereco {
     private String logradouro;
