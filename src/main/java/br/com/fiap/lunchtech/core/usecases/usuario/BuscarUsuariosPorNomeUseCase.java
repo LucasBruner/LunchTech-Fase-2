@@ -9,7 +9,7 @@ import java.util.List;
 public class BuscarUsuariosPorNomeUseCase {
     private IUsuarioGateway usuarioGateway;
 
-    public BuscarUsuariosPorNomeUseCase(IUsuarioGateway usuarioGateway) {
+    private BuscarUsuariosPorNomeUseCase(IUsuarioGateway usuarioGateway) {
         this.usuarioGateway = usuarioGateway;
     }
 

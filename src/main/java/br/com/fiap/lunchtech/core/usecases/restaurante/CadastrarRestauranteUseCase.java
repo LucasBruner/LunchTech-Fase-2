@@ -42,7 +42,7 @@ public class CadastrarRestauranteUseCase {
 
         //Validar se o restaurante pode ser criado sem um cardápio inicial ou se precisa ser criado junto a um cardápio
 
-        Restaurante restaurante = restauranteGateway.alterar(restauranteAlteracao);
+        Restaurante restaurante = restauranteGateway.incluir(restauranteAlteracao);
 
         return restaurante;
     }

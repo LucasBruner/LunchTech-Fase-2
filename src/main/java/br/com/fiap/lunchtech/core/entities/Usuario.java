@@ -79,16 +79,22 @@ public class Usuario {
                                  String login,
                                  String senha,
                                  TipoUsuario tipoUsuario) {
-        validaLogin(login);
-        enderecoEmailValido(enderecoEmail);
-        validaSenha(senha);
-        validaNomeUsuario(nomeUsuario);
 
         Usuario usuario = new Usuario();
         usuario.setNome(nomeUsuario);
         usuario.setEmail(enderecoEmail);
         usuario.setLogin(login);
         usuario.setSenha(senha);
+        usuario.setTipoDeUsuario(tipoUsuario);
+
+        return usuario;
+    }
+
+    public static Usuario create(String nomeUsuario, String email, TipoUsuario tipoUsuario) {
+        Usuario usuario = new Usuario();
+
+        usuario.setNome(nomeUsuario);
+        usuario.setEmail(email);
         usuario.setTipoDeUsuario(tipoUsuario);
 
         return usuario;
