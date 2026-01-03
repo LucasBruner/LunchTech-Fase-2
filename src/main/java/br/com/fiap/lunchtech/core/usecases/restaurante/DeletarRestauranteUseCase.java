@@ -1,5 +1,8 @@
 package br.com.fiap.lunchtech.core.usecases.restaurante;
 
+import br.com.fiap.lunchtech.core.entities.Restaurante;
+import br.com.fiap.lunchtech.core.exceptions.RestauranteJaExistenteException;
+import br.com.fiap.lunchtech.core.exceptions.RestauranteNaoEncontradoException;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteGateway;
 
 public class DeletarRestauranteUseCase {
@@ -13,6 +16,13 @@ public class DeletarRestauranteUseCase {
         return new DeletarRestauranteUseCase(restauranteGateway);
     }
 
-    public void run() {
+    public void run(String nomeRestaurante) {
+        Restaurante restauranteExistente = restauranteGateway.buscarPorNome(nomeRestaurante);
+
+        if(restauranteExistente == null) {
+            throw new RestauranteNaoEncontradoException("Resturante não foi encontrado.");
+        }
+
+        restauranteGateway.deletar(nomeRestaurante);
     }
 }

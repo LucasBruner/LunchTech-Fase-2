@@ -6,4 +6,8 @@ public interface IRestauranteGateway {
     Restaurante alterar(Restaurante restauranteAlteracao);
 
     Restaurante buscarPorNome(String nomeRestaurante);
+
+    void deletar(String nomeRestaurante);
+
+    Restaurante incluir(Restaurante restauranteAlteracao);
 }

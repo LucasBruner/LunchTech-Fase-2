@@ -14,6 +14,6 @@ public class DeletarCardapioUseCase {
     }
 
     public void run() {
-        cardapioGateway.deletar(nomeProduto, nomeRestaurante);
+        //cardapioGateway.deletar(nomeProduto, nomeRestaurante);
     }
 }

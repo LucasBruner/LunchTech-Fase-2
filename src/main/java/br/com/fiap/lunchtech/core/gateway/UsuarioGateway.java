@@ -43,25 +43,12 @@ public class UsuarioGateway implements IUsuarioGateway {
 
     @Override
     public Usuario incluir(Usuario novoUsuario) {
-
-        final EnderecoDTO enderecoDTO = new EnderecoDTO(novoUsuario.getEndereco().getLogradouro(),
-                novoUsuario.getEndereco().getNumero(),
-                novoUsuario.getEndereco().getBairro(),
-                novoUsuario.getEndereco().getCidade(),
-                novoUsuario.getEndereco().getEstado(),
-                novoUsuario.getEndereco().getCep());
-
-        final NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO(novoUsuario.getNome(),
-                novoUsuario.getEmail(),
-                novoUsuario.getLogin(),
-                novoUsuario.getSenha(),
-                novoUsuario.getTipoDeUsuario().getTipoUsuario(),
-                enderecoDTO);
+        final NovoUsuarioDTO novoUsuarioDTO = getNovoUsuarioDTO(novoUsuario);
 
         UsuarioDTO usuarioCriado = this.dataSource.incluirNovoUsuario(novoUsuarioDTO);
         var tipoUsuario = TipoUsuario.create(usuarioCriado.tipoDeUsuario());
 
-        var enderecoUsuario = buscarValoresEndereco(usuarioCriado.endereco());
+        var enderecoUsuario = mapearEndereco(usuarioCriado.endereco());
 
         return Usuario.create(usuarioCriado.nomeUsuario(),
                 usuarioCriado.enderecoEmail(),
@@ -80,7 +67,7 @@ public class UsuarioGateway implements IUsuarioGateway {
                         usuarioDTO.enderecoEmail(),
                         usuarioDTO.login(),
                         TipoUsuario.create(usuarioDTO.tipoDeUsuario()),
-                        buscarValoresEndereco(usuarioDTO.endereco())
+                        mapearEndereco(usuarioDTO.endereco())
                         ))
                 .toList();
     }
@@ -94,22 +81,11 @@ public class UsuarioGateway implements IUsuarioGateway {
     @Override
     public Usuario alterar(Usuario usuarioAlteracao) {
 
-        final EnderecoDTO enderecoUsuario = new EnderecoDTO(usuarioAlteracao.getEndereco().getLogradouro(),
-                usuarioAlteracao.getEndereco().getNumero(),
-                usuarioAlteracao.getEndereco().getBairro(),
-                usuarioAlteracao.getEndereco().getCidade(),
-                usuarioAlteracao.getEndereco().getEstado(),
-                usuarioAlteracao.getEndereco().getCep());
-
-        final UsuarioAlteracaoDTO usuarioAlteracaoDTO = new UsuarioAlteracaoDTO(usuarioAlteracao.getNome(),
-                usuarioAlteracao.getEmail(),
-                usuarioAlteracao.getLogin(),
-                usuarioAlteracao.getTipoDeUsuario().getTipoUsuario(),
-                enderecoUsuario);
+        final UsuarioAlteracaoDTO usuarioAlteracaoDTO = mapearUsuarioAlteracaoDTO(usuarioAlteracao);
 
         UsuarioDTO usuarioAlterado = this.dataSource.alterarUsuario(usuarioAlteracaoDTO);
 
-        final Endereco enderecoUsuarioAlterado = buscarValoresEndereco(usuarioAlterado.endereco());
+        final Endereco enderecoUsuarioAlterado = mapearEndereco(usuarioAlterado.endereco());
 
         return Usuario.create(usuarioAlterado.nomeUsuario(),
                 usuarioAlterado.enderecoEmail(),
@@ -151,12 +127,45 @@ public class UsuarioGateway implements IUsuarioGateway {
         return Usuario.create(usuarioValido.login(), usuarioValido.senha());
     }
 
-    private Endereco buscarValoresEndereco(EnderecoDTO enderecoDTO) {
+    private Endereco mapearEndereco(EnderecoDTO enderecoDTO) {
         return Endereco.create(enderecoDTO.logradouro(),
                 enderecoDTO.numero(),
                 enderecoDTO.bairro(),
                 enderecoDTO.cidade(),
                 enderecoDTO.estado(),
                 enderecoDTO.cep());
+    }
+
+    private NovoUsuarioDTO getNovoUsuarioDTO(Usuario novoUsuario) {
+        final EnderecoDTO enderecoDTO = mapearEnderecoDTO(novoUsuario.getEndereco());
+
+        final NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO(novoUsuario.getNome(),
+                novoUsuario.getEmail(),
+                novoUsuario.getLogin(),
+                novoUsuario.getSenha(),
+                novoUsuario.getTipoDeUsuario().getTipoUsuario(),
+                enderecoDTO);
+
+        return novoUsuarioDTO;
+    }
+
+
+    private UsuarioAlteracaoDTO mapearUsuarioAlteracaoDTO(Usuario usuarioAlteracao) {
+        final EnderecoDTO enderecoUsuario = mapearEnderecoDTO(usuarioAlteracao.getEndereco());
+
+        return new UsuarioAlteracaoDTO(usuarioAlteracao.getNome(),
+                usuarioAlteracao.getEmail(),
+                usuarioAlteracao.getLogin(),
+                usuarioAlteracao.getTipoDeUsuario().getTipoUsuario(),
+                enderecoUsuario);
+    }
+
+    private EnderecoDTO mapearEnderecoDTO(Endereco endereco) {
+        return new EnderecoDTO(endereco.getLogradouro(),
+                endereco.getNumero(),
+                endereco.getBairro(),
+                endereco.getCidade(),
+                endereco.getEstado(),
+                endereco.getCep());
     }
 }
