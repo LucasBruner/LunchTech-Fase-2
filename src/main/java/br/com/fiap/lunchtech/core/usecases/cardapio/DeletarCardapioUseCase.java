@@ -1,5 +1,6 @@
 package br.com.fiap.lunchtech.core.usecases.cardapio;
 
+import br.com.fiap.lunchtech.core.dto.cardapio.CardapioDTO;
 import br.com.fiap.lunchtech.core.interfaces.ICardapioGateway;
 
 public class DeletarCardapioUseCase {
@@ -12,8 +13,8 @@ public class DeletarCardapioUseCase {
     public static DeletarCardapioUseCase create(ICardapioGateway cardapioGateway) {
         return new DeletarCardapioUseCase(cardapioGateway);
     }
+    public void run(CardapioDTO cardapioDTO) {
 
-    public void run() {
-        //cardapioGateway.deletar(nomeProduto, nomeRestaurante);
+        cardapioGateway.deletar(nomeProduto, nomeRestaurante);
     }
 }
