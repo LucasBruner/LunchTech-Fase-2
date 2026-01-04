@@ -8,4 +8,6 @@ public interface ICardapioGateway {
     Cardapio incluir(Cardapio cardapioAlteracao);
 
     Cardapio alterar(Cardapio cardapio);
+
+    void deletar(String nomeProduto, String nomeRestaurante);
 }

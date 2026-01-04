@@ -19,7 +19,7 @@ public class DeletarRestauranteUseCase {
     public void run(String nomeRestaurante) {
         Restaurante restauranteExistente = restauranteGateway.buscarPorNome(nomeRestaurante);
 
-        if(restauranteExistente == null) {
+        if (restauranteExistente == null) {
             throw new RestauranteNaoEncontradoException("Resturante não foi encontrado.");
         }
 

@@ -24,9 +24,10 @@ public class CadastrarCardapioUseCase {
         Cardapio cardapioExistente = cardapioGateway.buscarProdutoPorNome(novoCardapioDTO.nomeProduto(),
                 novoCardapioDTO.restaurante().nomeRestaurante());
 
-        if(cardapioExistente != null) {
+        if (cardapioExistente != null) {
             throw new CardapioJaExisteException("O produto solicitado para adicionar já existe!");
         }
+
         Restaurante restaurante = restauranteGateway.buscarPorNome(novoCardapioDTO.restaurante().nomeRestaurante());
 
         Cardapio cardapioAlteracao = Cardapio.create(novoCardapioDTO.nomeProduto(),
