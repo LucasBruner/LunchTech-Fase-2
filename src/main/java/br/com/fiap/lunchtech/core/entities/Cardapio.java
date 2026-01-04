@@ -30,6 +30,22 @@ public class Cardapio {
         return cardapio;
     }
 
+    public static Cardapio create(String nomeProduto,
+                                  String descricao,
+                                  double preco,
+                                  boolean apenasPresencial,
+                                  String fotoPrato) {
+        Cardapio cardapio = new Cardapio();
+
+        cardapio.setNomeProduto(nomeProduto);
+        cardapio.setDescricao(descricao);
+        cardapio.setPreco(preco);
+        cardapio.setApenasPresencial(apenasPresencial);
+        cardapio.setFotoPrato(fotoPrato);
+
+        return cardapio;
+    }
+
     private void setRestaurante(Restaurante restaurante) {
         validaRestaurante(restaurante);
         this.restaurante = restaurante;

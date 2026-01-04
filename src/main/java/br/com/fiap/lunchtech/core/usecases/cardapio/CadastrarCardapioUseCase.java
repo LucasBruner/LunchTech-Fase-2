@@ -1,6 +1,6 @@
 package br.com.fiap.lunchtech.core.usecases.cardapio;
 
-import br.com.fiap.lunchtech.core.dto.cardapio.CardapioDTO;
+import br.com.fiap.lunchtech.core.dto.cardapio.NovoCardapioDTO;
 import br.com.fiap.lunchtech.core.entities.Cardapio;
 import br.com.fiap.lunchtech.core.entities.Restaurante;
 import br.com.fiap.lunchtech.core.exceptions.CardapioJaExisteException;
@@ -20,7 +20,7 @@ public class CadastrarCardapioUseCase {
         return new CadastrarCardapioUseCase(cardapioGateway, restauranteGateway);
     }
 
-    public Cardapio run(CardapioDTO novoCardapioDTO) {
+    public Cardapio run(NovoCardapioDTO novoCardapioDTO) {
         Cardapio cardapioExistente = cardapioGateway.buscarProdutoPorNome(novoCardapioDTO.nomeProduto(),
                 novoCardapioDTO.restaurante().nomeRestaurante());
 
