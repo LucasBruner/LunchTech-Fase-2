@@ -58,6 +58,14 @@ public class Restaurante {
         return restaurante;
     }
 
+    public static Restaurante create(String nomeRestaurante) {
+        Restaurante restaurante = new Restaurante();
+
+        restaurante.setNome(nomeRestaurante);
+
+        return restaurante;
+    }
+
     private void setNome(String nome) {
         validateNome(nome);
         this.nome = nome;
