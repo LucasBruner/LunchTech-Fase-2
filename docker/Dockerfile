@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jdk AS builder
+FROM openjdk:26-ea-24-slim AS builder
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ COPY src src
 
 RUN ./mvnw clean package -DskipTests
 
-FROM eclipse-temurin:21-jdk
+FROM openjdk:26-ea-24-slim
 WORKDIR /app
 
 WORKDIR /app
