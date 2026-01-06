@@ -1,4 +1,4 @@
-package br.com.fiap.lunchtech.infra.controller;
+package br.com.fiap.lunchtech.infra.http.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
