@@ -5,7 +5,6 @@ import br.com.fiap.lunchtech.core.dto.cardapio.CardapioDTO;
 import br.com.fiap.lunchtech.core.dto.cardapio.CardapioInfoDTO;
 import br.com.fiap.lunchtech.core.dto.cardapio.NovoCardapioDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteCardapioDTO;
-import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteDTO;
 import br.com.fiap.lunchtech.core.entities.Cardapio;
 import br.com.fiap.lunchtech.core.entities.Restaurante;
 import br.com.fiap.lunchtech.core.exceptions.CardapioNaoExisteException;
