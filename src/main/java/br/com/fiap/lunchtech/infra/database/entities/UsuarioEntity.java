@@ -1,4 +1,4 @@
-package br.com.fiap.lunchtech.infra.database.jpa.entity;
+package br.com.fiap.lunchtech.infra.database.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,8 +29,10 @@ public class UsuarioEntity {
     @Column(name= "data_atualizacao")
     private LocalDate dataAtualizacao;
 
-    @Column(name= "tipo_usuario")
-    private String tipoUsuario;
+    @OneToOne
+    @JoinColumn(name= "tipo_usuario_id",
+            unique = true)
+    private TipoUsuarioEntity tipoUsuario;
 
     @OneToOne
     @JoinColumn(

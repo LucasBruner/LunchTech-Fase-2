@@ -1,4 +1,4 @@
-package br.com.fiap.lunchtech.infra.database.jpa.entity;
+package br.com.fiap.lunchtech.infra.database.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,6 +17,7 @@ public class RestauranteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String nome;
 
     @Column(name= "tipo_cozinha")

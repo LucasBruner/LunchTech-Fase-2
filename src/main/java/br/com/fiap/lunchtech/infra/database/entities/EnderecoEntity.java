@@ -1,4 +1,4 @@
-package br.com.fiap.lunchtech.infra.database.jpa.entity;
+package br.com.fiap.lunchtech.infra.database.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
