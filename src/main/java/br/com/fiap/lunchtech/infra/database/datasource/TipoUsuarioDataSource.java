@@ -17,18 +17,20 @@ public class TipoUsuarioDataSource implements ITipoUsuarioDataSource {
 
     @Override
     public TipoUsuarioDTO incluirNovoTipoUsuario(TipoUsuarioDTO tipoUsuarioDTO) {
-        var tipoUsuario = new TipoUsuarioEntity();
-
+        TipoUsuarioEntity tipoUsuario = new TipoUsuarioEntity();
         tipoUsuario.setTipoUsuario(tipoUsuarioDTO.tipoUsuario());
+        TipoUsuarioEntity novoTipoUsuario = tipoUsuarioRepository.save(tipoUsuario);
 
-        return new TipoUsuarioDTO(tipoUsuarioRepository.save(tipoUsuario).getTipoUsuario());
+        return new TipoUsuarioDTO(novoTipoUsuario.getTipoUsuario());
     }
 
     @Override
     public TipoUsuarioDTO alterarTipoUsuario(TipoUsuarioDTO tipoUsuarioDTO) {
         try {
-            var tipoUsuario = tipoUsuarioRepository.findByTipoUsuario(tipoUsuarioDTO.tipoUsuario());
-            return new TipoUsuarioDTO(tipoUsuarioRepository.save(tipoUsuario).getTipoUsuario());
+            TipoUsuarioEntity tipoUsuario = tipoUsuarioRepository.findByTipoUsuario(tipoUsuarioDTO.tipoUsuario());
+            tipoUsuario.setTipoUsuario(tipoUsuarioDTO.tipoUsuario());
+            TipoUsuarioEntity tipoUsuarioAtualizado = tipoUsuarioRepository.save(tipoUsuario);
+            return new TipoUsuarioDTO(tipoUsuarioAtualizado.getTipoUsuario());
 
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Tipo de usuário não encontrado!");
@@ -38,9 +40,8 @@ public class TipoUsuarioDataSource implements ITipoUsuarioDataSource {
     @Override
     public void deletarTipoUsuario(String tipoUsuario) {
         try {
-            var tipoUsuarioDelete = tipoUsuarioRepository.findByTipoUsuario(tipoUsuario);
+            TipoUsuarioEntity tipoUsuarioDelete = tipoUsuarioRepository.findByTipoUsuario(tipoUsuario);
             tipoUsuarioRepository.delete(tipoUsuarioDelete);
-
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Tipo de usuário não encontrado!");
         }
@@ -49,9 +50,8 @@ public class TipoUsuarioDataSource implements ITipoUsuarioDataSource {
     @Override
     public TipoUsuarioDTO buscarTipoUsuarioPorNome(String tipoUsuario) {
         try {
-            var tipoUsuarioNome = tipoUsuarioRepository.findByTipoUsuario(tipoUsuario);
+            TipoUsuarioEntity tipoUsuarioNome = tipoUsuarioRepository.findByTipoUsuario(tipoUsuario);
             return new TipoUsuarioDTO(tipoUsuarioNome.getTipoUsuario());
-
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Tipo de usuário não encontrado!");
         }

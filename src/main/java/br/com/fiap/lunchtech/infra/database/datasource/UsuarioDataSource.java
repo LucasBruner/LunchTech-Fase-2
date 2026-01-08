@@ -6,7 +6,11 @@ import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
+import br.com.fiap.lunchtech.infra.database.entities.EnderecoEntity;
+import br.com.fiap.lunchtech.infra.database.entities.TipoUsuarioEntity;
 import br.com.fiap.lunchtech.infra.database.entities.UsuarioEntity;
+import br.com.fiap.lunchtech.infra.database.repositories.IEnderecoRepository;
+import br.com.fiap.lunchtech.infra.database.repositories.ITipoUsuarioRepository;
 import br.com.fiap.lunchtech.infra.database.repositories.IUsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
@@ -17,22 +21,46 @@ import java.util.stream.Collectors;
 @Component
 public class UsuarioDataSource implements IUsuarioDataSource {
     private final IUsuarioRepository usuarioRepository;
+    private final ITipoUsuarioRepository tipoUsuarioRepository;
+    private final IEnderecoRepository enderecoRepository;
 
-    public UsuarioDataSource(IUsuarioRepository usuarioRepository) {
+    public UsuarioDataSource(IUsuarioRepository usuarioRepository, ITipoUsuarioRepository tipoUsuarioRepository, IEnderecoRepository enderecoRepository) {
         this.usuarioRepository = usuarioRepository;
+        this.tipoUsuarioRepository = tipoUsuarioRepository;
+        this.enderecoRepository = enderecoRepository;
     }
 
     @Override
     public UsuarioDTO obterUsuarioPorLogin(String login) {
         var usuario = usuarioRepository.findByLogin(login);
 
-        EnderecoDTO endereco = mapToDomainEndereco(usuario);
+        EnderecoDTO endereco = usuarioEntityToEnderecoDTO(usuario);
         return mapToDomainUsuario(usuario, endereco);
     }
 
     @Override
     public UsuarioDTO incluirNovoUsuario(NovoUsuarioDTO novoUsuarioDTO) {
-        return null;
+        UsuarioEntity novoUsuario = new UsuarioEntity();
+        TipoUsuarioEntity tipoUsuario = buscarTipoUsuario(novoUsuarioDTO.tipoDeUsuario());
+        EnderecoEntity novoEndereco = new EnderecoEntity();
+
+        novoEndereco.setLogradouro(novoUsuarioDTO.endereco().logradouro());
+        novoEndereco.setBairro(novoUsuarioDTO.endereco().bairro());
+        novoEndereco.setCep(Integer.valueOf(novoUsuarioDTO.endereco().cep()));
+        novoEndereco.setNumero(novoUsuarioDTO.endereco().numero());
+        novoEndereco.setCidade(novoUsuarioDTO.endereco().cidade());
+        novoEndereco.setEstado(novoUsuarioDTO.endereco().estado());
+        enderecoRepository.save(novoEndereco);
+
+        novoUsuario.setNome(novoUsuarioDTO.nomeUsuario());
+        novoUsuario.setEmail(novoUsuarioDTO.enderecoEmail());
+        novoUsuario.setLogin(novoUsuarioDTO.login());
+        novoUsuario.setSenha(novoUsuarioDTO.senha());
+        novoUsuario.setTipoUsuario(tipoUsuario);
+        novoUsuario.setEndereco(novoEndereco);
+        usuarioRepository.save(novoUsuario);
+
+        return mapToDomainUsuario(novoUsuario, entityToDtoEndereco(novoEndereco));
     }
 
     @Override
@@ -40,7 +68,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
         List<UsuarioEntity> listUsuarios = usuarioRepository.findByNome(nomeUsuario);
 
         //AJUSTAR CONVERSÃO DE TIPOS DE RETURN
-        EnderecoDTO endereco = mapToDomainEndereco(listUsuarios.getFirst());
+        EnderecoDTO endereco = usuarioEntityToEnderecoDTO(listUsuarios.getFirst());
 
         return listUsuarios.stream()
                 .map(x -> new UsuarioDTO(x.getNome(), x.getEmail(), x.getLogin(), x.getTipoUsuario().getTipoUsuario(), endereco))
@@ -50,16 +78,16 @@ public class UsuarioDataSource implements IUsuarioDataSource {
 
     @Override
     public UsuarioDTO buscarUsuarioPorEmail(String emailUsuario) {
-        var usuario = usuarioRepository.findByEmail(emailUsuario);
+        UsuarioEntity usuario = usuarioRepository.findByEmail(emailUsuario);
 
-        EnderecoDTO endereco = mapToDomainEndereco(usuario);
+        EnderecoDTO endereco = usuarioEntityToEnderecoDTO(usuario);
         return mapToDomainUsuario(usuario, endereco);
     }
 
     @Override
     public UsuarioDTO alterarUsuario(UsuarioAlteracaoDTO usuarioAlteracaoDTO) {
         try {
-            var usuarioExisteste = usuarioRepository.findByLogin(usuarioAlteracaoDTO.login());
+            UsuarioEntity usuarioExisteste = usuarioRepository.findByLogin(usuarioAlteracaoDTO.login());
 
             //FINALIZAR
 
@@ -72,7 +100,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
 
             UsuarioEntity usuario = usuarioRepository.save(usuarioExisteste);
 
-            EnderecoDTO endereco = mapToDomainEndereco(usuario);
+            EnderecoDTO endereco = usuarioEntityToEnderecoDTO(usuario);
             return mapToDomainUsuario(usuario, endereco);
 
         } catch (EntityNotFoundException e) {
@@ -83,9 +111,8 @@ public class UsuarioDataSource implements IUsuarioDataSource {
     @Override
     public void deletarUsuario(String login) {
         try {
-            var tipoUsuarioDelete = usuarioRepository.findByLogin(login);
+            UsuarioEntity tipoUsuarioDelete = usuarioRepository.findByLogin(login);
             usuarioRepository.delete(tipoUsuarioDelete);
-
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Tipo de usuário não encontrado!");
         }
@@ -109,12 +136,25 @@ public class UsuarioDataSource implements IUsuarioDataSource {
                 endereco);
     }
 
-    private EnderecoDTO mapToDomainEndereco(UsuarioEntity usuario){
+    private EnderecoDTO usuarioEntityToEnderecoDTO(UsuarioEntity usuario){
         return new EnderecoDTO(usuario.getEndereco().getLogradouro(),
                 usuario.getEndereco().getNumero(),
                 usuario.getEndereco().getBairro(),
                 usuario.getEndereco().getCidade(),
                 usuario.getEndereco().getEstado(),
                 usuario.getEndereco().getCep().toString());
+    }
+
+    private EnderecoDTO entityToDtoEndereco(EnderecoEntity enderecoEntity){
+        return new EnderecoDTO(enderecoEntity.getLogradouro(),
+                enderecoEntity.getNumero(),
+                enderecoEntity.getBairro(),
+                enderecoEntity.getCidade(),
+                enderecoEntity.getEstado(),
+                enderecoEntity.getCep().toString());
+    }
+
+    private TipoUsuarioEntity buscarTipoUsuario(String tipo){
+        return tipoUsuarioRepository.findByTipoUsuario(tipo);
     }
 }
