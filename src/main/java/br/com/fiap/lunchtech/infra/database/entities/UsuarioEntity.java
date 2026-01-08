@@ -1,9 +1,11 @@
 package br.com.fiap.lunchtech.infra.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name="Usuario")
@@ -29,14 +31,22 @@ public class UsuarioEntity {
     @Column(name= "data_atualizacao")
     private LocalDate dataAtualizacao;
 
-    @OneToOne
-    @JoinColumn(name= "tipo_usuario_id",
-            unique = true)
+    @ManyToOne
+    @JoinColumn(
+            name= "tipo_usuario_id",
+            nullable = false)
     private TipoUsuarioEntity tipoUsuario;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToOne
     @JoinColumn(
             name = "endereco_id",
             unique = true)
     private EnderecoEntity endereco;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(
+            mappedBy = "donoRestaurante",
+            fetch = FetchType.LAZY)
+    private List<RestauranteEntity> restaurantes;
 }

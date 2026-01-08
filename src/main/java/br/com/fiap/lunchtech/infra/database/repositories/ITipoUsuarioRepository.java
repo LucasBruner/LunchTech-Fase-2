@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ITipoUsuarioRepository extends JpaRepository<TipoUsuarioEntity, String> {
+public interface ITipoUsuarioRepository extends JpaRepository<TipoUsuarioEntity, Long> {
+
+    TipoUsuarioEntity findByTipoUsuario(String tipoUsuario);
 }

@@ -28,6 +28,8 @@ public class CardapioEntity {
     private String fotoPrato;
 
     @ManyToOne
-    @JoinColumn(name = "restaurante_id")
+    @JoinColumn(
+            name = "restaurante_id",
+            nullable = false)
     private RestauranteEntity restaurante;
 }

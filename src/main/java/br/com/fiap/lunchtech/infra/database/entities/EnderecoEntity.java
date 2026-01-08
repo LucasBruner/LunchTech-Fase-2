@@ -20,4 +20,10 @@ public class EnderecoEntity {
     private Integer numero;
     private String cidade;
     private String estado;
+
+    @OneToOne(mappedBy = "endereco")
+    private RestauranteEntity restaurante;
+
+    @OneToOne(mappedBy = "endereco")
+    private UsuarioEntity usuario;
 }
