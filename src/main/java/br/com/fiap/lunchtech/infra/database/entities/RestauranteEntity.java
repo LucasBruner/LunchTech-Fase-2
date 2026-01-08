@@ -1,5 +1,6 @@
 package br.com.fiap.lunchtech.infra.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +31,7 @@ public class RestauranteEntity {
     @JoinColumn(name = "usuario_id")
     private UsuarioEntity donoRestaurante;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToOne
     @JoinColumn(
             name = "endereco_id",
