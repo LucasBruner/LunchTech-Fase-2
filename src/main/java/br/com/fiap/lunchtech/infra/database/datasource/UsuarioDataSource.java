@@ -16,6 +16,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -113,8 +114,10 @@ public class UsuarioDataSource implements IUsuarioDataSource {
     @Override
     public void deletarUsuario(String login) {
         try {
-            UsuarioEntity tipoUsuarioDelete = usuarioRepository.findByLogin(login);
-            usuarioRepository.delete(tipoUsuarioDelete);
+            UsuarioEntity usuarioDelete = usuarioRepository.findByLogin(login);
+
+            enderecoRepository.deleteById(usuarioDelete.getEndereco().getId());
+            usuarioRepository.delete(usuarioDelete);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Tipo de usuário não encontrado!");
         }
