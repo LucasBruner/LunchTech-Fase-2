@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="Restaurante")
+@Table(name="restaurante")
 @Getter
 @Setter
 @Builder
@@ -36,12 +36,14 @@ public class RestauranteEntity {
     private UsuarioEntity donoRestaurante;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(
             name = "endereco_id",
             unique = true)
     private EnderecoEntity endereco;
 
-    @OneToMany(mappedBy = "restaurante")
+    @OneToMany(mappedBy = "restaurante",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<CardapioEntity> itensCardapio;
 }

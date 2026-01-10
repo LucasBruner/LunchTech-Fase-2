@@ -43,13 +43,9 @@ public class RestauranteDataSource implements IRestauranteDataSource {
     public void deletarRestaurante(String nomeRestaurante) {
         try {
             RestauranteEntity restaurante = restauranteRepository.findByName(nomeRestaurante);
-            enderecoRepository.deleteById(restaurante.getEndereco().getId());
             restauranteRepository.delete(restaurante);
-
-            // ao deletar restaurante, devem ser deletados todos os itens do cardápio e endereço
-
         } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Restaurante não encontrado!");
+            throw new EntityNotFoundException("Restaurante não encontrado!", e);
         }
     }
 
@@ -66,6 +62,7 @@ public class RestauranteDataSource implements IRestauranteDataSource {
         restauranteAlterado.setHorarioFuncionamentoInicio(restauranteAlteracaoDTO.horarioFuncionamentoInicio());
         restauranteAlterado.setHorarioFuncionamentoFim(restauranteAlteracaoDTO.horarioFuncionamentoFim());
         restauranteAlterado.setDonoRestaurante(donoRestauranteAlterado);
+        restauranteAlterado.setEndereco(enderecoAlterar);
         restauranteRepository.save(restauranteAlterado);
 
         EnderecoDTO enderecoDTO = restauranteEntityToEnderecoDTO(restauranteAlterado);

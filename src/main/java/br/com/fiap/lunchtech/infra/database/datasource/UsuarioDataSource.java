@@ -115,11 +115,9 @@ public class UsuarioDataSource implements IUsuarioDataSource {
     public void deletarUsuario(String login) {
         try {
             UsuarioEntity usuarioDelete = usuarioRepository.findByLogin(login);
-
-            enderecoRepository.deleteById(usuarioDelete.getEndereco().getId());
             usuarioRepository.delete(usuarioDelete);
         } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Tipo de usuário não encontrado!");
+            throw new EntityNotFoundException("Tipo de usuário não encontrado!", e);
         }
     }
 

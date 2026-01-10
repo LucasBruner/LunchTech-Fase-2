@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name="Usuario")
+@Table(name="usuario")
 @Getter
 @Setter
 @Builder
@@ -31,14 +31,14 @@ public class UsuarioEntity {
     @Column(name= "data_atualizacao")
     private LocalDate dataAtualizacao;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(
             name= "tipo_usuario_id",
             nullable = false)
     private TipoUsuarioEntity tipoUsuario;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(
             name = "endereco_id",
             unique = true)
