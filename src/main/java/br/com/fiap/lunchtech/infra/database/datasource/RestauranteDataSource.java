@@ -167,4 +167,13 @@ public class RestauranteDataSource implements IRestauranteDataSource {
     private UsuarioEntity buscarUsuarioPorLogin(String login) {
         return usuarioRepository.findByLogin(login);
     }
+
+    public Long buscarRestauranteID(String nomeRestaurante) {
+        RestauranteEntity restaurante = restauranteRepository.findByName(nomeRestaurante);
+        return restaurante.getId();
+    }
+
+    public RestauranteEntity buscarRestauranteEntity(String nomeRestaurante) {
+        return restauranteRepository.findByName(nomeRestaurante);
+    }
 }
