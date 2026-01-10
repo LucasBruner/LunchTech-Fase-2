@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name="Cardapio")
+@Table(name="cardapio")
 @Getter
 @Setter
 @Builder

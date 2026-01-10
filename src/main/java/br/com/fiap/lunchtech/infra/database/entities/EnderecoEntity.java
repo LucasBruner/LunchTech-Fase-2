@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name="Endereco")
+@Table(name="endereco")
 @Getter
 @Setter
 @Builder
@@ -16,7 +16,7 @@ public class EnderecoEntity {
     private Long id;
     private String logradouro;
     private String bairro;
-    private Integer cep;
+    private String cep;
     private Integer numero;
     private String cidade;
     private String estado;

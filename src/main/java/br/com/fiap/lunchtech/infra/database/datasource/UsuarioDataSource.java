@@ -16,8 +16,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 public class UsuarioDataSource implements IUsuarioDataSource {
@@ -47,7 +45,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
         // Incluir endereço
         novoEndereco.setLogradouro(novoUsuarioDTO.endereco().logradouro());
         novoEndereco.setBairro(novoUsuarioDTO.endereco().bairro());
-        novoEndereco.setCep(Integer.valueOf(novoUsuarioDTO.endereco().cep()));
+        novoEndereco.setCep(novoUsuarioDTO.endereco().cep());
         novoEndereco.setNumero(novoUsuarioDTO.endereco().numero());
         novoEndereco.setCidade(novoUsuarioDTO.endereco().cidade());
         novoEndereco.setEstado(novoUsuarioDTO.endereco().estado());
@@ -71,7 +69,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
 
         return listUsuarios.stream()
                 .map(usuario -> mapToDomainUsuario(usuario, usuarioEntityToEnderecoDTO(usuario)))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -90,7 +88,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
             EnderecoEntity enderecoAlterar = usuarioAlterar.getEndereco();
             enderecoAlterar.setLogradouro(usuarioAlteracaoDTO.endereco().logradouro());
             enderecoAlterar.setBairro(usuarioAlteracaoDTO.endereco().bairro());
-            enderecoAlterar.setCep(Integer.valueOf(usuarioAlteracaoDTO.endereco().cep()));
+            enderecoAlterar.setCep(usuarioAlteracaoDTO.endereco().cep());
             enderecoAlterar.setNumero(usuarioAlteracaoDTO.endereco().numero());
             enderecoAlterar.setCidade(usuarioAlteracaoDTO.endereco().cidade());
             enderecoAlterar.setEstado(usuarioAlteracaoDTO.endereco().estado());
@@ -115,11 +113,9 @@ public class UsuarioDataSource implements IUsuarioDataSource {
     public void deletarUsuario(String login) {
         try {
             UsuarioEntity usuarioDelete = usuarioRepository.findByLogin(login);
-
-            enderecoRepository.deleteById(usuarioDelete.getEndereco().getId());
             usuarioRepository.delete(usuarioDelete);
         } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Tipo de usuário não encontrado!");
+            throw new EntityNotFoundException("Tipo de usuário não encontrado!", e);
         }
     }
 
@@ -159,7 +155,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
                 usuario.getEndereco().getBairro(),
                 usuario.getEndereco().getCidade(),
                 usuario.getEndereco().getEstado(),
-                usuario.getEndereco().getCep().toString());
+                usuario.getEndereco().getCep());
     }
 
     private EnderecoDTO entityToDtoEndereco(EnderecoEntity enderecoEntity){
@@ -168,7 +164,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
                 enderecoEntity.getBairro(),
                 enderecoEntity.getCidade(),
                 enderecoEntity.getEstado(),
-                enderecoEntity.getCep().toString());
+                enderecoEntity.getCep());
     }
 
     private TipoUsuarioEntity buscarTipoUsuario(String tipo){
