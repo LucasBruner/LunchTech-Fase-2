@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -24,8 +25,11 @@ public class RestauranteEntity {
     @Column(name= "tipo_cozinha")
     private String tipoCozinha;
 
-    @Column(name= "horario_funcionamento")
-    private String horarioFuncionamento;
+    @Column(name= "horario_inicio")
+    private Date horarioFuncionamentoInicio;
+
+    @Column(name= "horario_fim")
+    private Date horarioFuncionamentoFim;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")

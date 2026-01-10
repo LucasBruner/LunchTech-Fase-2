@@ -16,6 +16,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -32,8 +33,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
 
     @Override
     public UsuarioDTO obterUsuarioPorLogin(String login) {
-        var usuario = usuarioRepository.findByLogin(login);
-
+        UsuarioEntity usuario = usuarioRepository.findByLogin(login);
         EnderecoDTO endereco = usuarioEntityToEnderecoDTO(usuario);
         return mapToDomainUsuario(usuario, endereco);
     }
@@ -44,6 +44,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
         TipoUsuarioEntity tipoUsuario = buscarTipoUsuario(novoUsuarioDTO.tipoDeUsuario());
         EnderecoEntity novoEndereco = new EnderecoEntity();
 
+        // Incluir endereço
         novoEndereco.setLogradouro(novoUsuarioDTO.endereco().logradouro());
         novoEndereco.setBairro(novoUsuarioDTO.endereco().bairro());
         novoEndereco.setCep(Integer.valueOf(novoUsuarioDTO.endereco().cep()));
@@ -52,6 +53,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
         novoEndereco.setEstado(novoUsuarioDTO.endereco().estado());
         enderecoRepository.save(novoEndereco);
 
+        // Incluir usuário
         novoUsuario.setNome(novoUsuarioDTO.nomeUsuario());
         novoUsuario.setEmail(novoUsuarioDTO.enderecoEmail());
         novoUsuario.setLogin(novoUsuarioDTO.login());
@@ -67,19 +69,14 @@ public class UsuarioDataSource implements IUsuarioDataSource {
     public List<UsuarioDTO> buscarUsuariosPorNome(String nomeUsuario) {
         List<UsuarioEntity> listUsuarios = usuarioRepository.findByNome(nomeUsuario);
 
-        //AJUSTAR CONVERSÃO DE TIPOS DE RETURN
-        EnderecoDTO endereco = usuarioEntityToEnderecoDTO(listUsuarios.getFirst());
-
         return listUsuarios.stream()
-                .map(x -> new UsuarioDTO(x.getNome(), x.getEmail(), x.getLogin(), x.getTipoUsuario().getTipoUsuario(), endereco))
+                .map(usuario -> mapToDomainUsuario(usuario, usuarioEntityToEnderecoDTO(usuario)))
                 .collect(Collectors.toList());
-
     }
 
     @Override
     public UsuarioDTO buscarUsuarioPorEmail(String emailUsuario) {
         UsuarioEntity usuario = usuarioRepository.findByEmail(emailUsuario);
-
         EnderecoDTO endereco = usuarioEntityToEnderecoDTO(usuario);
         return mapToDomainUsuario(usuario, endereco);
     }
@@ -87,32 +84,40 @@ public class UsuarioDataSource implements IUsuarioDataSource {
     @Override
     public UsuarioDTO alterarUsuario(UsuarioAlteracaoDTO usuarioAlteracaoDTO) {
         try {
-            UsuarioEntity usuarioExisteste = usuarioRepository.findByLogin(usuarioAlteracaoDTO.login());
+            UsuarioEntity usuarioAlterar = usuarioRepository.findByLogin(usuarioAlteracaoDTO.login());
 
-            //FINALIZAR
+            // Atualizar endereço
+            EnderecoEntity enderecoAlterar = usuarioAlterar.getEndereco();
+            enderecoAlterar.setLogradouro(usuarioAlteracaoDTO.endereco().logradouro());
+            enderecoAlterar.setBairro(usuarioAlteracaoDTO.endereco().bairro());
+            enderecoAlterar.setCep(Integer.valueOf(usuarioAlteracaoDTO.endereco().cep()));
+            enderecoAlterar.setNumero(usuarioAlteracaoDTO.endereco().numero());
+            enderecoAlterar.setCidade(usuarioAlteracaoDTO.endereco().cidade());
+            enderecoAlterar.setEstado(usuarioAlteracaoDTO.endereco().estado());
+            enderecoRepository.save(enderecoAlterar);
 
-            UsuarioEntity usuarioEntity = new UsuarioEntity();
-            usuarioEntity.setNome(usuarioAlteracaoDTO.nomeUsuario());
-            usuarioEntity.setEmail(usuarioAlteracaoDTO.enderecoEmail());
-            usuarioEntity.setLogin(usuarioAlteracaoDTO.login());
-            //usuarioEntity.setTipoUsuario(usuarioAlteracaoDTO.tipoDeUsuario());
-            //usuarioEntity.setEndereco(usuarioAlteracaoDTO.endereco());
+            // Atualizar usuário
+            usuarioAlterar.setNome(usuarioAlteracaoDTO.nomeUsuario());
+            usuarioAlterar.setEmail(usuarioAlteracaoDTO.enderecoEmail());
+            usuarioAlterar.setLogin(usuarioAlteracaoDTO.login());
+            usuarioAlterar.setTipoUsuario(buscarTipoUsuario(usuarioAlteracaoDTO.tipoDeUsuario()));
+            usuarioRepository.save(usuarioAlterar);
 
-            UsuarioEntity usuario = usuarioRepository.save(usuarioExisteste);
-
-            EnderecoDTO endereco = usuarioEntityToEnderecoDTO(usuario);
-            return mapToDomainUsuario(usuario, endereco);
+            EnderecoDTO enderecoDTO = usuarioEntityToEnderecoDTO(usuarioAlterar);
+            return mapToDomainUsuario(usuarioAlterar, enderecoDTO);
 
         } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Tipo de usuário não encontrado!");
+            throw new EntityNotFoundException("Usuário não encontrado!");
         }
     }
 
     @Override
     public void deletarUsuario(String login) {
         try {
-            UsuarioEntity tipoUsuarioDelete = usuarioRepository.findByLogin(login);
-            usuarioRepository.delete(tipoUsuarioDelete);
+            UsuarioEntity usuarioDelete = usuarioRepository.findByLogin(login);
+
+            enderecoRepository.deleteById(usuarioDelete.getEndereco().getId());
+            usuarioRepository.delete(usuarioDelete);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Tipo de usuário não encontrado!");
         }
@@ -120,12 +125,24 @@ public class UsuarioDataSource implements IUsuarioDataSource {
 
     @Override
     public void alterarSenhaUsuario(UsuarioSenhaDTO usuarioSenhaDTO) {
-
+        try {
+            UsuarioEntity usuario = usuarioRepository.findByLogin(usuarioSenhaDTO.login());
+            usuario.setSenha(usuarioSenhaDTO.senha());
+            usuarioRepository.save(usuario);
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("Usuário não encontrado!");
+        }
     }
 
     @Override
     public UsuarioSenhaDTO buscarDadosUsuarioPorLogin(String login) {
-        return null;
+        try {
+            UsuarioEntity usuario = usuarioRepository.findByLogin(login);
+            return new UsuarioSenhaDTO(usuario.getLogin(), usuario.getSenha());
+
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("Usuário não encontrado!");
+        }
     }
 
     private UsuarioDTO mapToDomainUsuario(UsuarioEntity usuario, EnderecoDTO endereco){
