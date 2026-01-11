@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TipoUsuarioDataSource implements ITipoUsuarioDataSource {
-    private ITipoUsuarioRepository tipoUsuarioRepository;
+    private final ITipoUsuarioRepository tipoUsuarioRepository;
 
     public TipoUsuarioDataSource(ITipoUsuarioRepository tipoUsuarioRepository) {
         this.tipoUsuarioRepository = tipoUsuarioRepository;
@@ -55,5 +55,9 @@ public class TipoUsuarioDataSource implements ITipoUsuarioDataSource {
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Tipo de usuário não encontrado!");
         }
+    }
+
+    TipoUsuarioEntity buscarTipoUsuario(String tipo){
+        return tipoUsuarioRepository.findByTipoUsuario(tipo);
     }
 }
