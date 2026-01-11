@@ -1,6 +1,9 @@
 package br.com.fiap.lunchtech.core.interfaces;
 
 import br.com.fiap.lunchtech.core.entities.Restaurante;
+import br.com.fiap.lunchtech.core.entities.Usuario;
+
+import java.util.List;
 
 public interface IRestauranteGateway {
     Restaurante alterar(Restaurante restauranteAlteracao);
@@ -10,4 +13,6 @@ public interface IRestauranteGateway {
     void deletar(String nomeRestaurante);
 
     Restaurante incluir(Restaurante restauranteAlteracao);
+
+    List<Restaurante> buscarRestaurantesPorLogin(Usuario usuario);
 }
