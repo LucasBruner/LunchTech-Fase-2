@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CardapioDataSource implements ICardapioDataSource {
-    private ICardapioRepository cardapioRepository;
-    private RestauranteDataSource restauranteDataSource;
+    private final ICardapioRepository cardapioRepository;
+    private final RestauranteDataSource restauranteDataSource;
 
     public CardapioDataSource(ICardapioRepository cardapioRepository,
                               RestauranteDataSource restauranteDataSource) {

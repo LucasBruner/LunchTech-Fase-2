@@ -9,24 +9,22 @@ import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
 import br.com.fiap.lunchtech.infra.database.entities.EnderecoEntity;
 import br.com.fiap.lunchtech.infra.database.entities.RestauranteEntity;
 import br.com.fiap.lunchtech.infra.database.entities.UsuarioEntity;
-import br.com.fiap.lunchtech.infra.database.repositories.IEnderecoRepository;
 import br.com.fiap.lunchtech.infra.database.repositories.IRestauranteRepository;
-import br.com.fiap.lunchtech.infra.database.repositories.IUsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RestauranteDataSource implements IRestauranteDataSource {
     private final IRestauranteRepository restauranteRepository;
-    private final IEnderecoRepository enderecoRepository;
-    private final IUsuarioRepository usuarioRepository;
+    private final EnderecoDataSource enderecoDataSource;
+    private final UsuarioDataSource usuarioDataSource;
 
     public RestauranteDataSource(IRestauranteRepository restauranteRepository,
-                                 IEnderecoRepository enderecoRepository,
-                                 IUsuarioRepository usuarioRepository) {
+                                 EnderecoDataSource enderecoDataSource,
+                                 UsuarioDataSource usuarioDataSource) {
         this.restauranteRepository = restauranteRepository;
-        this.enderecoRepository = enderecoRepository;
-        this.usuarioRepository = usuarioRepository;
+        this.enderecoDataSource = enderecoDataSource;
+        this.usuarioDataSource = usuarioDataSource;
     }
 
     @Override
@@ -54,9 +52,11 @@ public class RestauranteDataSource implements IRestauranteDataSource {
         RestauranteEntity restauranteAlterado = restauranteRepository.findByName(restauranteAlteracaoDTO.nomeRestaurante());
         UsuarioEntity donoRestauranteAlterado = buscarUsuarioPorLogin(restauranteAlteracaoDTO.donoRestaurante().login());
 
-        EnderecoEntity enderecoAlterar = getEnderecoEntity(restauranteAlteracaoDTO, restauranteAlterado);
-        enderecoRepository.save(enderecoAlterar);
+        // Atualizar endereço
+        EnderecoEntity enderecoAlterar =
+                enderecoDataSource.updateFromRestaurante(restauranteAlteracaoDTO.endereco(), restauranteAlterado.getId());
 
+        // Atualizar restaurante
         restauranteAlterado.setNome(restauranteAlteracaoDTO.nomeRestaurante());
         restauranteAlterado.setTipoCozinha(restauranteAlteracaoDTO.tipoCozinha());
         restauranteAlterado.setHorarioFuncionamentoInicio(restauranteAlteracaoDTO.horarioFuncionamentoInicio());
@@ -73,18 +73,12 @@ public class RestauranteDataSource implements IRestauranteDataSource {
     @Override
     public RestauranteDTO incluirNovoRestaurante(NovoRestauranteDTO novoRestauranteDTO) {
         RestauranteEntity novoRestaurante = new RestauranteEntity();
-        EnderecoEntity novoEndereco = new EnderecoEntity();
         UsuarioEntity novoDonoRestaurante = buscarUsuarioPorLogin(novoRestauranteDTO.donoRestaurante().login());
 
-        novoEndereco.setLogradouro(novoRestauranteDTO.endereco().logradouro());
-        novoEndereco.setBairro(novoRestauranteDTO.endereco().bairro());
-        novoEndereco.setCep(novoRestauranteDTO.endereco().cep());
-        novoEndereco.setNumero(novoRestauranteDTO.endereco().numero());
-        novoEndereco.setCidade(novoRestauranteDTO.endereco().cidade());
-        novoEndereco.setEstado(novoRestauranteDTO.endereco().estado());
+        // Incluir endereço
+        EnderecoEntity novoEndereco = enderecoDataSource.save(novoRestauranteDTO.endereco());
 
-        enderecoRepository.save(novoEndereco);
-
+        // Incluir restaurante
         novoRestaurante.setNome(novoRestauranteDTO.nomeRestaurante());
         novoRestaurante.setTipoCozinha(novoRestauranteDTO.tipoCozinha());
         novoRestaurante.setHorarioFuncionamentoInicio(novoRestauranteDTO.horarioFuncionamentoInicio());
@@ -99,75 +93,6 @@ public class RestauranteDataSource implements IRestauranteDataSource {
         return mapToDomainRestaurante(novoRestaurante, enderecoDTO, donoRestauranteDTO);
     }
 
-    private RestauranteDTO entityToDtoRestaurante(RestauranteEntity restaurante){
-        return new RestauranteDTO(restaurante.getNome(),
-                restaurante.getTipoCozinha(),
-                restaurante.getHorarioFuncionamentoInicio(),
-                restaurante.getHorarioFuncionamentoFim(),
-                entityToDtoEndereco(restaurante.getEndereco()),
-                entityToDtoUsuario(restaurante.getDonoRestaurante()));
-    }
-
-    private EnderecoDTO entityToDtoEndereco(EnderecoEntity enderecoEntity){
-        return new EnderecoDTO(enderecoEntity.getLogradouro(),
-                enderecoEntity.getNumero(),
-                enderecoEntity.getBairro(),
-                enderecoEntity.getCidade(),
-                enderecoEntity.getEstado(),
-                enderecoEntity.getCep());
-    }
-
-    private UsuarioDonoRestauranteDTO entityToDtoUsuario(UsuarioEntity usuario){
-        return new UsuarioDonoRestauranteDTO(usuario.getNome(),
-                usuario.getEmail(),
-                usuario.getTipoUsuario().getTipoUsuario(),
-                usuario.getLogin());
-    }
-
-
-    private static EnderecoEntity getEnderecoEntity(RestauranteAlteracaoDTO restauranteAlteracaoDTO, RestauranteEntity restauranteAlterado) {
-        EnderecoEntity enderecoAlterar = restauranteAlterado.getEndereco();
-        enderecoAlterar.setLogradouro(restauranteAlteracaoDTO.endereco().logradouro());
-        enderecoAlterar.setBairro(restauranteAlteracaoDTO.endereco().bairro());
-        enderecoAlterar.setCep(restauranteAlteracaoDTO.endereco().cep());
-        enderecoAlterar.setNumero(restauranteAlteracaoDTO.endereco().numero());
-        enderecoAlterar.setCidade(restauranteAlteracaoDTO.endereco().cidade());
-        enderecoAlterar.setEstado(restauranteAlteracaoDTO.endereco().estado());
-        return enderecoAlterar;
-    }
-
-    private EnderecoDTO restauranteEntityToEnderecoDTO(RestauranteEntity restauranteAlterar) {
-        return new EnderecoDTO(restauranteAlterar.getEndereco().getLogradouro(),
-                restauranteAlterar.getEndereco().getNumero(),
-                restauranteAlterar.getEndereco().getBairro(),
-                restauranteAlterar.getEndereco().getCidade(),
-                restauranteAlterar.getEndereco().getEstado(),
-                restauranteAlterar.getEndereco().getCep());
-    }
-
-
-    private UsuarioDonoRestauranteDTO restauranteDonoToDTO(UsuarioEntity donoRestaurante) {
-        return new UsuarioDonoRestauranteDTO(donoRestaurante.getNome(),
-                donoRestaurante.getEmail(),
-                donoRestaurante.getTipoUsuario().toString(),
-                donoRestaurante.getLogin());
-    }
-
-    private RestauranteDTO mapToDomainRestaurante(RestauranteEntity restauranteAlterar,
-                                                  EnderecoDTO enderecoDTO,
-                                                  UsuarioDonoRestauranteDTO donoRestauranteDTO) {
-        return new RestauranteDTO(restauranteAlterar.getNome(),
-                restauranteAlterar.getTipoCozinha(),
-                restauranteAlterar.getHorarioFuncionamentoInicio(),
-                restauranteAlterar.getHorarioFuncionamentoFim(),
-                enderecoDTO,
-                donoRestauranteDTO);
-    }
-
-    private UsuarioEntity buscarUsuarioPorLogin(String login) {
-        return usuarioRepository.findByLogin(login);
-    }
-
     public Long buscarRestauranteID(String nomeRestaurante) {
         RestauranteEntity restaurante = restauranteRepository.findByName(nomeRestaurante);
         return restaurante.getId();
@@ -176,4 +101,42 @@ public class RestauranteDataSource implements IRestauranteDataSource {
     public RestauranteEntity buscarRestauranteEntity(String nomeRestaurante) {
         return restauranteRepository.findByName(nomeRestaurante);
     }
+
+    private RestauranteDTO entityToDtoRestaurante(RestauranteEntity restaurante){
+        return new RestauranteDTO(restaurante.getNome(),
+                restaurante.getTipoCozinha(),
+                restaurante.getHorarioFuncionamentoInicio(),
+                restaurante.getHorarioFuncionamentoFim(),
+                entityToDtoEndereco(restaurante.getEndereco()),
+                entityToDonoDtoUsuario(restaurante.getDonoRestaurante()));
+    }
+
+    private EnderecoDTO entityToDtoEndereco(EnderecoEntity enderecoEntity){
+        return enderecoDataSource.entityToDtoEndereco(enderecoEntity);
+    }
+
+    private EnderecoDTO restauranteEntityToEnderecoDTO(RestauranteEntity restauranteAlterar) {
+        return enderecoDataSource.restauranteEntityToEnderecoDTO(restauranteAlterar);
+    }
+
+    private RestauranteDTO mapToDomainRestaurante(RestauranteEntity restauranteAlterar,
+                                                  EnderecoDTO enderecoDTO,
+                                                  UsuarioDonoRestauranteDTO donoRestauranteDTO) {
+        return enderecoDataSource.mapToDomainRestaurante(restauranteAlterar, enderecoDTO, donoRestauranteDTO);
+    }
+
+    private UsuarioDonoRestauranteDTO entityToDonoDtoUsuario(UsuarioEntity usuario){
+        return usuarioDataSource.entityToDonoDtoUsuario(usuario);
+    }
+
+
+    private UsuarioDonoRestauranteDTO restauranteDonoToDTO(UsuarioEntity donoRestaurante) {
+        return usuarioDataSource.restauranteDonoToDTO(donoRestaurante);
+    }
+
+    private UsuarioEntity buscarUsuarioPorLogin(String login) {
+        return usuarioDataSource.findByLogin(login);
+    }
+
+
 }
