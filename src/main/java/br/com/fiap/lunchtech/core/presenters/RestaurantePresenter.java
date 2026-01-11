@@ -30,9 +30,6 @@ public class RestaurantePresenter {
     }
 
     private static UsuarioDonoRestauranteDTO buscarDonoRestaurante(Usuario usuario) {
-        return new UsuarioDonoRestauranteDTO(usuario.getNome(),
-                usuario.getEmail(),
-                usuario.getTipoDeUsuario().getTipoUsuario(),
-                usuario.getLogin());
+        return new UsuarioDonoRestauranteDTO(usuario.getLogin());
     }
 }

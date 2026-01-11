@@ -6,6 +6,7 @@ import br.com.fiap.lunchtech.core.entities.Endereco;
 import br.com.fiap.lunchtech.core.entities.Restaurante;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import br.com.fiap.lunchtech.core.exceptions.RestauranteJaExistenteException;
+import br.com.fiap.lunchtech.core.exceptions.RestauranteNaoEncontradoException;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteGateway;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioGateway;
 
@@ -24,9 +25,14 @@ public class CadastrarRestauranteUseCase {
     }
 
     public Restaurante run(NovoRestauranteDTO novoRestauranteDTO) {
-        Restaurante restauranteExistente = restauranteGateway.buscarPorNome(novoRestauranteDTO.nomeRestaurante());
+        Restaurante restauranteExistente;
+        try {
+            restauranteExistente = restauranteGateway.buscarPorNome(novoRestauranteDTO.nomeRestaurante());
+        } catch (RestauranteNaoEncontradoException _) {
+            restauranteExistente = null;
+        }
 
-        if (restauranteExistente == null) {
+        if (restauranteExistente != null) {
             throw new RestauranteJaExistenteException("Restaurante já existe!");
         }
 

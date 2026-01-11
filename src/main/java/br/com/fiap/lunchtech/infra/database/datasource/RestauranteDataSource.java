@@ -5,6 +5,7 @@ import br.com.fiap.lunchtech.core.dto.restaurante.NovoRestauranteDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDonoRestauranteDTO;
+import br.com.fiap.lunchtech.core.exceptions.RestauranteNaoEncontradoException;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
 import br.com.fiap.lunchtech.infra.database.entities.EnderecoEntity;
 import br.com.fiap.lunchtech.infra.database.entities.RestauranteEntity;
@@ -32,7 +33,12 @@ public class RestauranteDataSource implements IRestauranteDataSource {
     @Override
     public RestauranteDTO buscarRestaurantePorNome(String nomeRestaurante) {
         try {
-            RestauranteEntity restaurante = restauranteRepository.findByName(nomeRestaurante);
+            RestauranteEntity restaurante = restauranteRepository.findByNome(nomeRestaurante);
+
+            if (restaurante == null) {
+                throw new RestauranteNaoEncontradoException("Restaurante não encontrado!");
+            }
+
             return entityToDtoRestaurante(restaurante);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Restaurante não encontrado!", e);
@@ -42,7 +48,7 @@ public class RestauranteDataSource implements IRestauranteDataSource {
     @Override
     public void deletarRestaurante(String nomeRestaurante) {
         try {
-            RestauranteEntity restaurante = restauranteRepository.findByName(nomeRestaurante);
+            RestauranteEntity restaurante = restauranteRepository.findByNome(nomeRestaurante);
             restauranteRepository.delete(restaurante);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Restaurante não encontrado!", e);
@@ -51,7 +57,7 @@ public class RestauranteDataSource implements IRestauranteDataSource {
 
     @Override
     public RestauranteDTO alterarRestaurante(RestauranteAlteracaoDTO restauranteAlteracaoDTO) {
-        RestauranteEntity restauranteAlterado = restauranteRepository.findByName(restauranteAlteracaoDTO.nomeRestaurante());
+        RestauranteEntity restauranteAlterado = restauranteRepository.findByNome(restauranteAlteracaoDTO.nomeRestaurante());
         UsuarioEntity donoRestauranteAlterado = buscarUsuarioPorLogin(restauranteAlteracaoDTO.donoRestaurante().login());
 
         // Atualizar endereço
@@ -113,12 +119,12 @@ public class RestauranteDataSource implements IRestauranteDataSource {
     }
 
     public Long buscarRestauranteID(String nomeRestaurante) {
-        RestauranteEntity restaurante = restauranteRepository.findByName(nomeRestaurante);
+        RestauranteEntity restaurante = restauranteRepository.findByNome(nomeRestaurante);
         return restaurante.getId();
     }
 
     public RestauranteEntity buscarRestauranteEntity(String nomeRestaurante) {
-        return restauranteRepository.findByName(nomeRestaurante);
+        return restauranteRepository.findByNome(nomeRestaurante);
     }
 
     private RestauranteDTO entityToDtoRestaurante(RestauranteEntity restaurante){

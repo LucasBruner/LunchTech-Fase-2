@@ -16,20 +16,21 @@ import br.com.fiap.lunchtech.core.usecases.restaurante.DeletarRestauranteUseCase
 public class RestauranteController {
 
     private IUsuarioDataSource usuarioDataSource;
-    private IRestauranteDataSource restauranteDataSource;
+    private final IRestauranteDataSource restauranteDataSource;
 
-    private RestauranteController(IUsuarioDataSource usuarioDataSource, IRestauranteDataSource restauranteDataSource) {
+    private RestauranteController(IUsuarioDataSource usuarioDataSource,
+                                  IRestauranteDataSource restauranteDataSource) {
         this.usuarioDataSource = usuarioDataSource;
         this.restauranteDataSource = restauranteDataSource;
     }
 
-    public RestauranteController create(IUsuarioDataSource usuarioDataSource,
-                                        IRestauranteDataSource restauranteDataSource) {
+    public static RestauranteController create(IRestauranteDataSource restauranteDataSource,
+                                               IUsuarioDataSource usuarioDataSource) {
         return new RestauranteController(usuarioDataSource, restauranteDataSource);
     }
 
     public RestauranteDTO cadastrarRestaurante(NovoRestauranteDTO novoRestauranteDTO) {
-        var restauranteGateway = RestauranteGateway.create(this.restauranteDataSource);
+        var restauranteGateway = RestauranteGateway.create(this.restauranteDataSource, usuarioDataSource);
         var usuarioGateway = UsuarioGateway.create(this.usuarioDataSource);
         var useCaseNovoRestaurante = CadastrarRestauranteUseCase.create(restauranteGateway, usuarioGateway);
 
