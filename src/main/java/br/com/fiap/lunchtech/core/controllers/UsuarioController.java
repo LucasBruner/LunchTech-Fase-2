@@ -5,7 +5,9 @@ import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteradoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
+import br.com.fiap.lunchtech.core.gateway.RestauranteGateway;
 import br.com.fiap.lunchtech.core.gateway.UsuarioGateway;
+import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
 import br.com.fiap.lunchtech.core.presenters.UsuarioPresenter;
 import br.com.fiap.lunchtech.core.usecases.usuario.AlterarSenhaUseCase;
@@ -20,13 +22,24 @@ import java.util.List;
 public class UsuarioController {
 
     private final IUsuarioDataSource dataStorageSource;
+    private IRestauranteDataSource restauranteDataSource;
 
     private UsuarioController(IUsuarioDataSource dataSource) {
         this.dataStorageSource = dataSource;
     }
 
+    private UsuarioController(IUsuarioDataSource dataSource, IRestauranteDataSource restauranteDataSource) {
+        this.dataStorageSource = dataSource;
+        this.restauranteDataSource = restauranteDataSource;
+    }
+
     public static UsuarioController create(IUsuarioDataSource dataSource) {
         return new UsuarioController(dataSource);
+    }
+
+    public static UsuarioController create(IUsuarioDataSource dataSource,
+                                           IRestauranteDataSource restauranteDataSource) {
+        return new UsuarioController(dataSource, restauranteDataSource);
     }
 
     public UsuarioDTO cadastrar(NovoUsuarioDTO novoUsuarioDTO) {
@@ -61,7 +74,9 @@ public class UsuarioController {
 
     public void deletarUsuario(String login) {
         var usuarioGateway = UsuarioGateway.create(this.dataStorageSource);
-        var useCaseDeletarUsuario = DeletarUsuarioUseCase.create(usuarioGateway);
+        var restauranteGateway = RestauranteGateway.create(this.restauranteDataSource);
+
+        var useCaseDeletarUsuario = DeletarUsuarioUseCase.create(usuarioGateway, restauranteGateway);
 
         useCaseDeletarUsuario.run(login);
     }
