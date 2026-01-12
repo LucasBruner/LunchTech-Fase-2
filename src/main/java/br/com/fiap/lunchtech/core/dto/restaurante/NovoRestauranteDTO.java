@@ -1,6 +1,5 @@
 package br.com.fiap.lunchtech.core.dto.restaurante;
 
-import br.com.fiap.lunchtech.core.dto.cardapio.CardapioDTO;
 import br.com.fiap.lunchtech.core.dto.endereco.EnderecoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDonoRestauranteDTO;
 
@@ -11,6 +10,5 @@ public record NovoRestauranteDTO(String nomeRestaurante,
                                  Date horarioFuncionamentoInicio,
                                  Date horarioFuncionamentoFim,
                                  EnderecoDTO endereco,
-                                 CardapioDTO cardapio,
                                  UsuarioDonoRestauranteDTO donoRestaurante) {
 }

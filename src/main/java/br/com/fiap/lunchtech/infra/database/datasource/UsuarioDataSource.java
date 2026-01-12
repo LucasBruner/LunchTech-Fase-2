@@ -138,17 +138,11 @@ public class UsuarioDataSource implements IUsuarioDataSource {
     }
 
     UsuarioDonoRestauranteDTO entityToDonoDtoUsuario(UsuarioEntity usuario){
-        return new UsuarioDonoRestauranteDTO(usuario.getNome(),
-                usuario.getEmail(),
-                usuario.getTipoUsuario().getTipoUsuario(),
-                usuario.getLogin());
+        return new UsuarioDonoRestauranteDTO(usuario.getLogin());
     }
 
     UsuarioDonoRestauranteDTO restauranteDonoToDTO(UsuarioEntity donoRestaurante) {
-        return new UsuarioDonoRestauranteDTO(donoRestaurante.getNome(),
-                donoRestaurante.getEmail(),
-                donoRestaurante.getTipoUsuario().toString(),
-                donoRestaurante.getLogin());
+        return new UsuarioDonoRestauranteDTO(donoRestaurante.getLogin());
     }
 
     private EnderecoDTO usuarioEntityToEnderecoDTO(UsuarioEntity usuario){

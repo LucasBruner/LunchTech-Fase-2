@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IRestauranteRepository extends JpaRepository<RestauranteEntity, Long> {
 
-    RestauranteEntity findByName(String nome);
+    RestauranteEntity findByNome(String nome);
 }
