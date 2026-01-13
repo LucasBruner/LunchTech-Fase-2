@@ -35,7 +35,7 @@ public class CadastrarCardapioUseCase {
             throw new CardapioJaExisteException("O produto solicitado para adicionar já existe nesse restaurante!");
         }
 
-        Restaurante restaurante = restauranteGateway.buscarPorNome(novoCardapioDTO.restaurante().nomeRestaurante());
+        Restaurante restaurante = restauranteGateway.buscarRestaurantePorId(novoCardapioDTO.restaurante().id());
 
         Cardapio cardapioAlteracao = Cardapio.create(novoCardapioDTO.nomeProduto(),
                 novoCardapioDTO.descricao(),

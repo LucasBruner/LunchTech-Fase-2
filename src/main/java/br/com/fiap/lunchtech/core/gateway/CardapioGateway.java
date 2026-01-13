@@ -44,12 +44,14 @@ public class CardapioGateway implements ICardapioGateway {
         if(cardapioDTO == null) {
             throw new CardapioNaoExisteException("Produto não encontrado.");
         }
-
-        return Cardapio.create(cardapioDTO.nomeProduto(),
+        Restaurante restaurante = restauranteGateway.buscarRestaurantePorId(cardapioDTO.restauranteCardapioDTO().id());
+        return Cardapio.create(cardapioDTO.id(),
+                cardapioDTO.nomeProduto(),
                 cardapioDTO.descricao(),
                 cardapioDTO.preco(),
                 cardapioDTO.apenasPresencial(),
-                cardapioDTO.fotoPrato());
+                cardapioDTO.fotoPrato(),
+                restaurante);
     }
 
     @Override

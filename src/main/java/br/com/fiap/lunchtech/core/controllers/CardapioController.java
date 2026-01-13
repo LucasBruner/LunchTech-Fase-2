@@ -73,7 +73,9 @@ public class CardapioController {
     }
 
     public CardapioDTO buscarProduto (CardapioBuscarDTO cardapioBuscarDTO) {
-        var cardapioGateway = CardapioGateway.create(cardapioDataSource);
+        var usuarioGateway = UsuarioGateway.create(usuarioDataSource);
+        var restauranteGateway = RestauranteGateway.create(restauranteDataSource, usuarioGateway);
+        var cardapioGateway = CardapioGateway.create(cardapioDataSource, restauranteGateway);
         var buscarCardapioUseCase = BuscarCardapioUseCase.create(cardapioGateway);
 
         var cardapioBuscado = buscarCardapioUseCase.run(cardapioBuscarDTO);

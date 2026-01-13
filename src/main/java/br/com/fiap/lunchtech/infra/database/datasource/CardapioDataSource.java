@@ -105,7 +105,6 @@ public class CardapioDataSource implements ICardapioDataSource {
     @Override
     public List<CardapioDTO> buscarProdutoPorIdRestaurante(Long restauranteId) {
         try {
-            RestauranteEntity restaurante = restauranteDataSource.buscarRestauranteById(restauranteId);
             List<CardapioEntity> cardapioEntity = cardapioRepository.findAllByRestauranteId(restauranteId);
             return cardapioEntity.stream().map(this::mapCardapioEntityToCardapioDTO).toList();
         } catch (EntityNotFoundException e) {
