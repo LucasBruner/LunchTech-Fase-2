@@ -41,7 +41,7 @@ public class RestauranteController {
     }
 
     public RestauranteDTO buscarRestaurantePorNome(String nomeRestaurante) {
-        var restauranteGateway = RestauranteGateway.create(this.restauranteDataSource);
+        var restauranteGateway = RestauranteGateway.create(this.restauranteDataSource, this.usuarioDataSource);
         var useCaseBuscarPorNome = BuscarRestaurantePorNomeUseCase.create(restauranteGateway);
 
         var restaurante = useCaseBuscarPorNome.run(nomeRestaurante);
@@ -51,8 +51,8 @@ public class RestauranteController {
     }
 
     public RestauranteDTO alterarRestaurante(RestauranteAlteracaoDTO restauranteAlteracaoDTO) {
-        var restauranteGateway = RestauranteGateway.create(this.restauranteDataSource);
         var usuarioGateway = UsuarioGateway.create(this.usuarioDataSource);
+        var restauranteGateway = RestauranteGateway.create(this.restauranteDataSource, this.usuarioDataSource);
         var useCaseAlterarRestaurante = AlterarRestauranteUseCase.create(restauranteGateway, usuarioGateway);
 
         var restauranteAlterado = useCaseAlterarRestaurante.run(restauranteAlteracaoDTO);
@@ -62,7 +62,7 @@ public class RestauranteController {
     }
 
     public void deletarRestaurante(String nomeRestaurante) {
-        var restauranteGateway = RestauranteGateway.create(this.restauranteDataSource);
+        var restauranteGateway = RestauranteGateway.create(this.restauranteDataSource, this.usuarioDataSource);
         var useCaseDeletarRestaurante = DeletarRestauranteUseCase.create(restauranteGateway);
 
         useCaseDeletarRestaurante.run(nomeRestaurante);

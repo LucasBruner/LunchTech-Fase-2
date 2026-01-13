@@ -1,11 +1,9 @@
 package br.com.fiap.lunchtech.core.entities;
 
-import lombok.Getter;
-
 import java.util.Date;
 
-@Getter
 public class Restaurante {
+    private Long id;
     private String nome;
     private String tipoCozinha;
     private Date horarioFuncionamentoInicio;
@@ -40,6 +38,34 @@ public class Restaurante {
         }
     }
 
+    public static Restaurante create(Long id,
+                                     String nomeRestaurante,
+                                     String tipoCozinha,
+                                     Date horarioFuncionamentoInicio,
+                                     Date horarioFuncionamentoFim,
+                                     Endereco enderecoRestaurante,
+                                     Usuario donoRestaurante) {
+        Restaurante restaurante = new Restaurante();
+
+        restaurante.setNome(nomeRestaurante);
+        restaurante.setTipoCozinha(tipoCozinha);
+        restaurante.setHorarioFuncionamentoInicio(horarioFuncionamentoInicio);
+        restaurante.setHorarioFuncionamentoFim(horarioFuncionamentoFim);
+        restaurante.setEndereco(enderecoRestaurante);
+        restaurante.setDonoRestaurante(donoRestaurante);
+        restaurante.setId(id);
+
+        return restaurante;
+    }
+
+    public static Restaurante create(String nomeRestaurante) {
+        Restaurante restaurante = new Restaurante();
+
+        restaurante.setNome(nomeRestaurante);
+
+        return restaurante;
+    }
+
     public static Restaurante create(String nomeRestaurante,
                                      String tipoCozinha,
                                      Date horarioFuncionamentoInicio,
@@ -58,12 +84,41 @@ public class Restaurante {
         return restaurante;
     }
 
-    public static Restaurante create(String nomeRestaurante) {
-        Restaurante restaurante = new Restaurante();
+    public Long getId() {
+        return id;
+    }
 
-        restaurante.setNome(nomeRestaurante);
+    private void setId(Long id) {
+        validaId(id);
+        this.id = id;
+    }
 
-        return restaurante;
+    public String getNome() {
+        return nome;
+    }
+
+    public String getTipoCozinha() {
+        return tipoCozinha;
+    }
+
+    public Date getHorarioFuncionamentoInicio() {
+        return horarioFuncionamentoInicio;
+    }
+
+    public Date getHorarioFuncionamentoFim() {
+        return horarioFuncionamentoFim;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public Cardapio getCardapio() {
+        return cardapio;
+    }
+
+    public Usuario getDonoRestaurante() {
+        return donoRestaurante;
     }
 
     private void setNome(String nome) {
@@ -100,5 +155,11 @@ public class Restaurante {
 
     private void setCardapio(Cardapio cardapio) {
         this.cardapio = cardapio;
+    }
+
+    private static void validaId(Long id){
+        if (id <= 0) {
+            throw new IllegalArgumentException("Não é possível utilizar o identificador.");
+        }
     }
 }

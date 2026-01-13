@@ -1,4 +1,9 @@
 package br.com.fiap.lunchtech.core.dto.usuario;
 
-public record UsuarioDonoRestauranteDTO (String login){
-}
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public record UsuarioDonoRestauranteDTO(
+        String login,
+        String nomeUsuario
+) {}

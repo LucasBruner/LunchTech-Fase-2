@@ -49,7 +49,8 @@ public class RestauranteGateway implements IRestauranteGateway {
         Endereco enderecoRestaurante = mapearEnderecoRestaurante(restauranteAlterado.endereco());
         Usuario donoRestaurante = mapearDonoRestaurantParaUsuario(restauranteAlterado.donoRestaurante());
 
-        return Restaurante.create(restauranteAlterado.nomeRestaurante(),
+        return Restaurante.create(restauranteAlterado.id(),
+                restauranteAlterado.nomeRestaurante(),
                 restauranteAlterado.tipoCozinha(),
                 restauranteAlterado.horarioFuncionamentoInicio(),
                 restauranteAlterado.horarioFuncionamentoFim(),
@@ -68,7 +69,8 @@ public class RestauranteGateway implements IRestauranteGateway {
         Endereco enderecoRestaurante = mapearEnderecoRestaurante(restauranteDTO.endereco());
         Usuario donoRestaurante = mapearDonoRestaurantParaUsuario(restauranteDTO.donoRestaurante());
 
-        return Restaurante.create(restauranteDTO.nomeRestaurante(),
+        return Restaurante.create(restauranteDTO.id(),
+                restauranteDTO.nomeRestaurante(),
                 restauranteDTO.tipoCozinha(),
                 restauranteDTO.horarioFuncionamentoInicio(),
                 restauranteDTO.horarioFuncionamentoInicio(),
@@ -94,7 +96,8 @@ public class RestauranteGateway implements IRestauranteGateway {
         RestauranteDTO restauranteCriado = this.restauranteDataSource.incluirNovoRestaurante(novoRestauranteDTO);
 
 
-        return Restaurante.create(restauranteCriado.nomeRestaurante(),
+        return Restaurante.create(restauranteCriado.id(),
+                restauranteCriado.nomeRestaurante(),
                 restauranteCriado.tipoCozinha(),
                 restauranteCriado.horarioFuncionamentoInicio(),
                 restauranteCriado.horarioFuncionamentoFim(),
@@ -110,6 +113,7 @@ public class RestauranteGateway implements IRestauranteGateway {
 
         return restaurantesDTO.stream()
                 .map(rdto -> Restaurante.create(
+                        rdto.id(),
                         rdto.nomeRestaurante(),
                         rdto.tipoCozinha(),
                         rdto.horarioFuncionamentoInicio(),
@@ -117,6 +121,26 @@ public class RestauranteGateway implements IRestauranteGateway {
                         mapearEnderecoRestaurante(rdto.endereco()),
                         mapearDonoRestaurantParaUsuario(rdto.donoRestaurante())
                 )).toList();
+    }
+
+    @Override
+    public Restaurante buscarRestaurantePorId(Long id) {
+        RestauranteDTO restauranteDTO = this.restauranteDataSource.buscarRestaurantePorId(id);
+
+        if(restauranteDTO == null) {
+            throw new RestauranteNaoEncontradoException("O restaurante desejado não foi encontrado.");
+        }
+
+        Endereco enderecoRestaurante = mapearEnderecoRestaurante(restauranteDTO.endereco());
+        Usuario donoRestaurante = mapearDonoRestaurantParaUsuario(restauranteDTO.donoRestaurante());
+
+        return Restaurante.create(restauranteDTO.id(),
+                restauranteDTO.nomeRestaurante(),
+                restauranteDTO.tipoCozinha(),
+                restauranteDTO.horarioFuncionamentoInicio(),
+                restauranteDTO.horarioFuncionamentoInicio(),
+                enderecoRestaurante,
+                donoRestaurante);
     }
 
     private Endereco mapearEnderecoRestaurante(EnderecoDTO endereco) {
@@ -132,14 +156,15 @@ public class RestauranteGateway implements IRestauranteGateway {
         UsuarioDTO usuario = usuarioDataSource.obterUsuarioPorLogin(usuarioDTO.login());
         TipoUsuario tipoUsuario = TipoUsuario.create(usuario.tipoDeUsuario());
 
-        return Usuario.create(usuario.nomeUsuario(), usuario.enderecoEmail(), tipoUsuario);
+        return Usuario.create(usuario.nomeUsuario(), usuario.enderecoEmail(), usuario.login(), tipoUsuario);
     }
 
     private RestauranteAlteracaoDTO mapearRestauranteAlteradoDTO(Restaurante restauranteAlteracao) {
         EnderecoDTO enderecoDTO = mapearEnderecoRestauranteToDTO(restauranteAlteracao.getEndereco());
         UsuarioDonoRestauranteDTO donoRestauranteDTO = mapearDonoRestaurantParaDTO(restauranteAlteracao.getDonoRestaurante());
 
-        return new RestauranteAlteracaoDTO(restauranteAlteracao.getNome(),
+        return new RestauranteAlteracaoDTO(restauranteAlteracao.getId(),
+                restauranteAlteracao.getNome(),
                 restauranteAlteracao.getTipoCozinha(),
                 restauranteAlteracao.getHorarioFuncionamentoInicio(),
                 restauranteAlteracao.getHorarioFuncionamentoFim(),
@@ -148,7 +173,7 @@ public class RestauranteGateway implements IRestauranteGateway {
     }
 
     private UsuarioDonoRestauranteDTO mapearDonoRestaurantParaDTO(Usuario donoRestaurante) {
-        return new UsuarioDonoRestauranteDTO(donoRestaurante.getLogin());
+        return new UsuarioDonoRestauranteDTO(donoRestaurante.getLogin(), donoRestaurante.getNome());
     }
 
     private EnderecoDTO mapearEnderecoRestauranteToDTO(Endereco endereco) {

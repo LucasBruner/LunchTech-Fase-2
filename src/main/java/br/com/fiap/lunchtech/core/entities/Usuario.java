@@ -90,16 +90,6 @@ public class Usuario {
         return usuario;
     }
 
-    public static Usuario create(String nomeUsuario, String email, TipoUsuario tipoUsuario) {
-        Usuario usuario = new Usuario();
-
-        usuario.setNome(nomeUsuario);
-        usuario.setEmail(email);
-        usuario.setTipoDeUsuario(tipoUsuario);
-
-        return usuario;
-    }
-
     private void setEmail(String email) {
         enderecoEmailValido(email);
         this.email = email;

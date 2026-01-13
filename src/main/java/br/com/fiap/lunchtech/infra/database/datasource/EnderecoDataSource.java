@@ -91,7 +91,8 @@ public class EnderecoDataSource {
     RestauranteDTO mapToDomainRestaurante(RestauranteEntity restauranteAlterar,
                                           EnderecoDTO enderecoDTO,
                                           UsuarioDonoRestauranteDTO donoRestauranteDTO) {
-        return new RestauranteDTO(restauranteAlterar.getNome(),
+        return new RestauranteDTO(restauranteAlterar.getId(),
+                restauranteAlterar.getNome(),
                 restauranteAlterar.getTipoCozinha(),
                 restauranteAlterar.getHorarioFuncionamentoInicio(),
                 restauranteAlterar.getHorarioFuncionamentoFim(),

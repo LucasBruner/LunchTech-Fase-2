@@ -5,6 +5,7 @@ import br.com.fiap.lunchtech.core.dto.restaurante.NovoRestauranteDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDonoRestauranteDTO;
+import br.com.fiap.lunchtech.core.exceptions.RestauranteJaExistenteException;
 import br.com.fiap.lunchtech.core.exceptions.RestauranteNaoEncontradoException;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
 import br.com.fiap.lunchtech.infra.database.entities.EnderecoEntity;
@@ -14,6 +15,7 @@ import br.com.fiap.lunchtech.infra.database.repositories.IRestauranteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Component
@@ -38,7 +40,6 @@ public class RestauranteDataSource implements IRestauranteDataSource {
             if (restaurante == null) {
                 throw new RestauranteNaoEncontradoException("Restaurante não encontrado!");
             }
-
             return entityToDtoRestaurante(restaurante);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Restaurante não encontrado!", e);
@@ -57,19 +58,20 @@ public class RestauranteDataSource implements IRestauranteDataSource {
 
     @Override
     public RestauranteDTO alterarRestaurante(RestauranteAlteracaoDTO restauranteAlteracaoDTO) {
-        RestauranteEntity restauranteAlterado = restauranteRepository.findByNome(restauranteAlteracaoDTO.nomeRestaurante());
+        RestauranteEntity restauranteAlterado = new RestauranteEntity();
         UsuarioEntity donoRestauranteAlterado = buscarUsuarioPorLogin(restauranteAlteracaoDTO.donoRestaurante().login());
 
-        // Atualizar endereço
-        EnderecoEntity enderecoAlterar =
-                enderecoDataSource.updateFromRestaurante(restauranteAlteracaoDTO.endereco(), restauranteAlterado.getId());
-
-        // Atualizar restaurante
+        restauranteAlterado.setId(restauranteAlteracaoDTO.idRestaurante());
         restauranteAlterado.setNome(restauranteAlteracaoDTO.nomeRestaurante());
         restauranteAlterado.setTipoCozinha(restauranteAlteracaoDTO.tipoCozinha());
         restauranteAlterado.setHorarioFuncionamentoInicio(restauranteAlteracaoDTO.horarioFuncionamentoInicio());
         restauranteAlterado.setHorarioFuncionamentoFim(restauranteAlteracaoDTO.horarioFuncionamentoFim());
         restauranteAlterado.setDonoRestaurante(donoRestauranteAlterado);
+
+        EnderecoEntity enderecoAlterar = enderecoDataSource
+                .updateFromRestaurante(restauranteAlteracaoDTO.endereco(),
+                restauranteAlterado.getId());
+
         restauranteAlterado.setEndereco(enderecoAlterar);
         restauranteRepository.save(restauranteAlterado);
 
@@ -118,6 +120,21 @@ public class RestauranteDataSource implements IRestauranteDataSource {
                 .toList();
     }
 
+    @Override
+    public RestauranteDTO buscarRestaurantePorId(Long id) {
+        try {
+            RestauranteEntity restaurante = restauranteRepository.findById(id).orElse(null);
+
+            if (restaurante == null) {
+                throw new RestauranteNaoEncontradoException("Restaurante não encontrado!");
+            }
+
+            return entityToDtoRestaurante(restaurante);
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("Restaurante não encontrado!", e);
+        }
+    }
+
     public Long buscarRestauranteID(String nomeRestaurante) {
         RestauranteEntity restaurante = restauranteRepository.findByNome(nomeRestaurante);
         return restaurante.getId();
@@ -128,7 +145,8 @@ public class RestauranteDataSource implements IRestauranteDataSource {
     }
 
     private RestauranteDTO entityToDtoRestaurante(RestauranteEntity restaurante){
-        return new RestauranteDTO(restaurante.getNome(),
+        return new RestauranteDTO(restaurante.getId(),
+                restaurante.getNome(),
                 restaurante.getTipoCozinha(),
                 restaurante.getHorarioFuncionamentoInicio(),
                 restaurante.getHorarioFuncionamentoFim(),
@@ -162,6 +180,4 @@ public class RestauranteDataSource implements IRestauranteDataSource {
     private UsuarioEntity buscarUsuarioPorLogin(String login) {
         return usuarioDataSource.findByLogin(login);
     }
-
-
 }
