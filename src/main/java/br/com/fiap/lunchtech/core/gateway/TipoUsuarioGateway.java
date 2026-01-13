@@ -27,9 +27,9 @@ public class TipoUsuarioGateway implements ITipoUsuarioGateway {
     }
 
     @Override
-    public TipoUsuario alterar(TipoUsuario tipoUsuario) {
+    public TipoUsuario alterar(TipoUsuario tipoUsuario, String tipoUsuarioAntigo) {
         TipoUsuarioDTO tipoUsuarioDTO = new TipoUsuarioDTO(tipoUsuario.getTipoUsuario());
-        TipoUsuarioDTO tipoUsuarioAlterado = tipoUsuarioDataSource.alterarTipoUsuario(tipoUsuarioDTO);
+        TipoUsuarioDTO tipoUsuarioAlterado = tipoUsuarioDataSource.alterarTipoUsuario(tipoUsuarioDTO, tipoUsuarioAntigo);
         return TipoUsuario.create(tipoUsuarioAlterado.tipoUsuario());
     }
 

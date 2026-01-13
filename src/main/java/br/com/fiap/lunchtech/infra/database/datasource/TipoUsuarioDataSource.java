@@ -28,9 +28,9 @@ public class TipoUsuarioDataSource implements ITipoUsuarioDataSource {
     }
 
     @Override
-    public TipoUsuarioDTO alterarTipoUsuario(TipoUsuarioDTO tipoUsuarioDTO) {
+    public TipoUsuarioDTO alterarTipoUsuario(TipoUsuarioDTO tipoUsuarioDTO, String tipoUsuarioAntigo) {
         try {
-            TipoUsuarioEntity tipoUsuario = tipoUsuarioRepository.findByTipoUsuario(tipoUsuarioDTO.tipoUsuario());
+            TipoUsuarioEntity tipoUsuario = tipoUsuarioRepository.findByTipoUsuario(tipoUsuarioAntigo);
             tipoUsuario.setTipoUsuario(tipoUsuarioDTO.tipoUsuario());
             TipoUsuarioEntity tipoUsuarioAtualizado = tipoUsuarioRepository.save(tipoUsuario);
             return new TipoUsuarioDTO(tipoUsuarioAtualizado.getTipoUsuario());
