@@ -15,4 +15,6 @@ public interface IRestauranteGateway {
     Restaurante incluir(Restaurante restauranteAlteracao);
 
     List<Restaurante> buscarRestaurantesPorLogin(Usuario usuario);
+
+    Restaurante buscarRestaurantePorId(Long id);
 }

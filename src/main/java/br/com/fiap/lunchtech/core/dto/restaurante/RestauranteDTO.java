@@ -5,7 +5,8 @@ import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDonoRestauranteDTO;
 
 import java.util.Date;
 
-public record RestauranteDTO(String nomeRestaurante,
+public record RestauranteDTO(Long id,
+                             String nomeRestaurante,
                              String tipoCozinha,
                              Date horarioFuncionamentoInicio,
                              Date horarioFuncionamentoFim,

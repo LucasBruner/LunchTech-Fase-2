@@ -16,4 +16,6 @@ public interface IRestauranteDataSource {
     RestauranteDTO incluirNovoRestaurante(NovoRestauranteDTO novoRestauranteDTO);
 
     List<RestauranteDTO> buscarRestaurantesPorLogin(String login);
+
+    RestauranteDTO buscarRestaurantePorId(Long id);
 }

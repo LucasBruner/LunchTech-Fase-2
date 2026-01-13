@@ -5,6 +5,7 @@ import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteAlteracaoDTO;
 import br.com.fiap.lunchtech.core.entities.Endereco;
 import br.com.fiap.lunchtech.core.entities.Restaurante;
 import br.com.fiap.lunchtech.core.entities.Usuario;
+import br.com.fiap.lunchtech.core.exceptions.RestauranteEncontradoException;
 import br.com.fiap.lunchtech.core.exceptions.RestauranteNaoEncontradoException;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteGateway;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioGateway;
@@ -25,16 +26,24 @@ public class AlterarRestauranteUseCase {
     }
 
     public Restaurante run(RestauranteAlteracaoDTO restauranteAlteracaoDTO) {
-        Restaurante restauranteExistente = restauranteGateway.buscarPorNome(restauranteAlteracaoDTO.nomeRestaurante());
+        restauranteGateway.buscarRestaurantePorId(restauranteAlteracaoDTO.idRestaurante());
+        Restaurante restauranteExiste;
+        try{
+            restauranteExiste = restauranteGateway.buscarPorNome(restauranteAlteracaoDTO.nomeRestaurante());
+        } catch (RestauranteNaoEncontradoException _) {
+            restauranteExiste = null;
+        }
 
-        if (restauranteExistente == null) {
-            throw new RestauranteNaoEncontradoException("Restaurante não encontrado para a ação solicitada!");
+        if(restauranteExiste != null
+                && !restauranteExiste.getNome().equals(restauranteAlteracaoDTO.nomeRestaurante())) {
+            throw new RestauranteEncontradoException("Já existe um restaurante com esse nome.");
         }
 
         Usuario donoRestaurante = buscarDonoRestaurante(restauranteAlteracaoDTO.donoRestaurante().login());
         Endereco enderecoRestaurante = buscarEndereco(restauranteAlteracaoDTO.endereco());
 
-        Restaurante restauranteAlteracao = Restaurante.create(restauranteAlteracaoDTO.nomeRestaurante(),
+        Restaurante restauranteAlteracao = Restaurante.create(restauranteAlteracaoDTO.idRestaurante(),
+                restauranteAlteracaoDTO.nomeRestaurante(),
                 restauranteAlteracaoDTO.tipoCozinha(),
                 restauranteAlteracaoDTO.horarioFuncionamentoInicio(),
                 restauranteAlteracaoDTO.horarioFuncionamentoFim(),

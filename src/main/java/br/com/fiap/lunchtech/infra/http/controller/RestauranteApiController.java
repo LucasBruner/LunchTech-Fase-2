@@ -2,8 +2,8 @@ package br.com.fiap.lunchtech.infra.http.controller;
 
 import br.com.fiap.lunchtech.core.controllers.RestauranteController;
 import br.com.fiap.lunchtech.core.dto.restaurante.NovoRestauranteDTO;
+import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteDTO;
-import br.com.fiap.lunchtech.core.exceptions.RestauranteNaoEncontradoException;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,6 +54,18 @@ public class RestauranteApiController {
     @PostMapping
     public ResponseEntity<Void> criarRestaurante(@Valid @RequestBody NovoRestauranteDTO restaurante) {
         restauranteController.cadastrarRestaurante(restaurante);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> alterarRestaurante(@Valid @RequestBody RestauranteAlteracaoDTO restaurante) {
+        restauranteController.alterarRestaurante(restaurante);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{nome}")
+    public ResponseEntity<Void> deletarRestaurante(@PathVariable String nome) {
+        restauranteController.deletarRestaurante(nome);
         return ResponseEntity.ok().build();
     }
 }

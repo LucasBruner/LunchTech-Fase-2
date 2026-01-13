@@ -28,9 +28,13 @@ public class UsuarioDataSource implements IUsuarioDataSource {
 
     @Override
     public UsuarioDTO obterUsuarioPorLogin(String login) {
-        UsuarioEntity usuario = findByLogin(login);
-        EnderecoDTO endereco = usuarioEntityToEnderecoDTO(usuario);
-        return mapToDomainUsuario(usuario, endereco);
+        try{
+            UsuarioEntity usuario = findByLogin(login);
+            EnderecoDTO endereco = usuarioEntityToEnderecoDTO(usuario);
+            return mapToDomainUsuario(usuario, endereco);
+        } catch (NullPointerException _) {
+            return null;
+        }
     }
 
     @Override

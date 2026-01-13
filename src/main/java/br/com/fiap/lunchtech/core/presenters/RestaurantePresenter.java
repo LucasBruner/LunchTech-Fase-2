@@ -12,7 +12,8 @@ public class RestaurantePresenter {
         EnderecoDTO enderecoDTO = buscarEnderecoRestaurante(novoRestaurante.getEndereco());
         UsuarioDonoRestauranteDTO donoRestauranteDTO = buscarDonoRestaurante(novoRestaurante.getDonoRestaurante());
 
-        return new RestauranteDTO(novoRestaurante.getNome(),
+        return new RestauranteDTO(novoRestaurante.getId(),
+                novoRestaurante.getNome(),
                 novoRestaurante.getTipoCozinha(),
                 novoRestaurante.getHorarioFuncionamentoInicio(),
                 novoRestaurante.getHorarioFuncionamentoFim(),
