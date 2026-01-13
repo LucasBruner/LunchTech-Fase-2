@@ -82,4 +82,31 @@ public class ControllerExceptionHandler {
         problemDetail.setType(URI.create("http://localhost:8080/v1/usuarios"));
         return problemDetail;
     }
+
+    @ExceptionHandler(CardapioNaoExisteException.class)
+    public ProblemDetail handlerCardapioNaoExisteException(CardapioNaoExisteException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problemDetail.setTitle("Produto não encontrado!");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setType(URI.create("http://localhost:8080/v1/cardapio"));
+        return problemDetail;
+    }
+
+    @ExceptionHandler(CardapioJaExisteException.class)
+    public ProblemDetail handlerCardapioJaExisteException(CardapioJaExisteException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        problemDetail.setTitle("Item do cardápio já existe!");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setType(URI.create("http://localhost:8080/v1/cardapio"));
+        return problemDetail;
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ProblemDetail handlerIllegalArgumentException(IllegalArgumentException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle("Informação inválida!");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setType(URI.create("http://localhost:8080/v1/cardapio"));
+        return problemDetail;
+    }
 }
