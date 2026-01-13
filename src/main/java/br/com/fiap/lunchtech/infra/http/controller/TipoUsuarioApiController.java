@@ -30,7 +30,7 @@ public class TipoUsuarioApiController {
             responses = {
                     @ApiResponse(description =  "Ok", responseCode = "200"),
                     @ApiResponse(description = "Not found", responseCode = "404")})
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<TipoUsuarioDTO>> buscarPorNome(@RequestParam(value = "tipo", required = false) String tipo) {
         List<TipoUsuarioDTO> tipoUsuario = tipoUsuarioController.buscarTipoUsuario(new TipoUsuarioDTO(tipo));
         return ResponseEntity.ok(tipoUsuario);

@@ -17,10 +17,7 @@ public class TipoUsuario {
     }
 
     private static void validaTipoUsuario(String tipoDeUsuario) {
-        boolean isValid = "DONO_RESTAURANTE".equalsIgnoreCase(tipoDeUsuario)
-                || "CLIENTE".equalsIgnoreCase(tipoDeUsuario);
-
-        if (!isValid) {
+        if (tipoDeUsuario == null || tipoDeUsuario.trim().isEmpty()) {
             throw new UsuarioComInformacaoInvalidaException("Tipo de usuário inválido");
         }
     }
