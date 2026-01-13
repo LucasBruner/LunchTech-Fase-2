@@ -4,6 +4,7 @@ import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
 import br.com.fiap.lunchtech.core.entities.Endereco;
 import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
+import br.com.fiap.lunchtech.core.exceptions.TipoUsuarioNaoExisteException;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioComEmailJaCadastradoException;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioJaExisteException;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioGateway;
@@ -20,7 +21,7 @@ public class CadastrarUsuarioUseCase {
     }
 
     public Usuario run (NovoUsuarioDTO novoUsuarioDTO) {
-        Usuario usuarioExistente = usuarioGateway.buscarPorLogin(novoUsuarioDTO.login());
+        Usuario usuarioExistente = usuarioGateway.buscarPorLoginExistente(novoUsuarioDTO.login());
 
         if (usuarioExistente != null) {
             throw new UsuarioJaExisteException("Usuário já possuí registro na base!");
@@ -28,8 +29,14 @@ public class CadastrarUsuarioUseCase {
 
         boolean emailJaCadastrado = usuarioGateway.buscarPorEmail(novoUsuarioDTO.enderecoEmail());
 
-        if(emailJaCadastrado) {
+        if (emailJaCadastrado) {
             throw new UsuarioComEmailJaCadastradoException("Esse e-mail já está sendo utilizado por outro usuário.");
+        }
+
+        var tipoUsuarioValido = usuarioGateway.buscarSeTipoUsuarioExistente(novoUsuarioDTO.tipoDeUsuario());
+
+        if (!tipoUsuarioValido) {
+            throw new TipoUsuarioNaoExisteException("Tipo de usuário não encontrado!");
         }
 
         Endereco endereco = Endereco.create(novoUsuarioDTO.endereco().logradouro(),
@@ -46,8 +53,6 @@ public class CadastrarUsuarioUseCase {
                 TipoUsuario.create(novoUsuarioDTO.tipoDeUsuario()),
                 endereco);
 
-        Usuario usuario = usuarioGateway.incluir(novoUsuario);
-
-        return usuario;
+        return usuarioGateway.incluir(novoUsuario);
     }
 }

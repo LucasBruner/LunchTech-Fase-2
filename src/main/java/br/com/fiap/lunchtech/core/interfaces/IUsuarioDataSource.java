@@ -14,6 +14,8 @@ public interface IUsuarioDataSource {
 
     List<UsuarioDTO> buscarUsuariosPorNome(String nomeUsuario);
 
+    List<UsuarioDTO> buscarUsuarios();
+
     UsuarioDTO buscarUsuarioPorEmail(String emailUsuario);
 
     UsuarioDTO alterarUsuario(UsuarioAlteracaoDTO usuarioAlteracaoDTO);

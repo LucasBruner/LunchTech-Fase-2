@@ -67,6 +67,15 @@ public class UsuarioDataSource implements IUsuarioDataSource {
     }
 
     @Override
+    public List<UsuarioDTO> buscarUsuarios() {
+        List<UsuarioEntity> listUsuarios = usuarioRepository.findAll();
+
+        return listUsuarios.stream()
+                .map(usuario -> mapToDomainUsuario(usuario, usuarioEntityToEnderecoDTO(usuario)))
+                .toList();
+    }
+
+    @Override
     public UsuarioDTO buscarUsuarioPorEmail(String emailUsuario) {
         UsuarioEntity usuario = usuarioRepository.findByEmail(emailUsuario);
         EnderecoDTO endereco = usuarioEntityToEnderecoDTO(usuario);
@@ -134,6 +143,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
     }
 
     private UsuarioDTO mapToDomainUsuario(UsuarioEntity usuario, EnderecoDTO endereco){
+        if (usuario == null) return null;
         return new UsuarioDTO(usuario.getNome(),
                 usuario.getEmail(),
                 usuario.getLogin(),

@@ -1,6 +1,7 @@
 package br.com.fiap.lunchtech.core.gateway;
 
 import br.com.fiap.lunchtech.core.dto.endereco.EnderecoDTO;
+import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
@@ -9,20 +10,23 @@ import br.com.fiap.lunchtech.core.entities.Endereco;
 import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioNaoEncontradoException;
+import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioGateway;
 
 import java.util.List;
 
 public class UsuarioGateway implements IUsuarioGateway {
-    private IUsuarioDataSource dataSource;
+    private final IUsuarioDataSource dataSource;
+    private final ITipoUsuarioDataSource tipoUsuarioDataSource;
 
-    public UsuarioGateway(IUsuarioDataSource dataStorageSource) {
+    public UsuarioGateway(IUsuarioDataSource dataStorageSource, ITipoUsuarioDataSource tipoUsuarioDataSource) {
         this.dataSource = dataStorageSource;
+        this.tipoUsuarioDataSource = tipoUsuarioDataSource;
     }
 
-    public static UsuarioGateway create(IUsuarioDataSource dataStorageSource) {
-        return new UsuarioGateway(dataStorageSource);
+    public static UsuarioGateway create(IUsuarioDataSource dataStorageSource, ITipoUsuarioDataSource tipoUsuarioDataSource) {
+        return new UsuarioGateway(dataStorageSource, tipoUsuarioDataSource);
     }
 
     @Override
@@ -31,6 +35,22 @@ public class UsuarioGateway implements IUsuarioGateway {
 
         if(usuarioDTO == null) {
             throw new UsuarioNaoEncontradoException("Login incorreto!");
+        }
+
+        var tipoUsuario = TipoUsuario.create(usuarioDTO.tipoDeUsuario());
+
+        return Usuario.create(usuarioDTO.nomeUsuario(),
+                usuarioDTO.enderecoEmail(),
+                usuarioDTO.login(),
+                tipoUsuario);
+    }
+
+    @Override
+    public Usuario buscarPorLoginExistente(String login) {
+        UsuarioDTO usuarioDTO = this.dataSource.obterUsuarioPorLogin(login);
+
+        if (usuarioDTO == null) {
+            return null;
         }
 
         var tipoUsuario = TipoUsuario.create(usuarioDTO.tipoDeUsuario());
@@ -69,6 +89,20 @@ public class UsuarioGateway implements IUsuarioGateway {
                         TipoUsuario.create(usuarioDTO.tipoDeUsuario()),
                         mapearEndereco(usuarioDTO.endereco())
                         ))
+                .toList();
+    }
+
+    @Override
+    public List<Usuario> buscarTodos() {
+        List<UsuarioDTO> usuariosDTO = this.dataSource.buscarUsuarios();
+
+        return usuariosDTO.stream()
+                .map(usuarioDTO -> Usuario.create(usuarioDTO.nomeUsuario(),
+                        usuarioDTO.enderecoEmail(),
+                        usuarioDTO.login(),
+                        TipoUsuario.create(usuarioDTO.tipoDeUsuario()),
+                        mapearEndereco(usuarioDTO.endereco())
+                ))
                 .toList();
     }
 
@@ -125,6 +159,12 @@ public class UsuarioGateway implements IUsuarioGateway {
         }
 
         return Usuario.create(usuarioValido.login(), usuarioValido.senha());
+    }
+
+    @Override
+    public boolean buscarSeTipoUsuarioExistente(String tipo) {
+        TipoUsuarioDTO tipoUsuarioDTO = tipoUsuarioDataSource.buscarTipoUsuarioPorNome(tipo);
+        return tipoUsuarioDTO != null;
     }
 
     private Endereco mapearEndereco(EnderecoDTO enderecoDTO) {

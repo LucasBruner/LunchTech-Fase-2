@@ -6,6 +6,8 @@ import br.com.fiap.lunchtech.core.exceptions.TipoUsuarioNaoExisteException;
 import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
 import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioGateway;
 
+import java.util.List;
+
 public class TipoUsuarioGateway implements ITipoUsuarioGateway {
     ITipoUsuarioDataSource tipoUsuarioDataSource;
 
@@ -45,5 +47,18 @@ public class TipoUsuarioGateway implements ITipoUsuarioGateway {
         }
 
         return TipoUsuario.create(tipoUsuarioDTO.tipoUsuario());
+    }
+
+    @Override
+    public List<TipoUsuario> buscarTodosTipoUsuario() {
+        List<TipoUsuarioDTO> tipoUsuarioDTO = tipoUsuarioDataSource.buscarTodosTipoUsuario();
+
+        if(tipoUsuarioDTO == null || tipoUsuarioDTO.isEmpty()) {
+            throw new TipoUsuarioNaoExisteException("Tipo de usuário não encontrado.");
+        }
+
+        return tipoUsuarioDTO.stream()
+                .map(tipoUsuario -> TipoUsuario.create(tipoUsuario.tipoUsuario()))
+                .toList();
     }
 }

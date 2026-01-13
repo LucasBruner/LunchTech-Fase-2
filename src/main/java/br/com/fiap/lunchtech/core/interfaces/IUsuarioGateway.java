@@ -7,9 +7,13 @@ import java.util.List;
 public interface IUsuarioGateway {
     Usuario buscarPorLogin(String login);
 
+    Usuario buscarPorLoginExistente(String login);
+
     Usuario incluir(Usuario novoUsuario);
 
     List<Usuario> buscarPorNome(String nomeUsuario);
+
+    List<Usuario> buscarTodos();
 
     boolean buscarPorEmail(String emailUsuario);
 
@@ -20,4 +24,6 @@ public interface IUsuarioGateway {
     Usuario alterarSenha(Usuario usuarioAlteracao);
 
     Usuario buscarDadosLogin(String login);
+
+    boolean buscarSeTipoUsuarioExistente(String tipo);
 }

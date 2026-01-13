@@ -1,16 +1,17 @@
 package br.com.fiap.lunchtech.core.controllers;
 
 import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioDTO;
+import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.gateway.TipoUsuarioGateway;
 import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
 import br.com.fiap.lunchtech.core.presenters.TipoUsuarioPresenter;
-import br.com.fiap.lunchtech.core.usecases.tipousuario.AlterarTipoUsuarioUseCase;
-import br.com.fiap.lunchtech.core.usecases.tipousuario.BuscarTipoUsuarioUseCase;
-import br.com.fiap.lunchtech.core.usecases.tipousuario.CadastrarTipoUsuarioUseCase;
-import br.com.fiap.lunchtech.core.usecases.tipousuario.DeletarTipoUsuarioUseCase;
+import br.com.fiap.lunchtech.core.usecases.tipousuario.*;
+
+import java.util.Collections;
+import java.util.List;
 
 public class TipoUsuarioController {
-    private ITipoUsuarioDataSource tipoUsuarioDataSource;
+    private final ITipoUsuarioDataSource tipoUsuarioDataSource;
 
     private TipoUsuarioController(ITipoUsuarioDataSource tipoUsuarioDataSource) {
         this.tipoUsuarioDataSource = tipoUsuarioDataSource;
@@ -45,11 +46,17 @@ public class TipoUsuarioController {
         deletarTipoUsuarioUseCase.run(tipoUsuarioDTO);
     }
 
-    public TipoUsuarioDTO buscarTipoUsuario(TipoUsuarioDTO tipoUsuarioDTO) {
+    public List<TipoUsuarioDTO> buscarTipoUsuario(TipoUsuarioDTO tipoUsuarioDTO) {
         var tipoUsuarioGateway = TipoUsuarioGateway.create(tipoUsuarioDataSource);
         var buscarTipoUsuarioUseCase = BuscarTipoUsuarioUseCase.create(tipoUsuarioGateway);
+        var buscarTipoUsuarioUseCaseTodos = BuscarTodosTipoUsuarioUseCase.create(tipoUsuarioGateway);
 
+
+        if (tipoUsuarioDTO.tipoUsuario() == null || tipoUsuarioDTO.tipoUsuario().isEmpty()){
+            var tipoUsuarioBuscado = buscarTipoUsuarioUseCaseTodos.run();
+            return tipoUsuarioBuscado.stream().map(TipoUsuarioPresenter::toDto).toList();
+        }
         var tipoUsuarioBuscado = buscarTipoUsuarioUseCase.run(tipoUsuarioDTO);
-        return TipoUsuarioPresenter.toDto(tipoUsuarioBuscado);
+        return Collections.singletonList(TipoUsuarioPresenter.toDto(tipoUsuarioBuscado));
     }
 }

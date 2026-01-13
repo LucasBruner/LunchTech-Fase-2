@@ -62,6 +62,8 @@ public class EnderecoDataSource {
     }
 
     EnderecoDTO usuarioEntityToEnderecoDTO(UsuarioEntity usuario){
+        if (usuario == null || usuario.getEndereco() == null) return null;
+
         return new EnderecoDTO(usuario.getEndereco().getLogradouro(),
                 usuario.getEndereco().getNumero(),
                 usuario.getEndereco().getBairro(),
