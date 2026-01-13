@@ -49,7 +49,16 @@ public class ControllerExceptionHandler {
 
     @ExceptionHandler(TipoUsuarioJaExisteException.class)
     public ProblemDetail handlerUsuarioNaoEncontradoException(TipoUsuarioJaExisteException e) {
-        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        problemDetail.setTitle("Tipo de usuário já existe!");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setType(URI.create("http://localhost:8080/v1/tipo-usuario"));
+        return problemDetail;
+    }
+
+    @ExceptionHandler(UsuarioJaExisteException.class)
+    public ProblemDetail handlerUsuarioNaoEncontradoException(UsuarioJaExisteException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
         problemDetail.setTitle("Tipo de usuário já existe!");
         problemDetail.setDetail(e.getMessage());
         problemDetail.setType(URI.create("http://localhost:8080/v1/tipo-usuario"));
@@ -62,6 +71,15 @@ public class ControllerExceptionHandler {
         problemDetail.setTitle("Tipo de usuário inválido!");
         problemDetail.setDetail(e.getMessage());
         problemDetail.setType(URI.create("http://localhost:8080/v1/tipo-usuario"));
+        return problemDetail;
+    }
+
+    @ExceptionHandler(UsuarioComEmailJaCadastradoException.class)
+    public ProblemDetail handlerUsuarioNaoEncontradoException(UsuarioComEmailJaCadastradoException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        problemDetail.setTitle("Email já cadastrado!");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setType(URI.create("http://localhost:8080/v1/usuarios"));
         return problemDetail;
     }
 }

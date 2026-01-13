@@ -24,4 +24,6 @@ public interface IUsuarioGateway {
     Usuario alterarSenha(Usuario usuarioAlteracao);
 
     Usuario buscarDadosLogin(String login);
+
+    boolean buscarSeTipoUsuarioExistente(String tipo);
 }

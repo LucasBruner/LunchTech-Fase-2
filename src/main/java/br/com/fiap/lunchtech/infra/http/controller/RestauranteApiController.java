@@ -5,6 +5,7 @@ import br.com.fiap.lunchtech.core.dto.restaurante.NovoRestauranteDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteDTO;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
+import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,8 +30,9 @@ public class RestauranteApiController {
     private final RestauranteController restauranteController;
 
     public RestauranteApiController(IRestauranteDataSource restauranteDataSource,
-                                    IUsuarioDataSource usuarioDataSource) {
-        this.restauranteController = RestauranteController.create(restauranteDataSource, usuarioDataSource);
+                                    IUsuarioDataSource usuarioDataSource,
+                                    ITipoUsuarioDataSource tipoUsuarioDataSource) {
+        this.restauranteController = RestauranteController.create(restauranteDataSource, usuarioDataSource, tipoUsuarioDataSource);
     }
 
     @Operation(

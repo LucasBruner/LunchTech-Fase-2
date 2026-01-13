@@ -6,6 +6,7 @@ import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteDTO;
 import br.com.fiap.lunchtech.core.gateway.RestauranteGateway;
 import br.com.fiap.lunchtech.core.gateway.UsuarioGateway;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
+import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
 import br.com.fiap.lunchtech.core.presenters.RestaurantePresenter;
 import br.com.fiap.lunchtech.core.usecases.restaurante.AlterarRestauranteUseCase;
@@ -17,21 +18,25 @@ public class RestauranteController {
 
     private IUsuarioDataSource usuarioDataSource;
     private final IRestauranteDataSource restauranteDataSource;
+    private final ITipoUsuarioDataSource tipoUsuarioDataSource;
 
     private RestauranteController(IUsuarioDataSource usuarioDataSource,
-                                  IRestauranteDataSource restauranteDataSource) {
+                                  IRestauranteDataSource restauranteDataSource,
+                                  ITipoUsuarioDataSource tipoUsuarioDataSource) {
         this.usuarioDataSource = usuarioDataSource;
         this.restauranteDataSource = restauranteDataSource;
+        this.tipoUsuarioDataSource = tipoUsuarioDataSource;
     }
 
     public static RestauranteController create(IRestauranteDataSource restauranteDataSource,
-                                               IUsuarioDataSource usuarioDataSource) {
-        return new RestauranteController(usuarioDataSource, restauranteDataSource);
+                                               IUsuarioDataSource usuarioDataSource,
+                                               ITipoUsuarioDataSource tipoUsuarioDataSource) {
+        return new RestauranteController(usuarioDataSource, restauranteDataSource, tipoUsuarioDataSource);
     }
 
     public RestauranteDTO cadastrarRestaurante(NovoRestauranteDTO novoRestauranteDTO) {
         var restauranteGateway = RestauranteGateway.create(this.restauranteDataSource, usuarioDataSource);
-        var usuarioGateway = UsuarioGateway.create(this.usuarioDataSource);
+        var usuarioGateway = UsuarioGateway.create(this.usuarioDataSource, tipoUsuarioDataSource);
         var useCaseNovoRestaurante = CadastrarRestauranteUseCase.create(restauranteGateway, usuarioGateway);
 
         var novoRestaurante = useCaseNovoRestaurante.run(novoRestauranteDTO);
@@ -51,7 +56,7 @@ public class RestauranteController {
     }
 
     public RestauranteDTO alterarRestaurante(RestauranteAlteracaoDTO restauranteAlteracaoDTO) {
-        var usuarioGateway = UsuarioGateway.create(this.usuarioDataSource);
+        var usuarioGateway = UsuarioGateway.create(this.usuarioDataSource, tipoUsuarioDataSource);
         var restauranteGateway = RestauranteGateway.create(this.restauranteDataSource, this.usuarioDataSource);
         var useCaseAlterarRestaurante = AlterarRestauranteUseCase.create(restauranteGateway, usuarioGateway);
 
