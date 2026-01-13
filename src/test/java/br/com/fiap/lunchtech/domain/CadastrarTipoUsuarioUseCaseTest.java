@@ -48,7 +48,7 @@ class CadastrarTipoUsuarioUseCaseTest {
     void deveLancarExcecaoQuandoTipoUsuarioJaExistir() throws TipoUsuarioNaoExisteException {
         // Arrange
         TipoUsuarioDTO tipoUsuarioDTO = new TipoUsuarioDTO("TIPO_EXISTENTE");
-        when(tipoUsuarioGateway.buscarTipoUsuarioPorNome("TIPO_EXISTENTE")).thenReturn(new TipoUsuario("TIPO_EXISTENTE"));
+        when(tipoUsuarioGateway.buscarTipoUsuarioPorNome("TIPO_EXISTENTE")).thenReturn(TipoUsuario.create("TIPO_EXISTENTE"));
 
         // Act & Assert
         assertThrows(TipoUsuarioJaExisteException.class, () -> cadastrarTipoUsuarioUseCase.run(tipoUsuarioDTO));
