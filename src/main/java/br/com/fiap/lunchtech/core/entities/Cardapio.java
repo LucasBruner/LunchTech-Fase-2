@@ -1,9 +1,7 @@
 package br.com.fiap.lunchtech.core.entities;
 
-import lombok.Getter;
-
-@Getter
 public class Cardapio {
+    private Long id;
     private String nomeProduto;
     private String descricao;
     private double preco;
@@ -11,7 +9,8 @@ public class Cardapio {
     private String fotoPrato;
     private Restaurante restaurante;
 
-    public static Cardapio create(String nomeCardapio,
+    public static Cardapio create(Long id,
+                                  String nomeCardapio,
                                   String descricao,
                                   double preco,
                                   boolean apenasPresencial,
@@ -20,6 +19,7 @@ public class Cardapio {
         validaRestaurante(restaurante);
 
         Cardapio cardapio = new Cardapio();
+        cardapio.setId(id);
         cardapio.setNomeProduto(nomeCardapio);
         cardapio.setDescricao(descricao);
         cardapio.setPreco(preco);
@@ -42,6 +42,25 @@ public class Cardapio {
         cardapio.setPreco(preco);
         cardapio.setApenasPresencial(apenasPresencial);
         cardapio.setFotoPrato(fotoPrato);
+
+        return cardapio;
+    }
+
+    public static Cardapio create(String nomeProduto,
+                                  String descricao,
+                                  double preco,
+                                  boolean apenasPresencial,
+                                  String fotoPrato,
+                                  Restaurante restaurante) {
+        validaRestaurante(restaurante);
+
+        Cardapio cardapio = new Cardapio();
+        cardapio.setNomeProduto(nomeProduto);
+        cardapio.setDescricao(descricao);
+        cardapio.setPreco(preco);
+        cardapio.setApenasPresencial(apenasPresencial);
+        cardapio.setFotoPrato(fotoPrato);
+        cardapio.setRestaurante(restaurante);
 
         return cardapio;
     }
@@ -74,6 +93,39 @@ public class Cardapio {
         this.fotoPrato = fotoPrato;
     }
 
+    private void setId(Long id) {
+        validaId(id);
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNomeProduto() {
+        return nomeProduto;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    public boolean isApenasPresencial() {
+        return apenasPresencial;
+    }
+
+    public String getFotoPrato() {
+        return fotoPrato;
+    }
+
+    public Restaurante getRestaurante() {
+        return restaurante;
+    }
+
     private static void validaRestaurante(Restaurante restaurante) {
         if(restaurante.getNome().trim().isBlank()) {
             throw new IllegalArgumentException("Restaurante inválido");
@@ -95,6 +147,12 @@ public class Cardapio {
     private static void validaDescricaoProduto(String descricao) {
         if(descricao == null || descricao.trim().isEmpty()) {
             throw new IllegalArgumentException("Forneça uma descrição para o produto");
+        }
+    }
+
+    private static void validaId(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("ID inválido");
         }
     }
 }

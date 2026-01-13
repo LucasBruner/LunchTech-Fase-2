@@ -4,6 +4,7 @@ import br.com.fiap.lunchtech.core.dto.cardapio.NovoCardapioDTO;
 import br.com.fiap.lunchtech.core.entities.Cardapio;
 import br.com.fiap.lunchtech.core.entities.Restaurante;
 import br.com.fiap.lunchtech.core.exceptions.CardapioJaExisteException;
+import br.com.fiap.lunchtech.core.exceptions.CardapioNaoExisteException;
 import br.com.fiap.lunchtech.core.interfaces.ICardapioGateway;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteGateway;
 
@@ -21,11 +22,17 @@ public class CadastrarCardapioUseCase {
     }
 
     public Cardapio run(NovoCardapioDTO novoCardapioDTO) {
-        Cardapio cardapioExistente = cardapioGateway.buscarProdutoPorNome(novoCardapioDTO.nomeProduto(),
-                novoCardapioDTO.restaurante().nomeRestaurante());
+        Cardapio cardapioExistente;
+
+        try{
+            cardapioExistente = cardapioGateway.buscarProdutoPorNome(novoCardapioDTO.nomeProduto(),
+                    novoCardapioDTO.restaurante().nomeRestaurante());
+        } catch (CardapioNaoExisteException e) {
+            cardapioExistente = null;
+        }
 
         if (cardapioExistente != null) {
-            throw new CardapioJaExisteException("O produto solicitado para adicionar já existe!");
+            throw new CardapioJaExisteException("O produto solicitado para adicionar já existe nesse restaurante!");
         }
 
         Restaurante restaurante = restauranteGateway.buscarPorNome(novoCardapioDTO.restaurante().nomeRestaurante());
