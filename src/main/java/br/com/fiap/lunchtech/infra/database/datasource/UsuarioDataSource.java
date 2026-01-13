@@ -28,9 +28,13 @@ public class UsuarioDataSource implements IUsuarioDataSource {
 
     @Override
     public UsuarioDTO obterUsuarioPorLogin(String login) {
-        UsuarioEntity usuario = findByLogin(login);
-        EnderecoDTO endereco = usuarioEntityToEnderecoDTO(usuario);
-        return mapToDomainUsuario(usuario, endereco);
+        try{
+            UsuarioEntity usuario = findByLogin(login);
+            EnderecoDTO endereco = usuarioEntityToEnderecoDTO(usuario);
+            return mapToDomainUsuario(usuario, endereco);
+        } catch (NullPointerException _) {
+            return null;
+        }
     }
 
     @Override
@@ -148,11 +152,11 @@ public class UsuarioDataSource implements IUsuarioDataSource {
     }
 
     UsuarioDonoRestauranteDTO entityToDonoDtoUsuario(UsuarioEntity usuario){
-        return new UsuarioDonoRestauranteDTO(usuario.getLogin());
+        return new UsuarioDonoRestauranteDTO(usuario.getLogin(), usuario.getNome());
     }
 
     UsuarioDonoRestauranteDTO restauranteDonoToDTO(UsuarioEntity donoRestaurante) {
-        return new UsuarioDonoRestauranteDTO(donoRestaurante.getLogin());
+        return new UsuarioDonoRestauranteDTO(donoRestaurante.getLogin(), donoRestaurante.getNome());
     }
 
     private EnderecoDTO usuarioEntityToEnderecoDTO(UsuarioEntity usuario){

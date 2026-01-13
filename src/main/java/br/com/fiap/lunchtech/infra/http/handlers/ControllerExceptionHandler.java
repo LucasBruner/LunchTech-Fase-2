@@ -20,6 +20,15 @@ public class ControllerExceptionHandler {
         return problemDetail;
     }
 
+    @ExceptionHandler(RestauranteJaExistenteException.class)
+    public ProblemDetail handlerRestauranteJaExistenteException(RestauranteJaExistenteException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        problemDetail.setTitle("Restaurante já cadastrado!");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setType(URI.create("http://localhost:8080/v1/restaurantes"));
+        return problemDetail;
+    }
+
     @ExceptionHandler(UsuarioNaoEncontradoException.class)
     public ProblemDetail handlerUsuarioNaoEncontradoException(UsuarioNaoEncontradoException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);

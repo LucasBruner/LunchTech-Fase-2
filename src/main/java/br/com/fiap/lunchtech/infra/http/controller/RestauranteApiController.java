@@ -2,15 +2,17 @@ package br.com.fiap.lunchtech.infra.http.controller;
 
 import br.com.fiap.lunchtech.core.controllers.RestauranteController;
 import br.com.fiap.lunchtech.core.dto.restaurante.NovoRestauranteDTO;
+import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteDTO;
-import br.com.fiap.lunchtech.core.exceptions.RestauranteNaoEncontradoException;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,15 +34,6 @@ public class RestauranteApiController {
     }
 
     @Operation(
-            summary = "Busca restaurantes",
-            description = "Busca restaurantes.Exemplo: http://localhost:8080/v1/restaurantes",
-            responses = { @ApiResponse(description = "Ok", responseCode = "200")})
-    @GetMapping
-    public String teste() {
-        return "Teste brenda";
-    }
-
-    @Operation(
             summary = "Busca de restaurante",
             description = "Busca o restaurante a partir do nome. Retorna o restaurante pesquisado. Exemplo: http://localhost:8080/v1/restaurantes/nome",
             responses = {@ApiResponse(description =  "Ok", responseCode = "200")})
@@ -50,9 +43,41 @@ public class RestauranteApiController {
         return ResponseEntity.ok(restaurante);
     }
 
+    @Operation(
+            summary = "Inserir novo restaurante",
+            description = "Criação de um novo restaurante, onde são realizado as validações das regras dos campos e realiza a inserção do novo restaurante." +
+                    " Deve-se informar um JSON com as informações de restaurante.",
+            responses = { @ApiResponse(description = "Created", responseCode = "201"),
+                    @ApiResponse(description = "Bad request", responseCode = "400"),
+                    @ApiResponse(description = "Conflict", responseCode = "409"),
+                    @ApiResponse(description = "Not found", responseCode = "404")})
     @PostMapping
     public ResponseEntity<Void> criarRestaurante(@Valid @RequestBody NovoRestauranteDTO restaurante) {
         restauranteController.cadastrarRestaurante(restaurante);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Operation(
+            summary = "Altera informações de um restaurante",
+            description = "Alteração das informações de um restaurante, onde são realizado as validações das regras dos campos e realiza a alteração dos dados do restaurante." +
+                    " Deve-se informar um JSON com as informações de restaurante.",
+            responses = { @ApiResponse(description = "Ok", responseCode = "200"),
+                    @ApiResponse(description = "Bad request", responseCode = "400"),
+                    @ApiResponse(description = "Conflict", responseCode = "409"),
+                    @ApiResponse(description = "Not found", responseCode = "404")})
+    @PutMapping
+    public ResponseEntity<Void> alterarRestaurante(@Valid @RequestBody RestauranteAlteracaoDTO restaurante) {
+        restauranteController.alterarRestaurante(restaurante);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(
+            summary = "Exclusão de um restaurante",
+            description = "Exclusão de um restaurante. Deve-se informar o nome do restaurante que será excluído. Exemplo: http://localhost:8080/v1/restaurantes/Cantina da Nona",
+            responses = { @ApiResponse(description = "Ok", responseCode = "200"), @ApiResponse(description = "Not found", responseCode = "404")})
+    @DeleteMapping("/{nome}")
+    public ResponseEntity<Void> deletarRestaurante(@PathVariable String nome) {
+        restauranteController.deletarRestaurante(nome);
         return ResponseEntity.ok().build();
     }
 }
