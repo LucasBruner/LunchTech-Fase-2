@@ -29,7 +29,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nomeRestaurante\": \"Cantina da Nona\",\r\n  \"tipoCozinha\": \"Italiana\",\r\n  \"horarioFuncionamentoInicio\": \"2024-12-25T11:30:00.000Z\",\r\n  \"horarioFuncionamentoFim\": \"2024-12-25T22:00:00.000Z\",\r\n  \"endereco\": {\r\n    \"logradouro\": \"Rua das Pizzas\",\r\n    \"numero\": \"123\",\r\n    \"bairro\": \"Centro\",\r\n    \"cidade\": \"São Paulo\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"89066000\"\r\n  },\r\n  \"donoRestaurante\": {\r\n    \"login\": \"Testes\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"nomeRestaurante\": \"Cantina da Nona\",\r\n  \"tipoCozinha\": \"Italiana\",\r\n  \"horarioFuncionamentoInicio\": \"2024-12-25T11:30:00.000Z\",\r\n  \"horarioFuncionamentoFim\": \"2024-12-25T22:00:00.000Z\",\r\n  \"endereco\": {\r\n    \"logradouro\": \"Rua das Pizzas\",\r\n    \"numero\": \"123\",\r\n    \"bairro\": \"Centro\",\r\n    \"cidade\": \"São Paulo\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"89066000\"\r\n  },\r\n  \"donoRestaurante\": {\r\n    \"login\": \"Bruner\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -50,7 +50,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"idRestaurante\": \"9\",\r\n  \"nomeRestaurante\": \"Cantina da Nona\",\r\n  \"tipoCozinha\": \"Brasileira\",\r\n  \"horarioFuncionamentoInicio\": \"2024-10-27T11:00:00.000Z\",\r\n  \"horarioFuncionamentoFim\": \"2024-10-27T23:00:00.000Z\",\r\n  \"endereco\": {\r\n    \"logradouro\": \"Avenida Paulista\",\r\n    \"numero\": \"1578\",\r\n    \"bairro\": \"Teste Vista\",\r\n    \"cidade\": \"São Paulo\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"89066000\"\r\n  },\r\n  \"donoRestaurante\": {\r\n    \"login\": \"Testes\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"idRestaurante\": \"1\",\r\n  \"nomeRestaurante\": \"Cantina da Nona\",\r\n  \"tipoCozinha\": \"Brasileira\",\r\n  \"horarioFuncionamentoInicio\": \"2024-10-27T11:00:00.000Z\",\r\n  \"horarioFuncionamentoFim\": \"2024-10-27T23:00:00.000Z\",\r\n  \"endereco\": {\r\n    \"logradouro\": \"Avenida Paulista\",\r\n    \"numero\": \"1578\",\r\n    \"bairro\": \"Teste Vista\",\r\n    \"cidade\": \"São Paulo\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"89066000\"\r\n  },\r\n  \"donoRestaurante\": {\r\n    \"login\": \"Testes\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -85,7 +85,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nomeProduto\": \"Feijoada Incompleta1243\",\r\n  \"descricao\": \"Acompanha arroz, couve, farofa e laranja.\",\r\n  \"preco\": \"59.90\",\r\n  \"apenasPresencial\": \"false\",\r\n  \"fotoPrato\": \"https://example.com/images/feijoada.jpg\",\r\n  \"restaurante\": {\r\n    \"id\": \"9\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"nomeProduto\": \"Feijoada Incompleta\",\r\n  \"descricao\": \"Acompanha arroz, couve, farofa e laranja.\",\r\n  \"preco\": \"59.90\",\r\n  \"apenasPresencial\": \"false\",\r\n  \"fotoPrato\": \"https://example.com/images/feijoada.jpg\",\r\n  \"restaurante\": {\r\n    \"id\": \"1\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -106,7 +106,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\":\"10\",\r\n  \"nomeProduto\": \"Feijoada Completa\",\r\n  \"descricao\": \"Acompanha arroz, couve, farofa e laranja.\",\r\n  \"preco\": \"59.90\",\r\n  \"apenasPresencial\": \"false\",\r\n  \"fotoPrato\": \"https://example.com/images/feijoada.jpg\",\r\n  \"restaurante\": {\r\n    \"id\": \"9\"\r\n  }\r\n}",
+							"raw": "{\r\n  \"id\":\"1\",\r\n  \"nomeProduto\": \"Feijoada Completa\",\r\n  \"descricao\": \"Acompanha arroz, couve, farofa e laranja.\",\r\n  \"preco\": \"59.90\",\r\n  \"apenasPresencial\": \"false\",\r\n  \"fotoPrato\": \"https://example.com/images/feijoada.jpg\",\r\n  \"restaurante\": {\r\n    \"id\": \"1\"\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -129,7 +129,7 @@
 							"mode": "raw",
 							"raw": "{\r\n  \"nomeProduto\": \"Feijoada Completa\",\r\n  \"descricao\": \"Acompanha arroz, couve, farofa e laranja.\",\r\n  \"preco\": \"59.90\",\r\n  \"apenasPresencial\": \"false\",\r\n  \"fotoPrato\": \"https://example.com/images/feijoada.jpg\",\r\n  \"restaurante\": {\r\n    \"idRestaurante\": \"9\"\r\n  }\r\n}"
 						},
-						"url": "http://localhost:8080/v1/cardapio/5"
+						"url": "http://localhost:8080/v1/cardapio/1"
 					},
 					"response": []
 				},
@@ -165,9 +165,86 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nomeProduto\": \"Feijoada Incompleta\",\r\n  \"nomeRestaurante\": \"Cantina da Nona\"\r\n}"
+							"raw": "{\r\n  \"nomeProduto\": \"Feijoada Incompleta\",\r\n  \"nomeRestaurante\": \"Cantina da Nona\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
-						"url": "http://localhost:8080/v1/cardapio/restaurante/Cantina da Nona"
+						"url": "http://localhost:8080/v1/cardapio"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tipo de Usuario",
+			"item": [
+				{
+					"name": "Buscar tipos de usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/tipo-usuario/buscar?tipo=CLIENTE",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"tipo-usuario",
+								"buscar"
+							],
+							"query": [
+								{
+									"key": "tipo",
+									"value": "CLIENTE"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inserir tipo de usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipoUsuario\": \"GERENTE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/tipo-usuario"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar tipo de usuario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipoUsuario\": \"GERENTE\"\r\n}"
+						},
+						"url": "http://localhost:8080/v1/tipo-usuario/GERENTE"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar tipos de usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/tipo-usuario/buscar"
 					},
 					"response": []
 				}
