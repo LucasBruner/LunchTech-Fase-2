@@ -8,6 +8,7 @@ import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
 import br.com.fiap.lunchtech.core.entities.Endereco;
 import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
+import br.com.fiap.lunchtech.core.exceptions.UsuarioJaExisteException;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioNaoEncontradoException;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioGateway;
@@ -31,6 +32,22 @@ public class UsuarioGateway implements IUsuarioGateway {
 
         if(usuarioDTO == null) {
             throw new UsuarioNaoEncontradoException("Login incorreto!");
+        }
+
+        var tipoUsuario = TipoUsuario.create(usuarioDTO.tipoDeUsuario());
+
+        return Usuario.create(usuarioDTO.nomeUsuario(),
+                usuarioDTO.enderecoEmail(),
+                usuarioDTO.login(),
+                tipoUsuario);
+    }
+
+    @Override
+    public Usuario buscarPorLoginExistente(String login) {
+        UsuarioDTO usuarioDTO = this.dataSource.obterUsuarioPorLogin(login);
+
+        if (usuarioDTO == null) {
+            return null;
         }
 
         var tipoUsuario = TipoUsuario.create(usuarioDTO.tipoDeUsuario());
@@ -69,6 +86,20 @@ public class UsuarioGateway implements IUsuarioGateway {
                         TipoUsuario.create(usuarioDTO.tipoDeUsuario()),
                         mapearEndereco(usuarioDTO.endereco())
                         ))
+                .toList();
+    }
+
+    @Override
+    public List<Usuario> buscarTodos() {
+        List<UsuarioDTO> usuariosDTO = this.dataSource.buscarUsuarios();
+
+        return usuariosDTO.stream()
+                .map(usuarioDTO -> Usuario.create(usuarioDTO.nomeUsuario(),
+                        usuarioDTO.enderecoEmail(),
+                        usuarioDTO.login(),
+                        TipoUsuario.create(usuarioDTO.tipoDeUsuario()),
+                        mapearEndereco(usuarioDTO.endereco())
+                ))
                 .toList();
     }
 

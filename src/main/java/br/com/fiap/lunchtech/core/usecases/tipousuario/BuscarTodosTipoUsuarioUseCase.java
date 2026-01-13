@@ -1,25 +1,24 @@
 package br.com.fiap.lunchtech.core.usecases.tipousuario;
 
-import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioDTO;
 import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.exceptions.TipoUsuarioNaoExisteException;
 import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioGateway;
 
 import java.util.List;
 
-public class BuscarTipoUsuarioUseCase {
+public class BuscarTodosTipoUsuarioUseCase {
     private final ITipoUsuarioGateway tipoUsuarioGateway;
 
-    private BuscarTipoUsuarioUseCase(ITipoUsuarioGateway tipoUsuarioGateway) {
+    private BuscarTodosTipoUsuarioUseCase(ITipoUsuarioGateway tipoUsuarioGateway) {
         this.tipoUsuarioGateway = tipoUsuarioGateway;
     }
 
-    public static BuscarTipoUsuarioUseCase create(ITipoUsuarioGateway tipoUsuarioGateway) {
-        return new BuscarTipoUsuarioUseCase(tipoUsuarioGateway);
+    public static BuscarTodosTipoUsuarioUseCase create(ITipoUsuarioGateway tipoUsuarioGateway) {
+        return new BuscarTodosTipoUsuarioUseCase(tipoUsuarioGateway);
     }
 
-    public TipoUsuario run(TipoUsuarioDTO tipoUsuarioDTO) {
-        TipoUsuario tipoUsuario = tipoUsuarioGateway.buscarTipoUsuarioPorNome(tipoUsuarioDTO.tipoUsuario());
+    public List<TipoUsuario> run() {
+        List<TipoUsuario> tipoUsuario = tipoUsuarioGateway.buscarTodosTipoUsuario();
 
         if(tipoUsuario == null) {
             throw new TipoUsuarioNaoExisteException("Tipo de usuário não encontrado.");

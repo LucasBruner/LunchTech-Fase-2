@@ -20,7 +20,7 @@ public class CadastrarUsuarioUseCase {
     }
 
     public Usuario run (NovoUsuarioDTO novoUsuarioDTO) {
-        Usuario usuarioExistente = usuarioGateway.buscarPorLogin(novoUsuarioDTO.login());
+        Usuario usuarioExistente = usuarioGateway.buscarPorLoginExistente(novoUsuarioDTO.login());
 
         if (usuarioExistente != null) {
             throw new UsuarioJaExisteException("Usuário já possuí registro na base!");
@@ -46,8 +46,6 @@ public class CadastrarUsuarioUseCase {
                 TipoUsuario.create(novoUsuarioDTO.tipoDeUsuario()),
                 endereco);
 
-        Usuario usuario = usuarioGateway.incluir(novoUsuario);
-
-        return usuario;
+        return usuarioGateway.incluir(novoUsuario);
     }
 }

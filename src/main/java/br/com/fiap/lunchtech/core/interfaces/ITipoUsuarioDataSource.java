@@ -2,6 +2,8 @@ package br.com.fiap.lunchtech.core.interfaces;
 
 import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioDTO;
 
+import java.util.List;
+
 public interface ITipoUsuarioDataSource {
     TipoUsuarioDTO incluirNovoTipoUsuario(TipoUsuarioDTO tipoUsuarioDTO);
 
@@ -10,4 +12,6 @@ public interface ITipoUsuarioDataSource {
     void deletarTipoUsuario(String tipoUsuario);
 
     TipoUsuarioDTO buscarTipoUsuarioPorNome(String tipoUsuario);
+
+    List<TipoUsuarioDTO> buscarTodosTipoUsuario();
 }

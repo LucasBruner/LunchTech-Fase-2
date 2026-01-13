@@ -1,11 +1,14 @@
 package br.com.fiap.lunchtech.infra.database.datasource;
 
 import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioDTO;
+import br.com.fiap.lunchtech.core.exceptions.TipoUsuarioNaoExisteException;
 import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
 import br.com.fiap.lunchtech.infra.database.entities.TipoUsuarioEntity;
 import br.com.fiap.lunchtech.infra.database.repositories.ITipoUsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class TipoUsuarioDataSource implements ITipoUsuarioDataSource {
@@ -51,7 +54,23 @@ public class TipoUsuarioDataSource implements ITipoUsuarioDataSource {
     public TipoUsuarioDTO buscarTipoUsuarioPorNome(String tipoUsuario) {
         try {
             TipoUsuarioEntity tipoUsuarioNome = tipoUsuarioRepository.findByTipoUsuario(tipoUsuario);
-            return new TipoUsuarioDTO(tipoUsuarioNome.getTipoUsuario());
+            if (tipoUsuarioNome != null){
+                return new TipoUsuarioDTO(tipoUsuarioNome.getTipoUsuario());
+            }
+            throw new TipoUsuarioNaoExisteException("Tipo de usuário não encontrado!");
+
+        } catch (TipoUsuarioNaoExisteException e) {
+            throw new TipoUsuarioNaoExisteException("Tipo de usuário não encontrado!");
+        }
+    }
+
+    @Override
+    public List<TipoUsuarioDTO> buscarTodosTipoUsuario() {
+        try {
+            List<TipoUsuarioEntity> tipoUsuario = tipoUsuarioRepository.findAll();
+            return tipoUsuario.stream()
+                            .map(this::mapToDomainTipoUsuario)
+                            .toList();
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Tipo de usuário não encontrado!");
         }
@@ -59,5 +78,10 @@ public class TipoUsuarioDataSource implements ITipoUsuarioDataSource {
 
     TipoUsuarioEntity buscarTipoUsuario(String tipo){
         return tipoUsuarioRepository.findByTipoUsuario(tipo);
+    }
+
+    private TipoUsuarioDTO mapToDomainTipoUsuario(TipoUsuarioEntity tipo){
+        if (tipo == null) return null;
+        return new TipoUsuarioDTO(tipo.getTipoUsuario());
     }
 }
