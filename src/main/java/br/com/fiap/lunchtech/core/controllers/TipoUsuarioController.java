@@ -1,5 +1,6 @@
 package br.com.fiap.lunchtech.core.controllers;
 
+import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioDTO;
 import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.gateway.TipoUsuarioGateway;
@@ -30,7 +31,7 @@ public class TipoUsuarioController {
         return TipoUsuarioPresenter.toDto(novoTipoUsuario);
     }
 
-    public TipoUsuarioDTO alterarTipoUsuario(TipoUsuarioDTO tipoUsuarioDTO) {
+    public TipoUsuarioDTO alterarTipoUsuario(TipoUsuarioAlteracaoDTO tipoUsuarioDTO) {
         var tipoUsuarioGateway = TipoUsuarioGateway.create(tipoUsuarioDataSource);
         var alterarTipoUsuarioUseCase = AlterarTipoUsuarioUseCase.create(tipoUsuarioGateway);
 

@@ -7,7 +7,7 @@ import java.util.List;
 public interface ITipoUsuarioDataSource {
     TipoUsuarioDTO incluirNovoTipoUsuario(TipoUsuarioDTO tipoUsuarioDTO);
 
-    TipoUsuarioDTO alterarTipoUsuario(TipoUsuarioDTO tipoUsuarioDTO);
+    TipoUsuarioDTO alterarTipoUsuario(TipoUsuarioDTO tipoUsuarioDTO, String tipoUsuarioAntigo);
 
     void deletarTipoUsuario(String tipoUsuario);
 

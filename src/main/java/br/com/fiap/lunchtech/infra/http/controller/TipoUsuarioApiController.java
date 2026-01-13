@@ -1,6 +1,7 @@
 package br.com.fiap.lunchtech.infra.http.controller;
 
 import br.com.fiap.lunchtech.core.controllers.TipoUsuarioController;
+import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioDTO;
 import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +31,7 @@ public class TipoUsuarioApiController {
             responses = {
                     @ApiResponse(description =  "Ok", responseCode = "200"),
                     @ApiResponse(description = "Not found", responseCode = "404")})
-    @GetMapping
+    @GetMapping("/buscar")
     public ResponseEntity<List<TipoUsuarioDTO>> buscarPorNome(@RequestParam(value = "tipo", required = false) String tipo) {
         List<TipoUsuarioDTO> tipoUsuario = tipoUsuarioController.buscarTipoUsuario(new TipoUsuarioDTO(tipo));
         return ResponseEntity.ok(tipoUsuario);
@@ -61,16 +62,18 @@ public class TipoUsuarioApiController {
         return ResponseEntity.ok().build();
     }
 
-//    @Operation(
-//            summary = "Alteração de informações do usuário",
-//            description = "Alteração de informações do usuário, onde são feitas as validações das regras dos campos e atualiza as informações do usuário. Deve-se informar um JSON com as informações de usuário e na URL informar o email do usuário que será alterado. A data de alteração será atualizada automaticamente com a data atual do sistema.",
-//            responses = {
-//                    @ApiResponse(description = "Ok", responseCode = "200"),
-//                    @ApiResponse(description = "Bad request", responseCode = "400")})
-//    @PutMapping("/{email}")
-//    public ResponseEntity<Void> updateTipoUsuario(@Valid @RequestBody TipoUsuarioDTO tipo,
-//                                              @PathVariable("tipo-usuario") String tipoUsuario) {
-//        tipoUsuarioController.alterarTipoUsuario(tipo);
-//        return ResponseEntity.ok().build();
-//    }
+    @Operation(
+            summary = "Alteração de informações do tipo de usuário",
+            description = "Alteração de informações do tipo de usuário, onde são feitas as validações das regras dos campos e atualiza as informações do tipo de usuário. " +
+                    "Deve-se informar um JSON com as informações de usuário e na URL informar o tipo do usuário que será alterado. " +
+                    "Exemplo: http://localhost:8080/v1/tipo-usuario/TIPO",
+            responses = {
+                    @ApiResponse(description = "Ok", responseCode = "200"),
+                    @ApiResponse(description = "Bad request", responseCode = "400")})
+
+    @PutMapping
+    public ResponseEntity<Void> updateTipoUsuario(@Valid @RequestBody TipoUsuarioAlteracaoDTO tipo) {
+        tipoUsuarioController.alterarTipoUsuario(tipo);
+        return ResponseEntity.ok().build();
+    }
 }

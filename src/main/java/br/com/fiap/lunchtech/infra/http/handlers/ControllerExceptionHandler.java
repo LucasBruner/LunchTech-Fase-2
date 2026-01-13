@@ -109,4 +109,22 @@ public class ControllerExceptionHandler {
         problemDetail.setType(URI.create("http://localhost:8080/v1/cardapio"));
         return problemDetail;
     }
+
+    @ExceptionHandler(TipoDeUsuarioExisteException.class)
+    public ProblemDetail handlerTipoDeUsuarioExisteException(TipoDeUsuarioExisteException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problemDetail.setTitle("Tipo de usuário não encontrado!");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setType(URI.create("http://localhost:8080/v1/tipo-usuario"));
+        return problemDetail;
+    }
+
+    @ExceptionHandler(TipoDeUsuarioNaoPodeSerExcluidoException.class)
+    public ProblemDetail handlerTipoDeUsuarioNaoPodeSerExcluidoException(TipoDeUsuarioNaoPodeSerExcluidoException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problemDetail.setTitle("Tipo de usuário não pode ser excluído!");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setType(URI.create("http://localhost:8080/v1/tipo-usuario"));
+        return problemDetail;
+    }
 }
