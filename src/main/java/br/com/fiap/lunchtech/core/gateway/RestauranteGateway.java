@@ -156,7 +156,7 @@ public class RestauranteGateway implements IRestauranteGateway {
         UsuarioDTO usuario = usuarioDataSource.obterUsuarioPorLogin(usuarioDTO.login());
         TipoUsuario tipoUsuario = TipoUsuario.create(usuario.tipoDeUsuario());
 
-        return Usuario.create(usuario.nomeUsuario(), usuario.enderecoEmail(), tipoUsuario);
+        return Usuario.create(usuario.nomeUsuario(), usuario.enderecoEmail(), usuario.login(), tipoUsuario);
     }
 
     private RestauranteAlteracaoDTO mapearRestauranteAlteradoDTO(Restaurante restauranteAlteracao) {
@@ -173,7 +173,7 @@ public class RestauranteGateway implements IRestauranteGateway {
     }
 
     private UsuarioDonoRestauranteDTO mapearDonoRestaurantParaDTO(Usuario donoRestaurante) {
-        return new UsuarioDonoRestauranteDTO(donoRestaurante.getLogin());
+        return new UsuarioDonoRestauranteDTO(donoRestaurante.getLogin(), donoRestaurante.getNome());
     }
 
     private EnderecoDTO mapearEnderecoRestauranteToDTO(Endereco endereco) {

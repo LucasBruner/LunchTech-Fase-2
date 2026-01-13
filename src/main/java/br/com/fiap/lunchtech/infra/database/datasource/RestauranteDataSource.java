@@ -5,6 +5,7 @@ import br.com.fiap.lunchtech.core.dto.restaurante.NovoRestauranteDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDonoRestauranteDTO;
+import br.com.fiap.lunchtech.core.exceptions.RestauranteJaExistenteException;
 import br.com.fiap.lunchtech.core.exceptions.RestauranteNaoEncontradoException;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
 import br.com.fiap.lunchtech.infra.database.entities.EnderecoEntity;
@@ -14,6 +15,7 @@ import br.com.fiap.lunchtech.infra.database.repositories.IRestauranteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Component
@@ -178,6 +180,4 @@ public class RestauranteDataSource implements IRestauranteDataSource {
     private UsuarioEntity buscarUsuarioPorLogin(String login) {
         return usuarioDataSource.findByLogin(login);
     }
-
-
 }

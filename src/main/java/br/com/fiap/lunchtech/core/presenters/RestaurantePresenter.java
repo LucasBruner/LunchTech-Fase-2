@@ -8,20 +8,27 @@ import br.com.fiap.lunchtech.core.entities.Restaurante;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 
 public class RestaurantePresenter {
-    public static RestauranteDTO toDto(Restaurante novoRestaurante) {
-        EnderecoDTO enderecoDTO = buscarEnderecoRestaurante(novoRestaurante.getEndereco());
-        UsuarioDonoRestauranteDTO donoRestauranteDTO = buscarDonoRestaurante(novoRestaurante.getDonoRestaurante());
+    public static RestauranteDTO toDto(Restaurante restaurante) {
+        if (restaurante == null) {
+            return null;
+        }
 
-        return new RestauranteDTO(novoRestaurante.getId(),
-                novoRestaurante.getNome(),
-                novoRestaurante.getTipoCozinha(),
-                novoRestaurante.getHorarioFuncionamentoInicio(),
-                novoRestaurante.getHorarioFuncionamentoFim(),
+        EnderecoDTO enderecoDTO = restaurante.getEndereco() != null ? toEnderecoDto(restaurante.getEndereco()) : null;
+        UsuarioDonoRestauranteDTO donoRestauranteDTO = restaurante.getDonoRestaurante() != null ? toDonoDto(restaurante.getDonoRestaurante()) : null;
+
+        return new RestauranteDTO(restaurante.getId(),
+                restaurante.getNome(),
+                restaurante.getTipoCozinha(),
+                restaurante.getHorarioFuncionamentoInicio(),
+                restaurante.getHorarioFuncionamentoFim(),
                 enderecoDTO,
                 donoRestauranteDTO);
     }
 
-    private static EnderecoDTO buscarEnderecoRestaurante(Endereco endereco) {
+    private static EnderecoDTO toEnderecoDto(Endereco endereco) {
+        if (endereco == null) {
+            return null;
+        }
         return new EnderecoDTO(endereco.getLogradouro(),
                 endereco.getNumero(),
                 endereco.getBairro(),
@@ -30,7 +37,10 @@ public class RestaurantePresenter {
                 endereco.getCep());
     }
 
-    private static UsuarioDonoRestauranteDTO buscarDonoRestaurante(Usuario usuario) {
-        return new UsuarioDonoRestauranteDTO(usuario.getLogin());
+    private static UsuarioDonoRestauranteDTO toDonoDto(Usuario usuario) {
+        if (usuario == null) {
+            return null;
+        }
+        return new UsuarioDonoRestauranteDTO(null, usuario.getNome());
     }
 }
