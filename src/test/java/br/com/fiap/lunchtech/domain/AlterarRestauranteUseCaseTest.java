@@ -2,9 +2,9 @@ package br.com.fiap.lunchtech.domain;
 
 import br.com.fiap.lunchtech.core.dto.endereco.EnderecoDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteAlteracaoDTO;
-import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDonoRestauranteDTO;
 import br.com.fiap.lunchtech.core.entities.Restaurante;
+import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import br.com.fiap.lunchtech.core.exceptions.RestauranteJaExistenteException;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteGateway;
@@ -60,7 +60,7 @@ class AlterarRestauranteUseCaseTest {
                         "bairro",
                         "cidade",
                         "estado",
-                        "cep"),
+                        "01001000"),
                 new UsuarioDonoRestauranteDTO("login", "nome"));
         Restaurante restauranteAtual = mock(Restaurante.class);
         when(restauranteAtual.getNome()).thenReturn("nome_antigo");
@@ -93,14 +93,18 @@ class AlterarRestauranteUseCaseTest {
                         "bairro",
                         "cidade",
                         "estado",
-                        "cep"),
+                        "01001000"),
                 new UsuarioDonoRestauranteDTO("login",
                         "nome"));
         Restaurante restauranteAtual = mock(Restaurante.class);
+        Usuario usuarioMock = mock(Usuario.class);
+        TipoUsuario tipoUsuarioMock = mock(TipoUsuario.class);
+        when(tipoUsuarioMock.getTipoUsuario()).thenReturn("DONO_RESTAURANTE");
+        when(usuarioMock.getTipoDeUsuario()).thenReturn(tipoUsuarioMock);
         when(restauranteAtual.getNome()).thenReturn("nome_antigo");
         when(restauranteGateway.buscarRestaurantePorId(1L)).thenReturn(restauranteAtual);
         when(restauranteGateway.buscarPorNome("novo_nome")).thenReturn(null);
-        when(usuarioGateway.buscarPorLogin("login")).thenReturn(mock(Usuario.class));
+        when(usuarioGateway.buscarPorLogin("login")).thenReturn(usuarioMock);
         when(restauranteGateway.alterar(any(Restaurante.class))).thenAnswer(i -> i.getArgument(0));
 
         // Act

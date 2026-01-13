@@ -2,7 +2,6 @@ package br.com.fiap.lunchtech.domain;
 
 import br.com.fiap.lunchtech.core.dto.cardapio.CardapioAlteradoDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteCardapioDTO;
-import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteDTO;
 import br.com.fiap.lunchtech.core.entities.Cardapio;
 import br.com.fiap.lunchtech.core.entities.Restaurante;
 import br.com.fiap.lunchtech.core.exceptions.CardapioJaExisteException;
@@ -64,10 +63,12 @@ class AlterarCardapioUseCaseTest {
                 false,
                 "foto", restauranteDTO);
         Cardapio cardapioExistente = mock(Cardapio.class);
+        Restaurante restauranteMock = mock(Restaurante.class);
+        when(restauranteMock.getNome()).thenReturn("restaurante");
         when(cardapioExistente.getNomeProduto()).thenReturn("nome_antigo");
         when(cardapioGateway.buscarProdutoPorId(1L)).thenReturn(cardapioExistente);
         when(cardapioGateway.buscarProdutoPorNome("novo_nome", "restaurante")).thenReturn(null);
-        when(restauranteGateway.buscarRestaurantePorId(1L)).thenReturn(mock(Restaurante.class));
+        when(restauranteGateway.buscarRestaurantePorId(1L)).thenReturn(restauranteMock);
         when(cardapioGateway.alterar(any(Cardapio.class))).thenAnswer(i -> i.getArgument(0));
 
         // Act

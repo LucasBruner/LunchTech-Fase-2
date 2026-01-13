@@ -4,6 +4,7 @@ import br.com.fiap.lunchtech.core.dto.endereco.EnderecoDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.NovoRestauranteDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDonoRestauranteDTO;
 import br.com.fiap.lunchtech.core.entities.Restaurante;
+import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import br.com.fiap.lunchtech.core.exceptions.RestauranteJaExistenteException;
 import br.com.fiap.lunchtech.core.exceptions.RestauranteNaoEncontradoException;
@@ -60,7 +61,7 @@ class CadastrarRestauranteUseCaseTest {
                         "bairro",
                         "cidade",
                         "estado",
-                        "cep"), new UsuarioDonoRestauranteDTO("Teste",
+                        "01001000"), new UsuarioDonoRestauranteDTO("Teste",
                 "nome"));
         when(restauranteGateway.buscarPorNome("restaurante")).thenReturn(mock(Restaurante.class));
 
@@ -88,11 +89,15 @@ class CadastrarRestauranteUseCaseTest {
                         1, "bairro",
                         "cidade",
                         "estado",
-                        "cep"),
+                        "01001000"),
                 new UsuarioDonoRestauranteDTO("Teste",
                         "nome"));
+        Usuario usuarioMock = mock(Usuario.class);
+        TipoUsuario tipoUsuarioMock = mock(TipoUsuario.class);
+        when(tipoUsuarioMock.getTipoUsuario()).thenReturn("DONO_RESTAURANTE");
+        when(usuarioMock.getTipoDeUsuario()).thenReturn(tipoUsuarioMock);
         when(restauranteGateway.buscarPorNome("restaurante")).thenThrow(new RestauranteNaoEncontradoException(""));
-        when(usuarioGateway.buscarPorLogin("login")).thenReturn(mock(Usuario.class));
+        when(usuarioGateway.buscarPorLogin("Teste")).thenReturn(usuarioMock);
         when(restauranteGateway.incluir(any(Restaurante.class))).thenAnswer(i -> i.getArgument(0));
 
         // Act

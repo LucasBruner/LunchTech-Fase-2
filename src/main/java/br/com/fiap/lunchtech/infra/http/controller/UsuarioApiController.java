@@ -4,7 +4,11 @@ import br.com.fiap.lunchtech.core.controllers.UsuarioController;
 import br.com.fiap.lunchtech.core.dto.restaurante.NovoRestauranteDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
+import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
+import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
+import br.com.fiap.lunchtech.infra.database.datasource.RestauranteDataSource;
+import br.com.fiap.lunchtech.infra.database.datasource.TipoUsuarioDataSource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,9 +24,13 @@ import java.util.List;
 public class UsuarioApiController {
 
     private final UsuarioController usuarioController;
+    private TipoUsuarioDataSource tipoUsuarioDataSource;
+    private RestauranteDataSource restauranteDataSource;
 
-    public UsuarioApiController(IUsuarioDataSource usuarioDataSource) {
-        this.usuarioController = UsuarioController.create(usuarioDataSource);
+    public UsuarioApiController(IUsuarioDataSource usuarioDataSource,
+                                ITipoUsuarioDataSource tipoUsuarioDataSource,
+                                IRestauranteDataSource restauranteDataSource) {
+        this.usuarioController = UsuarioController.create(usuarioDataSource, restauranteDataSource, tipoUsuarioDataSource);
     }
 
     @Operation(

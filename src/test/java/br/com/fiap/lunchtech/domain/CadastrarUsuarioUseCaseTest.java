@@ -33,7 +33,7 @@ class CadastrarUsuarioUseCaseTest {
     @Test
     void deveLancarExcecaoQuandoUsuarioJaExiste() {
         // Arrange
-        NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO("usuario", "email@teste.com", "login", "senha", "TIPO", new EnderecoDTO("logradouro", 9, "bairro", "cidade", "estado", "cep"));
+        NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO("usuario", "email@teste.com", "login", "senha", "TIPO", new EnderecoDTO("logradouro", 9, "bairro", "cidade", "estado", "01001000"));
         when(usuarioGateway.buscarPorLoginExistente("login")).thenReturn(mock(Usuario.class));
 
         // Act & Assert
@@ -43,7 +43,7 @@ class CadastrarUsuarioUseCaseTest {
     @Test
     void deveLancarExcecaoQuandoEmailJaCadastrado() {
         // Arrange
-        NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO("usuario", "email@teste.com", "login", "senha", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "cep"));
+        NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO("usuario", "email@teste.com", "login", "senha", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
         when(usuarioGateway.buscarPorLoginExistente("login")).thenReturn(null);
         when(usuarioGateway.buscarPorEmail("email@teste.com")).thenReturn(true);
 
@@ -54,7 +54,7 @@ class CadastrarUsuarioUseCaseTest {
     @Test
     void deveLancarExcecaoQuandoTipoUsuarioNaoExiste() {
         // Arrange
-        NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO("usuario", "email@teste.com", "login", "senha", "TIPO_INEXISTENTE", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "cep"));
+        NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO("usuario", "email@teste.com", "login", "senha", "TIPO_INEXISTENTE", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
         when(usuarioGateway.buscarPorLoginExistente("login")).thenReturn(null);
         when(usuarioGateway.buscarPorEmail("email@teste.com")).thenReturn(false);
         when(usuarioGateway.buscarSeTipoUsuarioExistente("TIPO_INEXISTENTE")).thenReturn(false);
@@ -66,7 +66,7 @@ class CadastrarUsuarioUseCaseTest {
     @Test
     void deveCadastrarUsuarioComSucesso() {
         // Arrange
-        NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO("usuario", "email@teste.com", "login", "senha", "TIPO_EXISTENTE", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "cep"));
+        NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO("usuario", "email@teste.com", "login", "senha", "TIPO_EXISTENTE", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
         when(usuarioGateway.buscarPorLoginExistente("login")).thenReturn(null);
         when(usuarioGateway.buscarPorEmail("email@teste.com")).thenReturn(false);
         when(usuarioGateway.buscarSeTipoUsuarioExistente("TIPO_EXISTENTE")).thenReturn(true);

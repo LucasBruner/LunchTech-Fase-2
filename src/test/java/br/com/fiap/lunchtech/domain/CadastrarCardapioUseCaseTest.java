@@ -2,7 +2,6 @@ package br.com.fiap.lunchtech.domain;
 
 import br.com.fiap.lunchtech.core.dto.cardapio.NovoCardapioDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteCardapioDTO;
-import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteDTO;
 import br.com.fiap.lunchtech.core.entities.Cardapio;
 import br.com.fiap.lunchtech.core.entities.Restaurante;
 import br.com.fiap.lunchtech.core.exceptions.CardapioJaExisteException;
@@ -50,8 +49,10 @@ class CadastrarCardapioUseCaseTest {
         // Arrange
         RestauranteCardapioDTO restauranteDTO = new RestauranteCardapioDTO("restaurante", 1L);
         NovoCardapioDTO novoCardapioDTO = new NovoCardapioDTO("produto", "descricao", 10.0, false, "foto", restauranteDTO);
+        Restaurante restauranteMock = mock(Restaurante.class);
+        when(restauranteMock.getNome()).thenReturn("restaurante");
         when(cardapioGateway.buscarProdutoPorNome("produto", "restaurante")).thenThrow(new CardapioNaoExisteException(""));
-        when(restauranteGateway.buscarRestaurantePorId(1L)).thenReturn(mock(Restaurante.class));
+        when(restauranteGateway.buscarRestaurantePorId(1L)).thenReturn(restauranteMock);
         when(cardapioGateway.incluir(any(Cardapio.class))).thenAnswer(i -> i.getArgument(0));
 
         // Act
