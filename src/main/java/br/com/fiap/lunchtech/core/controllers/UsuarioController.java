@@ -6,6 +6,7 @@ import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteradoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
 import br.com.fiap.lunchtech.core.gateway.RestauranteGateway;
+import br.com.fiap.lunchtech.core.gateway.TipoUsuarioGateway;
 import br.com.fiap.lunchtech.core.gateway.UsuarioGateway;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
 import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
@@ -31,6 +32,14 @@ public class UsuarioController {
         this.restauranteDataSource = restauranteDataSource;
     }
 
+    private UsuarioController(IUsuarioDataSource dataSource,
+                              IRestauranteDataSource restauranteDataSource,
+                              ITipoUsuarioDataSource tipoUsuarioDataSource) {
+        this.dataStorageSource = dataSource;
+        this.restauranteDataSource = restauranteDataSource;
+        this.tipoUsuarioDataSource = tipoUsuarioDataSource;
+    }
+
     public static UsuarioController create(IUsuarioDataSource dataSource) {
         return new UsuarioController(dataSource);
     }
@@ -40,8 +49,17 @@ public class UsuarioController {
         return new UsuarioController(dataSource, restauranteDataSource);
     }
 
+    public static UsuarioController create(IUsuarioDataSource dataSource,
+                                           IRestauranteDataSource restauranteDataSource,
+                                           ITipoUsuarioDataSource tipoUsuarioDataSource) {
+        return new UsuarioController(dataSource,
+                restauranteDataSource,
+                tipoUsuarioDataSource);
+    }
+
     public UsuarioDTO cadastrar(NovoUsuarioDTO novoUsuarioDTO) {
-        var usuarioGateway = UsuarioGateway.create(this.dataStorageSource, tipoUsuarioDataSource);
+        var tipoUsuarioGateway = TipoUsuarioGateway.create(tipoUsuarioDataSource);
+        var usuarioGateway = UsuarioGateway.create(this.dataStorageSource, tipoUsuarioGateway);
         var useCaseNovoUsuario = CadastrarUsuarioUseCase.create(usuarioGateway);
 
         var usuario = useCaseNovoUsuario.run(novoUsuarioDTO);
@@ -50,7 +68,8 @@ public class UsuarioController {
     }
 
     public List<UsuarioDTO> buscarPorNome(String nomeUsuario) {
-        var usuarioGateway = UsuarioGateway.create(this.dataStorageSource, tipoUsuarioDataSource);
+        var tipoUsuarioGateway = TipoUsuarioGateway.create(tipoUsuarioDataSource);
+        var usuarioGateway = UsuarioGateway.create(this.dataStorageSource, tipoUsuarioGateway);
 
         var useCaseBuscarTodos = BuscarTodosUsuariosUseCase.create(usuarioGateway);
         var useCaseBuscarPorNome = BuscarUsuariosPorNomeUseCase.create(usuarioGateway);
@@ -63,7 +82,8 @@ public class UsuarioController {
     }
 
     public UsuarioDTO alterarUsuario(UsuarioAlteracaoDTO usuarioAlteracaoDTO) {
-        var usuarioGateway = UsuarioGateway.create(this.dataStorageSource, tipoUsuarioDataSource);
+        var tipoUsuarioGateway = TipoUsuarioGateway.create(tipoUsuarioDataSource);
+        var usuarioGateway = UsuarioGateway.create(this.dataStorageSource, tipoUsuarioGateway);
         var useCaseAlterarUsuario = AlterarUsuarioUseCase.create(usuarioGateway);
 
         var usuario = useCaseAlterarUsuario.run(usuarioAlteracaoDTO);
@@ -72,7 +92,8 @@ public class UsuarioController {
     }
 
     public void deletarUsuario(String login) {
-        var usuarioGateway = UsuarioGateway.create(this.dataStorageSource, tipoUsuarioDataSource);
+        var tipoUsuarioGateway = TipoUsuarioGateway.create(tipoUsuarioDataSource);
+        var usuarioGateway = UsuarioGateway.create(this.dataStorageSource, tipoUsuarioGateway);
         var restauranteGateway = RestauranteGateway.create(this.restauranteDataSource);
 
         var useCaseDeletarUsuario = DeletarUsuarioUseCase.create(usuarioGateway, restauranteGateway);
@@ -81,7 +102,8 @@ public class UsuarioController {
     }
 
     public UsuarioAlteradoDTO alterarSenhaUsuario(UsuarioSenhaDTO usuarioSenhaDTO) {
-        var usuarioGateway = UsuarioGateway.create(this.dataStorageSource, tipoUsuarioDataSource);
+        var tipoUsuarioGateway = TipoUsuarioGateway.create(tipoUsuarioDataSource);
+        var usuarioGateway = UsuarioGateway.create(this.dataStorageSource, tipoUsuarioGateway);
         var useCaseAlterarSenhaUsuario = AlterarSenhaUseCase.create(usuarioGateway);
 
         var usuario = useCaseAlterarSenhaUsuario.run(usuarioSenhaDTO);
@@ -90,7 +112,8 @@ public class UsuarioController {
     }
 
     public boolean validarLoginUsuario(UsuarioSenhaDTO usuarioSenhaDTO) {
-        var usuarioGateway = UsuarioGateway.create(this.dataStorageSource, tipoUsuarioDataSource);
+        var tipoUsuarioGateway = TipoUsuarioGateway.create(tipoUsuarioDataSource);
+        var usuarioGateway = UsuarioGateway.create(this.dataStorageSource, tipoUsuarioGateway);
         var useCaseValidarLogin = ValidarLoginUseCase.create(usuarioGateway);
 
         return useCaseValidarLogin.run(usuarioSenhaDTO);

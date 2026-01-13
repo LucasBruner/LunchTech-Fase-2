@@ -5,12 +5,15 @@ import br.com.fiap.lunchtech.core.dto.cardapio.CardapioDTO;
 import br.com.fiap.lunchtech.core.dto.cardapio.CardapioInfoDTO;
 import br.com.fiap.lunchtech.core.dto.cardapio.NovoCardapioDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteCardapioDTO;
+import br.com.fiap.lunchtech.core.exceptions.CardapioNaoExisteException;
 import br.com.fiap.lunchtech.core.interfaces.ICardapioDataSource;
 import br.com.fiap.lunchtech.infra.database.entities.CardapioEntity;
 import br.com.fiap.lunchtech.infra.database.entities.RestauranteEntity;
 import br.com.fiap.lunchtech.infra.database.repositories.ICardapioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class CardapioDataSource implements ICardapioDataSource {
@@ -45,6 +48,7 @@ public class CardapioDataSource implements ICardapioDataSource {
         CardapioEntity novoCardapio = new CardapioEntity();
         RestauranteEntity restaurante = restauranteDataSource.buscarRestauranteEntity(cardapioAlteradoDTO.restaurante().nomeRestaurante());
 
+        novoCardapio.setId(cardapioAlteradoDTO.id());
         novoCardapio.setNome(cardapioAlteradoDTO.nomeProduto());
         novoCardapio.setDescricao(cardapioAlteradoDTO.descricao());
         novoCardapio.setPreco(cardapioAlteradoDTO.preco());
@@ -58,35 +62,71 @@ public class CardapioDataSource implements ICardapioDataSource {
     }
 
     @Override
-    public void deletarProduto(String nomeProduto, String nomeRestaurante) {
-        Long restauranteID = restauranteDataSource.buscarRestauranteID(nomeRestaurante);
-        CardapioEntity itemCardapio = cardapioRepository.findByNome(nomeProduto, restauranteID);
+    public void deletarProduto(Long id) {
+        CardapioEntity itemCardapio = cardapioRepository.findById(id).orElse(null);
+
+        if(itemCardapio == null) {
+            throw new CardapioNaoExisteException("Produto do cardápio não encontrado!");
+        }
+
         cardapioRepository.delete(itemCardapio);
     }
 
     @Override
     public CardapioDTO buscarProdutoPorNome(String nomeProduto, String nomeRestaurante) {
         try {
-            Long restauranteID = restauranteDataSource.buscarRestauranteID(nomeRestaurante);
-            CardapioEntity itemCardapio = cardapioRepository.findByNome(nomeProduto, restauranteID);
+            RestauranteEntity restauranteEntity = restauranteDataSource.buscarRestaurante(nomeRestaurante);
+            CardapioEntity itemCardapio = cardapioRepository.findByNomeProdutoAndRestauranteId(nomeProduto, restauranteEntity);
+
+            if(itemCardapio == null) {
+                throw new CardapioNaoExisteException("Produto não encontrado.");
+            }
             return mapCardapioEntityToCardapioDTO(itemCardapio);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Produto não encontrado!", e);
         }
     }
 
+    @Override
+    public CardapioDTO buscarProdutoPorId(Long id) {
+        try {
+            CardapioEntity itemCardapio = cardapioRepository.findById(id).orElse(null);
+
+            if(itemCardapio == null) {
+                throw new CardapioNaoExisteException("Produto do cardápio não encontrado!");
+            }
+
+            return mapCardapioEntityToCardapioDTO(itemCardapio);
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("Produto não encontrado!", e);
+        }
+    }
+
+    @Override
+    public List<CardapioDTO> buscarProdutoPorIdRestaurante(Long restauranteId) {
+        try {
+            List<CardapioEntity> cardapioEntity = cardapioRepository.findAllByRestauranteId(restauranteId);
+            return cardapioEntity.stream().map(this::mapCardapioEntityToCardapioDTO).toList();
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("Produtos não encontrado!", e);
+        }
+    }
+
     private CardapioDTO mapCardapioEntityToCardapioDTO(CardapioEntity cardapio) {
-        return new CardapioDTO(cardapio.getNome(),
+        RestauranteCardapioDTO restauranteCardapioDTO = restauranteDataSource.toRestauranteCardapioDTO(cardapio.getRestaurante());
+        return new CardapioDTO(cardapio.getId(),
+                cardapio.getNome(),
                 cardapio.getDescricao(),
                 cardapio.getPreco(),
                 cardapio.isApenasPresencial(),
-                cardapio.getFotoPrato());
+                cardapio.getFotoPrato(),
+                restauranteCardapioDTO);
     }
 
 
     private CardapioInfoDTO mapCardapioEntityToCardapioInfoDTO(CardapioEntity novoCardapio) {
         RestauranteEntity restaurante = novoCardapio.getRestaurante();
-        RestauranteCardapioDTO restauranteCardapioDTO = new RestauranteCardapioDTO(restaurante.getNome());
+        RestauranteCardapioDTO restauranteCardapioDTO = new RestauranteCardapioDTO(restaurante.getNome(), restaurante.getId());
         return new CardapioInfoDTO(novoCardapio.getNome(),
                 novoCardapio.getDescricao(),
                 novoCardapio.getPreco(),
