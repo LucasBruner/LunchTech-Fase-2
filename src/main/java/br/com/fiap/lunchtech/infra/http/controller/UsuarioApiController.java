@@ -1,7 +1,6 @@
 package br.com.fiap.lunchtech.infra.http.controller;
 
 import br.com.fiap.lunchtech.core.controllers.UsuarioController;
-import br.com.fiap.lunchtech.core.dto.restaurante.NovoRestauranteDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
