@@ -70,7 +70,7 @@ public class UsuarioApiController {
             summary = "Alteração de informações do usuário",
             description = "Alteração de informações do usuário, onde são feitas as validações das regras dos campos e atualiza as informações do usuário. " +
                     "Deve-se informar um JSON com as informações do usuário. " +
-                    "Exemplo: http://localhost:8080/v1/usuarios",
+                    "Exemplo: http://localhost:8080/v1/login",
             responses = {
                     @ApiResponse(description = "Ok", responseCode = "200"),
                     @ApiResponse(description = "Not found", responseCode = "404")})

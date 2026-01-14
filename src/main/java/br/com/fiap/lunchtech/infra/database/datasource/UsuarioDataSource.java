@@ -2,6 +2,7 @@ package br.com.fiap.lunchtech.infra.database.datasource;
 
 import br.com.fiap.lunchtech.core.dto.endereco.EnderecoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.*;
+import br.com.fiap.lunchtech.core.exceptions.UsuarioNaoEncontradoException;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
 import br.com.fiap.lunchtech.infra.database.entities.EnderecoEntity;
 import br.com.fiap.lunchtech.infra.database.entities.TipoUsuarioEntity;
@@ -129,13 +130,11 @@ public class UsuarioDataSource implements IUsuarioDataSource {
 
     @Override
     public UsuarioSenhaDTO buscarDadosUsuarioPorLogin(String login) {
-        try {
-            UsuarioEntity usuario = findByLogin(login);
-            return new UsuarioSenhaDTO(usuario.getLogin(), usuario.getSenha());
-
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Usuário não encontrado!");
+        UsuarioEntity usuario = findByLogin(login);
+        if (usuario == null) {
+            throw new UsuarioNaoEncontradoException("Usuário não encontrado!");
         }
+        return new UsuarioSenhaDTO(usuario.getLogin(), usuario.getSenha());
     }
 
     public UsuarioEntity findByLogin(String login) {

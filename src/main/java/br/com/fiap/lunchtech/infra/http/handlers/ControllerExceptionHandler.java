@@ -127,4 +127,13 @@ public class ControllerExceptionHandler {
         problemDetail.setType(URI.create("http://localhost:8080/v1/tipo-usuario"));
         return problemDetail;
     }
+
+    @ExceptionHandler(LoginInvalidoException.class)
+    public ProblemDetail handlerLoginInvalidoException(LoginInvalidoException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
+        problemDetail.setTitle("Login inválido!");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setType(URI.create("http://localhost:8080/v1/login"));
+        return problemDetail;
+    }
 }
