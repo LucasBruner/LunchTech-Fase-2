@@ -1,11 +1,7 @@
 package br.com.fiap.lunchtech.core.entities;
 
-import lombok.Getter;
-
 import java.util.regex.Pattern;
 
-
-@Getter
 public class Endereco {
     private String logradouro;
     private int numero;
@@ -100,5 +96,29 @@ public class Endereco {
                 || !CEP_PATTERN.matcher(cep).matches()) {
             throw new IllegalArgumentException("CEP inválido");
         }
+    }
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public String getCep() {
+        return cep;
     }
 }
