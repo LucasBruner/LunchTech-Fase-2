@@ -31,7 +31,7 @@ public class UsuarioEntity {
     @Column(name= "data_atualizacao")
     private LocalDate dataAtualizacao;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(
             name= "tipo_usuario_id",
             nullable = false)

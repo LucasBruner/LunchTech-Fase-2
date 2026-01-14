@@ -93,7 +93,6 @@ public class RestauranteGateway implements IRestauranteGateway {
 
         RestauranteDTO restauranteCriado = this.restauranteDataSource.incluirNovoRestaurante(novoRestauranteDTO);
 
-
         return Restaurante.create(restauranteCriado.id(),
                 restauranteCriado.nomeRestaurante(),
                 restauranteCriado.tipoCozinha(),
@@ -101,8 +100,6 @@ public class RestauranteGateway implements IRestauranteGateway {
                 restauranteCriado.horarioFuncionamentoFim(),
                 mapearEnderecoRestaurante(restauranteCriado.endereco()),
                 buscarUsuarioDonoRestaurante(restauranteCriado.donoRestaurante()));
-
-        //validar se precisa do cardápio
     }
 
     @Override
