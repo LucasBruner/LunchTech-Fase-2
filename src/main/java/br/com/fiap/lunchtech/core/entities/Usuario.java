@@ -45,6 +45,7 @@ public class Usuario {
         usuario.setLogin(login);
         usuario.setTipoDeUsuario(tipoDeUsuario);
         usuario.setEndereco(enderecoUsuario);
+        usuario.setDataAtualizacao(LocalDateTime.now());
 
         return usuario;
     }
@@ -54,6 +55,7 @@ public class Usuario {
 
         usuario.setLogin(login);
         usuario.setSenha(senha);
+        usuario.setDataAtualizacao(LocalDateTime.now());
 
         return usuario;
     }
@@ -68,22 +70,7 @@ public class Usuario {
         usuario.setEmail(email);
         usuario.setLogin(login);
         usuario.setTipoDeUsuario(tipoUsuario);
-
-        return usuario;
-    }
-
-    public static Usuario create(String nomeUsuario,
-                                 String enderecoEmail,
-                                 String login,
-                                 String senha,
-                                 TipoUsuario tipoUsuario) {
-
-        Usuario usuario = new Usuario();
-        usuario.setNome(nomeUsuario);
-        usuario.setEmail(enderecoEmail);
-        usuario.setLogin(login);
-        usuario.setSenha(senha);
-        usuario.setTipoDeUsuario(tipoUsuario);
+        usuario.setDataAtualizacao(LocalDateTime.now());
 
         return usuario;
     }

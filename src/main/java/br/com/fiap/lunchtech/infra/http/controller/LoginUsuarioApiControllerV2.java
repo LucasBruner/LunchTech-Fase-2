@@ -3,6 +3,7 @@ package br.com.fiap.lunchtech.infra.http.controller;
 import br.com.fiap.lunchtech.core.controllers.UsuarioController;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
+import br.com.fiap.lunchtech.infra.http.controller.json.LoginJson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,9 +30,16 @@ public class LoginUsuarioApiControllerV2 {
                     @ApiResponse(description = "Unauthorized", responseCode = "401"),
                     @ApiResponse(description = "Not found", responseCode = "404")})
     @PostMapping
-    public ResponseEntity<Void> validarLogin(@Valid @RequestBody UsuarioSenhaDTO usuarioSenhaDTO) {
-        usuarioController.validarLoginUsuario(usuarioSenhaDTO);
+    public ResponseEntity<Void> validarLogin(@Valid @RequestBody LoginJson loginJson) {
+        usuarioController.validarLoginUsuario(mapToUsuarioSenhaDTO(loginJson));
         return ResponseEntity.ok().build();
     }
 
+    private UsuarioSenhaDTO mapToUsuarioSenhaDTO(LoginJson loginJson) {
+        return new UsuarioSenhaDTO(
+                loginJson.getLogin(),
+                loginJson.getSenha(),
+                null
+        );
+    }
 }

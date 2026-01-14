@@ -53,6 +53,8 @@ public class UsuarioDataSource implements IUsuarioDataSource {
         novoUsuario.setSenha(novoUsuarioDTO.senha());
         novoUsuario.setTipoUsuario(tipoUsuario);
         novoUsuario.setEndereco(novoEndereco);
+        novoUsuario.setDataAtualizacao(novoUsuarioDTO.dataAtualizacao());
+
         usuarioRepository.save(novoUsuario);
 
         return mapToDomainUsuario(novoUsuario, entityToDtoEndereco(novoEndereco));
@@ -97,6 +99,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
             usuarioAlterar.setEmail(usuarioAlteracaoDTO.enderecoEmail());
             usuarioAlterar.setLogin(usuarioAlteracaoDTO.login());
             usuarioAlterar.setTipoUsuario(buscarTipoUsuario(usuarioAlteracaoDTO.tipoDeUsuario()));
+            usuarioAlterar.setDataAtualizacao(usuarioAlteracaoDTO.dataAtualizacao());
             usuarioRepository.save(usuarioAlterar);
 
             EnderecoDTO enderecoDTO = usuarioEntityToEnderecoDTO(usuarioAlterar);
@@ -122,6 +125,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
         try {
             UsuarioEntity usuario = findByLogin(usuarioSenhaDTO.login());
             usuario.setSenha(usuarioSenhaDTO.senha());
+            usuario.setDataAtualizacao(usuarioSenhaDTO.dataAtualizacao());
             usuarioRepository.save(usuario);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Usuário não encontrado!");
@@ -134,7 +138,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
         if (usuario == null) {
             throw new UsuarioNaoEncontradoException("Usuário não encontrado!");
         }
-        return new UsuarioSenhaDTO(usuario.getLogin(), usuario.getSenha());
+        return new UsuarioSenhaDTO(usuario.getLogin(), usuario.getSenha(), usuario.getDataAtualizacao());
     }
 
     public UsuarioEntity findByLogin(String login) {

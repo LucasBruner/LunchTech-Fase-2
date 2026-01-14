@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "7c0bd99e-fda6-4c53-a686-52a82baa9cc4",
+		"_postman_id": "03585a4f-e364-40ce-8797-c4e46ef9d200",
 		"name": "LunchTech - V2",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "47549624",
-		"_collection_link": "https://emailaleatoriocinco-6197942.postman.co/workspace/Lucas-SeiLa's-Workspace~d96a523d-4357-42b0-84e9-fe6fb94fa9f7/collection/47549624-7c0bd99e-fda6-4c53-a686-52a82baa9cc4?action=share&source=collection_link&creator=47549624"
+		"_collection_link": "https://emailaleatoriocinco-6197942.postman.co/workspace/Lucas-SeiLa's-Workspace~d96a523d-4357-42b0-84e9-fe6fb94fa9f7/collection/47549624-03585a4f-e364-40ce-8797-c4e46ef9d200?action=share&source=collection_link&creator=47549624"
 	},
 	"item": [
 		{
@@ -15,19 +15,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/v1/restaurantes/Cantina da Nona",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"v1",
-								"restaurantes",
-								"Cantina da Nona"
-							]
-						}
+						"url": "http://localhost:8080/v1/restaurantes/Cantina da Nona"
 					},
 					"response": []
 				},
@@ -48,18 +36,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8080/v1/restaurantes",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"v1",
-								"restaurantes"
-							]
-						}
+						"url": "http://localhost:8080/v1/restaurantes"
 					},
 					"response": []
 				},
@@ -80,18 +57,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8080/v1/restaurantes",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"v1",
-								"restaurantes"
-							]
-						}
+						"url": "http://localhost:8080/v1/restaurantes"
 					},
 					"response": []
 				},
@@ -100,19 +66,7 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/v1/restaurantes/Cantina da Nona",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"v1",
-								"restaurantes",
-								"Cantina da Nona"
-							]
-						}
+						"url": "http://localhost:8080/v1/restaurantes/Cantina da Nona"
 					},
 					"response": []
 				}
@@ -138,18 +92,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8080/v1/cardapio",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"v1",
-								"cardapio"
-							]
-						}
+						"url": "http://localhost:8080/v1/cardapio"
 					},
 					"response": []
 				},
@@ -170,18 +113,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8080/v1/cardapio",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"v1",
-								"cardapio"
-							]
-						}
+						"url": "http://localhost:8080/v1/cardapio"
 					},
 					"response": []
 				},
@@ -197,19 +129,7 @@
 							"mode": "raw",
 							"raw": "{\r\n  \"nomeProduto\": \"Feijoada Completa\",\r\n  \"descricao\": \"Acompanha arroz, couve, farofa e laranja.\",\r\n  \"preco\": \"59.90\",\r\n  \"apenasPresencial\": \"false\",\r\n  \"fotoPrato\": \"https://example.com/images/feijoada.jpg\",\r\n  \"restaurante\": {\r\n    \"idRestaurante\": \"9\"\r\n  }\r\n}"
 						},
-						"url": {
-							"raw": "http://localhost:8080/v1/cardapio/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"v1",
-								"cardapio",
-								"1"
-							]
-						}
+						"url": "http://localhost:8080/v1/cardapio/1"
 					},
 					"response": []
 				},
@@ -228,20 +148,7 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": {
-							"raw": "http://localhost:8080/v1/cardapio/restaurante/Cantina da Nona",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"v1",
-								"cardapio",
-								"restaurante",
-								"Cantina da Nona"
-							]
-						}
+						"url": "http://localhost:8080/v1/cardapio/restaurante/Cantina da Nona"
 					},
 					"response": []
 				},
@@ -265,18 +172,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8080/v1/cardapio",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"v1",
-								"cardapio"
-							]
-						}
+						"url": "http://localhost:8080/v1/cardapio"
 					},
 					"response": []
 				}
@@ -326,18 +222,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8080/v1/tipo-usuario",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"v1",
-								"tipo-usuario"
-							]
-						}
+						"url": "http://localhost:8080/v1/tipo-usuario"
 					},
 					"response": []
 				},
@@ -350,19 +235,7 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"tipoUsuario\": \"GERENTE\"\r\n}"
 						},
-						"url": {
-							"raw": "http://localhost:8080/v1/tipo-usuario/GERENTE",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"v1",
-								"tipo-usuario",
-								"GERENTE"
-							]
-						}
+						"url": "http://localhost:8080/v1/tipo-usuario/GERENTE"
 					},
 					"response": []
 				},
@@ -371,8 +244,126 @@
 					"request": {
 						"method": "GET",
 						"header": [],
+						"url": "http://localhost:8080/v1/tipo-usuario/buscar"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Fazer login usuário",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"joao1\",\r\n    \"senha\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Fazer login usuário - inválido login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"joao11\",\r\n    \"senha\": \"password22\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Fazer login usuário - inválido senha",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"joao1\",\r\n    \"senha\": \"password22\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar senha do usuário",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"joao1\",\r\n    \"senha\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/login/senha"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar senha do usuário - inválido",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"joao11\",\r\n    \"senha\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/login/senha"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Buscar todos os tipos de usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/tipo-usuario/buscar"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar tipos usuario CLIENTE",
+					"request": {
+						"method": "GET",
+						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/v1/tipo-usuario/buscar",
+							"raw": "http://localhost:8080/v1/tipo-usuario/buscar?tipo=CLIENTE",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -382,8 +373,220 @@
 								"v1",
 								"tipo-usuario",
 								"buscar"
+							],
+							"query": [
+								{
+									"key": "tipo",
+									"value": "CLIENTE"
+								}
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar tipo usuário",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipoUsuario\": \"CLIENTE_TESTE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/tipo-usuario"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar tipo usuário",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipoUsuario\": \"CLIENTE_TESTE1\",\r\n    \"novoTipoUsuario\": \"CLIENTE_TESTE2\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/tipo-usuario"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar tipo usuario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/v1/tipo-usuario/CLIENTE_TESTE"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos os usuarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/v1/usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar usuario por nome",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/usuarios?nome=joao1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"usuarios"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "joao1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar usuário",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeUsuario\": \"Joao1\",\r\n    \"enderecoEmail\": \"joao1@fiap.com\",\r\n    \"login\": \"joao1\",\r\n    \"senha\": \"password\",\r\n    \"tipoDeUsuario\": \"CLIENTE\",\r\n    \"endereco\": {\"logradouro\": \"Rua 2 de Setembro\",\"numero\": 111, \"bairro\": \"Fortaleza\", \"cidade\": \"Blumenau\",\"estado\": \"SC\",\"cep\": 89055555}\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastro de usuário - email duplicado",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeUsuario\": \"Brenda\",\r\n    \"enderecoEmail\": \"joao1@fiap.com\",\r\n    \"login\": \"brenda\",\r\n    \"senha\": \"password\",\r\n    \"tipoDeUsuario\": \"CLIENTE\",\r\n    \"endereco\": {\"logradouro\": \"Rua X\",\"numero\": 222, \"bairro\": \"Fortaleza\", \"cidade\": \"Blumenau\",\"estado\": \"SC\",\"cep\": 89055551}\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastro de usuário - endereço inválido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeUsuario\": \"Brenda\",\r\n    \"enderecoEmail\": \"brenda@fiap.com\",\r\n    \"login\": \"brenda\",\r\n    \"senha\": \"password\",\r\n    \"tipoDeUsuario\": \"CLIENTE\",\r\n    \"endereco\": {\"logradouro\": \"Rua X\",\"numero\": \"222\", \"cidade\": \"Blumenau\",\"estado\": \"SC\",\"cep\": 89055551}\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar usuario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/v1/usuarios/brenda"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar usuario inválido",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/v1/usuarios/brenda11"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar dados do usuário",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeUsuario\": \"Joao1\",\r\n    \"enderecoEmail\": \"joao@fiap.com\",\r\n    \"login\": \"joao1\",\r\n    \"senha\": \"password1\",\r\n    \"tipoDeUsuario\": \"CLIENTE\",\r\n    \"endereco\": {\"logradouro\": \"Rua 2 de Setembro\",\"numero\": 999, \"bairro\": \"Fortaleza\", \"cidade\": \"Blumenau\",\"estado\": \"SC\",\"cep\": 89055555}\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar dados do usuário inválido",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeUsuario\": \"Joao1\",\r\n    \"enderecoEmail\": \"joao@fiap.com\",\r\n    \"login\": \"joao_invalido\",\r\n    \"senha\": \"password1\",\r\n    \"tipoDeUsuario\": \"CLIENTE\",\r\n    \"endereco\": {\"logradouro\": \"Rua 2 de Setembro\",\"numero\": 999, \"bairro\": \"Fortaleza\", \"cidade\": \"Blumenau\",\"estado\": \"SC\",\"cep\": 89055555}\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar dados do usuário - inválido",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"nome\": \"\",\r\n        \"email\": \"email errado\",\r\n        \"login\": \"blbernat\",\r\n        \"senha\": \"password\",\r\n        \"endereco\": {\r\n            \"rua\": \"Rua 2 de Setembro\",\r\n            \"numero\": 12345,\r\n            \"cidade\": \"Blumenau\",\r\n            \"cep\": 89055555\r\n        },\r\n        \"tipoUsuario\": \"USUARIO\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/v1/usuarios/brenda@fiap.com"
 					},
 					"response": []
 				}

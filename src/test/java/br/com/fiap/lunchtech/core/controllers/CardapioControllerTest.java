@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +45,7 @@ class CardapioControllerTest {
     }
 
     private RestauranteDTO createRestauranteDTO() {
-        return new RestauranteDTO(1L, "restaurante", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome"));
+        return new RestauranteDTO(1L, "restaurante", "cozinha", LocalTime.now(), LocalTime.now(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome"));
     }
 
     @Test

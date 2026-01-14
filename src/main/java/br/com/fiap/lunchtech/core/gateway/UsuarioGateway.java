@@ -152,7 +152,8 @@ public class UsuarioGateway implements IUsuarioGateway {
         }
 
         final UsuarioSenhaDTO usuarioSenhaDTO = new UsuarioSenhaDTO(usuarioAlteracaoSenha.getLogin(),
-                usuarioAlteracaoSenha.getSenha());
+                usuarioAlteracaoSenha.getSenha(),
+                usuarioAlteracaoSenha.getDataAtualizacao());
 
         this.dataSource.alterarSenhaUsuario(usuarioSenhaDTO);
 
@@ -188,14 +189,13 @@ public class UsuarioGateway implements IUsuarioGateway {
     private NovoUsuarioDTO getNovoUsuarioDTO(Usuario novoUsuario) {
         final EnderecoDTO enderecoDTO = mapearEnderecoDTO(novoUsuario.getEndereco());
 
-        final NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO(novoUsuario.getNome(),
+        return new NovoUsuarioDTO(novoUsuario.getNome(),
                 novoUsuario.getEmail(),
                 novoUsuario.getLogin(),
                 novoUsuario.getSenha(),
                 novoUsuario.getTipoDeUsuario().getTipoUsuario(),
-                enderecoDTO);
-
-        return novoUsuarioDTO;
+                enderecoDTO,
+                novoUsuario.getDataAtualizacao());
     }
 
 
@@ -206,7 +206,8 @@ public class UsuarioGateway implements IUsuarioGateway {
                 usuarioAlteracao.getEmail(),
                 usuarioAlteracao.getLogin(),
                 usuarioAlteracao.getTipoDeUsuario().getTipoUsuario(),
-                enderecoUsuario);
+                enderecoUsuario,
+                usuarioAlteracao.getDataAtualizacao());
     }
 
     private EnderecoDTO mapearEnderecoDTO(Endereco endereco) {

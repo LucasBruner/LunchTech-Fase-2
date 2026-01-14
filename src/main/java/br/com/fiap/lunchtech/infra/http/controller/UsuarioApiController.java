@@ -1,12 +1,15 @@
 package br.com.fiap.lunchtech.infra.http.controller;
 
 import br.com.fiap.lunchtech.core.controllers.UsuarioController;
+import br.com.fiap.lunchtech.core.dto.endereco.EnderecoDTO;
+import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
 import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
+import br.com.fiap.lunchtech.infra.http.controller.json.UsuarioJson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,6 +17,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -49,8 +53,8 @@ public class UsuarioApiController {
                     @ApiResponse(description = "Conflict", responseCode = "409"),
                     @ApiResponse(description = "Bad request", responseCode = "400")})
     @PostMapping
-    public ResponseEntity<Void> criarUsuario(@Valid @RequestBody NovoUsuarioDTO usuario) {
-        usuarioController.cadastrar(usuario);
+    public ResponseEntity<Void> criarUsuario(@Valid @RequestBody UsuarioJson usuario) {
+        usuarioController.cadastrar(mapToNovoUsuarioDTO(usuario));
         return ResponseEntity.ok().build();
     }
 
@@ -75,9 +79,42 @@ public class UsuarioApiController {
                     @ApiResponse(description = "Ok", responseCode = "200"),
                     @ApiResponse(description = "Not found", responseCode = "404")})
     @PutMapping
-    public ResponseEntity<Void> updateUsuario(@Valid @RequestBody UsuarioAlteracaoDTO usuarioAlteracaoDTO) {
-        usuarioController.alterarUsuario(usuarioAlteracaoDTO);
+    public ResponseEntity<Void> updateUsuario(@Valid @RequestBody UsuarioJson usuarionJson) {
+        usuarioController.alterarUsuario(mapToUsuarioAlteracaoDTO(usuarionJson));
         return ResponseEntity.ok().build();
+    }
+
+    private NovoUsuarioDTO mapToNovoUsuarioDTO(UsuarioJson usuarioJson) {
+        return new NovoUsuarioDTO(
+                usuarioJson.getNomeUsuario(),
+                usuarioJson.getEnderecoEmail(),
+                usuarioJson.getLogin(),
+                usuarioJson.getSenha(),
+                usuarioJson.getTipoDeUsuario(),
+                new EnderecoDTO(usuarioJson.getEndereco().getLogradouro(),
+                        usuarioJson.getEndereco().getNumero(),
+                        usuarioJson.getEndereco().getBairro(),
+                        usuarioJson.getEndereco().getCidade(),
+                        usuarioJson.getEndereco().getEstado(),
+                        usuarioJson.getEndereco().getCep()
+                ),
+                LocalDateTime.now());
+    }
+
+    private UsuarioAlteracaoDTO mapToUsuarioAlteracaoDTO(UsuarioJson usuarioJson) {
+        return new UsuarioAlteracaoDTO(
+                usuarioJson.getNomeUsuario(),
+                usuarioJson.getEnderecoEmail(),
+                usuarioJson.getLogin(),
+                usuarioJson.getTipoDeUsuario(),
+                new EnderecoDTO(usuarioJson.getEndereco().getLogradouro(),
+                        usuarioJson.getEndereco().getNumero(),
+                        usuarioJson.getEndereco().getBairro(),
+                        usuarioJson.getEndereco().getCidade(),
+                        usuarioJson.getEndereco().getEstado(),
+                        usuarioJson.getEndereco().getCep()
+                ),
+                LocalDateTime.now());
     }
 
 }

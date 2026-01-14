@@ -2,7 +2,7 @@ package br.com.fiap.lunchtech.core.entities;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,7 +12,7 @@ class CardapioTest {
         Endereco endereco = Endereco.create("Rua Teste", 123, "Bairro Teste", "Cidade Teste", "Estado Teste", "12345678");
         TipoUsuario tipoUsuario = TipoUsuario.create("DONO_RESTAURANTE");
         Usuario dono = Usuario.create("Dono", "dono@restaurante.com", "dono_login", "senha", tipoUsuario, endereco);
-        return Restaurante.create("Restaurante Teste", "Cozinha Teste", new Date(), new Date(), endereco, dono);
+        return Restaurante.create("Restaurante Teste", "Cozinha Teste", LocalTime.now(), LocalTime.now(), endereco, dono);
     }
 
     @Test

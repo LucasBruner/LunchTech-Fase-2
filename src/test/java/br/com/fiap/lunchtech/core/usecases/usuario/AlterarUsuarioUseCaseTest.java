@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -39,7 +41,8 @@ class AlterarUsuarioUseCaseTest {
                         1, "bairro",
                         "cidade",
                         "estado",
-                        "cep"));
+                        "cep"),
+                LocalDateTime.now());
         when(usuarioGateway.buscarPorLogin("login_invalido")).thenReturn(null);
 
         // Act & Assert
@@ -57,7 +60,8 @@ class AlterarUsuarioUseCaseTest {
                         1, "bairro",
                         "cidade",
                         "estado",
-                        "cep"));
+                        "cep"),
+                LocalDateTime.now());
         when(usuarioGateway.buscarPorLogin("login")).thenReturn(mock(Usuario.class));
         when(usuarioGateway.buscarPorEmail("email@teste.com")).thenReturn(true);
 
@@ -76,7 +80,8 @@ class AlterarUsuarioUseCaseTest {
                         1, "bairro",
                         "cidade",
                         "estado",
-                        "12344555"));
+                        "12344555"),
+                LocalDateTime.now());
         when(usuarioGateway.buscarPorLogin("login")).thenReturn(mock(Usuario.class));
         when(usuarioGateway.buscarPorEmail("novo_email@teste.com")).thenReturn(false);
         when(usuarioGateway.alterar(any(Usuario.class))).thenAnswer(i -> i.getArgument(0));

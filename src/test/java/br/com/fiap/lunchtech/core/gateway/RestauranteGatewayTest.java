@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Date;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -37,7 +37,7 @@ class RestauranteGatewayTest {
     @Test
     void deveBuscarPorNome() {
         // Arrange
-        when(dataSource.buscarRestaurantePorNome("nome")).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
+        when(dataSource.buscarRestaurantePorNome("nome")).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", LocalTime.now(), LocalTime.now(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
 
         Usuario usuarioMock = mock(Usuario.class);
         when(usuarioMock.getLogin()).thenReturn("login");
@@ -70,7 +70,7 @@ class RestauranteGatewayTest {
         when(dono.getLogin()).thenReturn("login");
         when(restaurante.getEndereco()).thenReturn(mock(Endereco.class));
         when(restaurante.getDonoRestaurante()).thenReturn(dono);
-        when(dataSource.incluirNovoRestaurante(any())).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
+        when(dataSource.incluirNovoRestaurante(any())).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", LocalTime.now(), LocalTime.now(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
 
         Usuario usuarioMock = mock(Usuario.class);
         when(usuarioMock.getLogin()).thenReturn("login");
@@ -97,7 +97,7 @@ class RestauranteGatewayTest {
         when(dono.getLogin()).thenReturn("login");
         when(restaurante.getEndereco()).thenReturn(mock(Endereco.class));
         when(restaurante.getDonoRestaurante()).thenReturn(dono);
-        when(dataSource.alterarRestaurante(any())).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
+        when(dataSource.alterarRestaurante(any())).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", LocalTime.now(), LocalTime.now(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
 
         Usuario usuarioMock = mock(Usuario.class);
         when(usuarioMock.getLogin()).thenReturn("login");

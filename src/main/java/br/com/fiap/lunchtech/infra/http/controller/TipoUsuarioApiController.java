@@ -4,6 +4,7 @@ import br.com.fiap.lunchtech.core.controllers.TipoUsuarioController;
 import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioDTO;
 import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
+import br.com.fiap.lunchtech.infra.http.controller.json.TipoUsuarioJson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,8 +46,8 @@ public class TipoUsuarioApiController {
                     @ApiResponse(description = "Conflict", responseCode = "409"),
                     @ApiResponse(description = "Bad request", responseCode = "400")})
     @PostMapping
-    public ResponseEntity<Void> criarTipoUsuario(@Valid @RequestBody TipoUsuarioDTO tipo) {
-        tipoUsuarioController.cadastrarTipoUsuario(tipo);
+    public ResponseEntity<Void> criarTipoUsuario(@Valid @RequestBody TipoUsuarioJson tipo) {
+        tipoUsuarioController.cadastrarTipoUsuario(mapToTipoUsuarioDTO(tipo));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -73,8 +74,21 @@ public class TipoUsuarioApiController {
                     @ApiResponse(description = "Bad request", responseCode = "400")})
 
     @PutMapping
-    public ResponseEntity<Void> updateTipoUsuario(@Valid @RequestBody TipoUsuarioAlteracaoDTO tipo) {
-        tipoUsuarioController.alterarTipoUsuario(tipo);
+    public ResponseEntity<Void> updateTipoUsuario(@Valid @RequestBody TipoUsuarioJson tipo) {
+        tipoUsuarioController.alterarTipoUsuario(mapToTipoUsuarioAlteracaoDTO(tipo));
         return ResponseEntity.ok().build();
+    }
+
+    private TipoUsuarioDTO mapToTipoUsuarioDTO(TipoUsuarioJson tipo) {
+        return new TipoUsuarioDTO(
+                tipo.getTipoUsuario()
+        );
+    }
+
+    private TipoUsuarioAlteracaoDTO mapToTipoUsuarioAlteracaoDTO(TipoUsuarioJson tipo){
+        return new TipoUsuarioAlteracaoDTO(
+                tipo.getTipoUsuario(),
+                tipo.getNovoTipoUsuario()
+        );
     }
 }
