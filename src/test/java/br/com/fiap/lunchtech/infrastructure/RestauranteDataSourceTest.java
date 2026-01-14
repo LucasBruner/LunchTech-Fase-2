@@ -41,12 +41,23 @@ class RestauranteDataSourceTest {
         restauranteDataSource = new RestauranteDataSource(restauranteRepository, enderecoDataSource, usuarioDataSource);
     }
 
+    private EnderecoEntity createEnderecoEntity() {
+        EnderecoEntity enderecoEntity = new EnderecoEntity();
+        enderecoEntity.setNumero(123);
+        return enderecoEntity;
+    }
+
+    private RestauranteEntity createRestauranteEntity() {
+        RestauranteEntity restauranteEntity = new RestauranteEntity();
+        restauranteEntity.setDonoRestaurante(new UsuarioEntity());
+        restauranteEntity.setEndereco(createEnderecoEntity());
+        return restauranteEntity;
+    }
+
     @Test
     void deveBuscarRestaurantePorNome() {
         // Arrange
-        RestauranteEntity restauranteEntity = new RestauranteEntity();
-        restauranteEntity.setDonoRestaurante(new UsuarioEntity());
-        restauranteEntity.setEndereco(new EnderecoEntity());
+        RestauranteEntity restauranteEntity = createRestauranteEntity();
         when(restauranteRepository.findByNome("nome")).thenReturn(restauranteEntity);
         when(enderecoDataSource.entityToDtoEndereco(any())).thenReturn(new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
         when(usuarioDataSource.entityToDonoDtoUsuario(any())).thenReturn(new UsuarioDonoRestauranteDTO("login", "nome"));
@@ -61,7 +72,7 @@ class RestauranteDataSourceTest {
     @Test
     void deveDeletarRestaurante() {
         // Arrange
-        RestauranteEntity restauranteEntity = new RestauranteEntity();
+        RestauranteEntity restauranteEntity = createRestauranteEntity();
         when(restauranteRepository.findByNome("nome")).thenReturn(restauranteEntity);
         doNothing().when(restauranteRepository).delete(restauranteEntity);
 
@@ -76,8 +87,8 @@ class RestauranteDataSourceTest {
     void deveAlterarRestaurante() {
         // Arrange
         RestauranteAlteracaoDTO restauranteAlteracaoDTO = new RestauranteAlteracaoDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome"));
-        when(usuarioDataSource.findByLogin("login")).thenReturn(new UsuarioEntity());
-        when(enderecoDataSource.updateFromRestaurante(any(), any())).thenReturn(new EnderecoEntity());
+        when(usuarioDataSource.findByLogin(anyString())).thenReturn(new UsuarioEntity());
+        when(enderecoDataSource.updateFromRestaurante(any(), anyLong())).thenReturn(createEnderecoEntity());
         when(restauranteRepository.save(any(RestauranteEntity.class))).thenAnswer(i -> i.getArgument(0));
         when(enderecoDataSource.restauranteEntityToEnderecoDTO(any())).thenReturn(new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
         when(usuarioDataSource.restauranteDonoToDTO(any())).thenReturn(new UsuarioDonoRestauranteDTO("login", "nome"));
@@ -97,8 +108,8 @@ class RestauranteDataSourceTest {
     void deveIncluirNovoRestaurante() {
         // Arrange
         NovoRestauranteDTO novoRestauranteDTO = new NovoRestauranteDTO("nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome"));
-        when(usuarioDataSource.findByLogin("login")).thenReturn(new UsuarioEntity());
-        when(enderecoDataSource.save(any(EnderecoDTO.class))).thenReturn(new EnderecoEntity());
+        when(usuarioDataSource.findByLogin(anyString())).thenReturn(new UsuarioEntity());
+        when(enderecoDataSource.save(any(EnderecoDTO.class))).thenReturn(createEnderecoEntity());
         when(restauranteRepository.save(any(RestauranteEntity.class))).thenAnswer(i -> i.getArgument(0));
         when(enderecoDataSource.restauranteEntityToEnderecoDTO(any())).thenReturn(new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
         when(usuarioDataSource.restauranteDonoToDTO(any())).thenReturn(new UsuarioDonoRestauranteDTO("login", "nome"));
@@ -116,9 +127,7 @@ class RestauranteDataSourceTest {
     @Test
     void deveBuscarRestaurantePorId() {
         // Arrange
-        RestauranteEntity restauranteEntity = new RestauranteEntity();
-        restauranteEntity.setDonoRestaurante(new UsuarioEntity());
-        restauranteEntity.setEndereco(new EnderecoEntity());
+        RestauranteEntity restauranteEntity = createRestauranteEntity();
         when(restauranteRepository.findById(1L)).thenReturn(Optional.of(restauranteEntity));
         when(enderecoDataSource.entityToDtoEndereco(any())).thenReturn(new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
         when(usuarioDataSource.entityToDonoDtoUsuario(any())).thenReturn(new UsuarioDonoRestauranteDTO("login", "nome"));

@@ -2,6 +2,7 @@ package br.com.fiap.lunchtech.domain.gateway;
 
 import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioDTO;
 import br.com.fiap.lunchtech.core.entities.TipoUsuario;
+import br.com.fiap.lunchtech.core.exceptions.TipoUsuarioNaoExisteException;
 import br.com.fiap.lunchtech.core.gateway.TipoUsuarioGateway;
 import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,10 +69,9 @@ class TipoUsuarioGatewayTest {
     }
 
     @Test
-    void deveRetornarNuloSeTipoUsuarioNaoEncontrado() {
+    void deveLancarExcecaoSeTipoUsuarioNaoEncontrado() {
         when(dataSource.buscarTipoUsuarioPorNome("INEXISTENTE")).thenReturn(null);
-        TipoUsuario result = tipoUsuarioGateway.buscarTipoUsuarioPorNome("INEXISTENTE");
-        assertNull(result);
+        assertThrows(TipoUsuarioNaoExisteException.class, () -> tipoUsuarioGateway.buscarTipoUsuarioPorNome("INEXISTENTE"));
     }
 
     @Test

@@ -1,7 +1,6 @@
 package br.com.fiap.lunchtech.core.usecases.tipousuario;
 
 import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioAlteracaoDTO;
-import br.com.fiap.lunchtech.core.dto.tipoUsuario.TipoUsuarioDTO;
 import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.exceptions.TipoDeUsuarioExisteException;
 import br.com.fiap.lunchtech.core.exceptions.TipoDeUsuarioNaoPodeSerExcluidoException;
@@ -9,7 +8,7 @@ import br.com.fiap.lunchtech.core.exceptions.TipoUsuarioNaoExisteException;
 import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioGateway;
 
 public class AlterarTipoUsuarioUseCase {
-    private ITipoUsuarioGateway tipoUsuarioGateway;
+    private final ITipoUsuarioGateway tipoUsuarioGateway;
 
     private AlterarTipoUsuarioUseCase(ITipoUsuarioGateway tipoUsuarioGateway) {
         this.tipoUsuarioGateway = tipoUsuarioGateway;

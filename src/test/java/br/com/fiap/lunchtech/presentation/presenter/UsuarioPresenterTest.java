@@ -22,7 +22,7 @@ class UsuarioPresenterTest {
 
         assertNotNull(dto);
         assertEquals("Nome", dto.nomeUsuario());
-        assertEquals("email@teste.com", dto.email());
+        assertEquals("email@teste.com", dto.enderecoEmail());
         assertEquals("login", dto.login());
         assertEquals("TIPO", dto.tipoDeUsuario());
         assertNotNull(dto.endereco());

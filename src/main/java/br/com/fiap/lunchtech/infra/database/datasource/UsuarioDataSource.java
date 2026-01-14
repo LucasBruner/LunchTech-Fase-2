@@ -138,7 +138,7 @@ public class UsuarioDataSource implements IUsuarioDataSource {
         }
     }
 
-    UsuarioEntity findByLogin(String login) {
+    public UsuarioEntity findByLogin(String login) {
         return usuarioRepository.findByLogin(login);
     }
 
@@ -151,11 +151,11 @@ public class UsuarioDataSource implements IUsuarioDataSource {
                 endereco);
     }
 
-    UsuarioDonoRestauranteDTO entityToDonoDtoUsuario(UsuarioEntity usuario){
+    public UsuarioDonoRestauranteDTO entityToDonoDtoUsuario(UsuarioEntity usuario){
         return new UsuarioDonoRestauranteDTO(usuario.getLogin(), usuario.getNome());
     }
 
-    UsuarioDonoRestauranteDTO restauranteDonoToDTO(UsuarioEntity donoRestaurante) {
+    public UsuarioDonoRestauranteDTO restauranteDonoToDTO(UsuarioEntity donoRestaurante) {
         return new UsuarioDonoRestauranteDTO(donoRestaurante.getLogin(), donoRestaurante.getNome());
     }
 

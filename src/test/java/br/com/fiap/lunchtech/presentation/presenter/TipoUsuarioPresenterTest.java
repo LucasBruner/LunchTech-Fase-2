@@ -16,12 +16,4 @@ class TipoUsuarioPresenterTest {
         assertNotNull(dto);
         assertEquals("TESTE", dto.tipoUsuario());
     }
-
-    @Test
-    void deveConverterParaEntidade() {
-        TipoUsuarioDTO dto = new TipoUsuarioDTO("TESTE");
-        TipoUsuario tipoUsuario = TipoUsuarioPresenter.toEntity(dto);
-        assertNotNull(tipoUsuario);
-        assertEquals("TESTE", tipoUsuario.getTipoUsuario());
-    }
 }

@@ -3,6 +3,7 @@ package br.com.fiap.lunchtech.domain;
 import br.com.fiap.lunchtech.core.entities.Endereco;
 import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
+import br.com.fiap.lunchtech.core.exceptions.UsuarioComInformacaoInvalidaException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,27 +38,27 @@ class UsuarioTest {
     void deveLancarExcecaoParaNomeInvalido() {
         TipoUsuario tipoUsuario = TipoUsuario.create("CLIENTE");
         Endereco endereco = Endereco.create("Rua", 1, "Bairro", "Cidade", "Estado", "12345678");
-        assertThrows(IllegalArgumentException.class, () -> Usuario.create(null, "email@teste.com", "login", "senha", tipoUsuario, endereco));
+        assertThrows(UsuarioComInformacaoInvalidaException.class, () -> Usuario.create(null, "email@teste.com", "login", "senha", tipoUsuario, endereco));
     }
 
     @Test
     void deveLancarExcecaoParaEmailInvalido() {
         TipoUsuario tipoUsuario = TipoUsuario.create("CLIENTE");
         Endereco endereco = Endereco.create("Rua", 1, "Bairro", "Cidade", "Estado", "12345678");
-        assertThrows(IllegalArgumentException.class, () -> Usuario.create("Nome", "email-invalido", "login", "senha", tipoUsuario, endereco));
+        assertThrows(UsuarioComInformacaoInvalidaException.class, () -> Usuario.create("Nome", "email-invalido", "login", "senha", tipoUsuario, endereco));
     }
 
     @Test
     void deveLancarExcecaoParaLoginInvalido() {
         TipoUsuario tipoUsuario = TipoUsuario.create("CLIENTE");
         Endereco endereco = Endereco.create("Rua", 1, "Bairro", "Cidade", "Estado", "12345678");
-        assertThrows(IllegalArgumentException.class, () -> Usuario.create("Nome", "email@teste.com", null, "senha", tipoUsuario, endereco));
+        assertThrows(UsuarioComInformacaoInvalidaException.class, () -> Usuario.create("Nome", "email@teste.com", null, "senha", tipoUsuario, endereco));
     }
 
     @Test
     void deveLancarExcecaoParaSenhaInvalida() {
         TipoUsuario tipoUsuario = TipoUsuario.create("CLIENTE");
         Endereco endereco = Endereco.create("Rua", 1, "Bairro", "Cidade", "Estado", "12345678");
-        assertThrows(IllegalArgumentException.class, () -> Usuario.create("Nome", "email@teste.com", "login", null, tipoUsuario, endereco));
+        assertThrows(UsuarioComInformacaoInvalidaException.class, () -> Usuario.create("Nome", "email@teste.com", "login", null, tipoUsuario, endereco));
     }
 }

@@ -38,6 +38,13 @@ class CardapioDataSourceTest {
         cardapioDataSource = new CardapioDataSource(cardapioRepository, restauranteDataSource);
     }
 
+    private CardapioEntity createCardapioEntity() {
+        CardapioEntity cardapioEntity = new CardapioEntity();
+        cardapioEntity.setPreco(10.0);
+        cardapioEntity.setRestaurante(new RestauranteEntity());
+        return cardapioEntity;
+    }
+
     @Test
     void deveIncluirNovoProdutoCardapio() {
         // Arrange
@@ -73,7 +80,7 @@ class CardapioDataSourceTest {
     @Test
     void deveDeletarProduto() {
         // Arrange
-        CardapioEntity cardapioEntity = new CardapioEntity();
+        CardapioEntity cardapioEntity = createCardapioEntity();
         when(cardapioRepository.findById(1L)).thenReturn(Optional.of(cardapioEntity));
         doNothing().when(cardapioRepository).delete(cardapioEntity);
 
@@ -88,8 +95,7 @@ class CardapioDataSourceTest {
     void deveBuscarProdutoPorNome() {
         // Arrange
         RestauranteEntity restauranteEntity = new RestauranteEntity();
-        CardapioEntity cardapioEntity = new CardapioEntity();
-        cardapioEntity.setRestaurante(restauranteEntity);
+        CardapioEntity cardapioEntity = createCardapioEntity();
         when(restauranteDataSource.buscarRestaurante("restaurante")).thenReturn(restauranteEntity);
         when(cardapioRepository.findByNomeProdutoAndRestauranteId("nome", restauranteEntity)).thenReturn(cardapioEntity);
         when(restauranteDataSource.toRestauranteCardapioDTO(any())).thenReturn(new RestauranteCardapioDTO("restaurante",1L));
@@ -104,8 +110,7 @@ class CardapioDataSourceTest {
     @Test
     void deveBuscarProdutoPorId() {
         // Arrange
-        CardapioEntity cardapioEntity = new CardapioEntity();
-        cardapioEntity.setRestaurante(new RestauranteEntity());
+        CardapioEntity cardapioEntity = createCardapioEntity();
         when(cardapioRepository.findById(1L)).thenReturn(Optional.of(cardapioEntity));
         when(restauranteDataSource.toRestauranteCardapioDTO(any())).thenReturn(new RestauranteCardapioDTO("restaurante",1L));
 
@@ -121,8 +126,7 @@ class CardapioDataSourceTest {
     @Test
     void deveBuscarProdutoPorIdRestaurante() {
         // Arrange
-        CardapioEntity cardapioEntity = new CardapioEntity();
-        cardapioEntity.setRestaurante(new RestauranteEntity());
+        CardapioEntity cardapioEntity = createCardapioEntity();
         when(cardapioRepository.findAllByRestauranteId(1L)).thenReturn(Arrays.asList(cardapioEntity));
         when(restauranteDataSource.toRestauranteCardapioDTO(any())).thenReturn(new RestauranteCardapioDTO("restaurante",1L));
 

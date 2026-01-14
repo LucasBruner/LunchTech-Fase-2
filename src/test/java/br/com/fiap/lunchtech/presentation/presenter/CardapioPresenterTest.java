@@ -28,7 +28,7 @@ class CardapioPresenterTest {
         assertNotNull(dto);
         assertEquals("Produto", dto.nomeProduto());
         assertEquals(10.0, dto.preco());
-        assertNotNull(dto.restaurante());
-        assertEquals("Restaurante", dto.restaurante().nomeRestaurante());
+        assertNotNull(dto.restauranteCardapioDTO());
+        assertEquals("Restaurante", dto.restauranteCardapioDTO().nomeRestaurante());
     }
 }

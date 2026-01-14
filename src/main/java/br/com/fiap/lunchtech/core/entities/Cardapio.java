@@ -127,7 +127,7 @@ public class Cardapio {
     }
 
     private static void validaRestaurante(Restaurante restaurante) {
-        if(restaurante.getNome().trim().isBlank()) {
+        if(restaurante == null || restaurante.getNome().trim().isBlank()) {
             throw new IllegalArgumentException("Restaurante inválido");
         }
     }

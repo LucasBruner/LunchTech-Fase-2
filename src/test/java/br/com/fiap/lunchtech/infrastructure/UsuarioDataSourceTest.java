@@ -41,14 +41,20 @@ class UsuarioDataSourceTest {
         usuarioDataSource = new UsuarioDataSource(usuarioRepository, tipoUsuarioDataSource, enderecoDataSource);
     }
 
+    private UsuarioEntity createUsuarioEntity() {
+        UsuarioEntity usuarioEntity = new UsuarioEntity();
+        usuarioEntity.setTipoUsuario(new TipoUsuarioEntity());
+        usuarioEntity.setEndereco(new EnderecoEntity());
+        return usuarioEntity;
+    }
+
     @Test
     void deveObterUsuarioPorLogin() {
         // Arrange
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
+        UsuarioEntity usuarioEntity = createUsuarioEntity();
         usuarioEntity.setLogin("login");
-        usuarioEntity.setTipoUsuario(new TipoUsuarioEntity());
         when(usuarioRepository.findByLogin("login")).thenReturn(usuarioEntity);
-        when(enderecoDataSource.usuarioEntityToEnderecoDTO(usuarioEntity)).thenReturn(new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
+        when(enderecoDataSource.usuarioEntityToEnderecoDTO(any())).thenReturn(new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
 
         // Act
         UsuarioDTO result = usuarioDataSource.obterUsuarioPorLogin("login");
@@ -62,9 +68,10 @@ class UsuarioDataSourceTest {
     void deveIncluirNovoUsuario() {
         // Arrange
         NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO("nome", "email", "login", "senha", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
-        when(tipoUsuarioDataSource.buscarTipoUsuario("TIPO")).thenReturn(new TipoUsuarioEntity());
+        when(tipoUsuarioDataSource.buscarTipoUsuario(anyString())).thenReturn(new TipoUsuarioEntity());
         when(enderecoDataSource.save(any(EnderecoDTO.class))).thenReturn(new EnderecoEntity());
         when(usuarioRepository.save(any(UsuarioEntity.class))).thenAnswer(i -> i.getArgument(0));
+        when(enderecoDataSource.entityToDtoEndereco(any())).thenReturn(new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
 
         // Act
         UsuarioDTO result = usuarioDataSource.incluirNovoUsuario(novoUsuarioDTO);
@@ -78,8 +85,7 @@ class UsuarioDataSourceTest {
     @Test
     void deveBuscarUsuariosPorNome() {
         // Arrange
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
-        usuarioEntity.setTipoUsuario(new TipoUsuarioEntity());
+        UsuarioEntity usuarioEntity = createUsuarioEntity();
         when(usuarioRepository.findByNome("nome")).thenReturn(Arrays.asList(usuarioEntity));
         when(enderecoDataSource.usuarioEntityToEnderecoDTO(any(UsuarioEntity.class))).thenReturn(new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
 
@@ -94,8 +100,7 @@ class UsuarioDataSourceTest {
     @Test
     void deveBuscarTodosUsuarios() {
         // Arrange
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
-        usuarioEntity.setTipoUsuario(new TipoUsuarioEntity());
+        UsuarioEntity usuarioEntity = createUsuarioEntity();
         when(usuarioRepository.findAll()).thenReturn(Arrays.asList(usuarioEntity));
         when(enderecoDataSource.usuarioEntityToEnderecoDTO(any(UsuarioEntity.class))).thenReturn(new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
 
@@ -110,8 +115,7 @@ class UsuarioDataSourceTest {
     @Test
     void deveBuscarUsuarioPorEmail() {
         // Arrange
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
-        usuarioEntity.setTipoUsuario(new TipoUsuarioEntity());
+        UsuarioEntity usuarioEntity = createUsuarioEntity();
         when(usuarioRepository.findByEmail("email")).thenReturn(usuarioEntity);
         when(enderecoDataSource.usuarioEntityToEnderecoDTO(any(UsuarioEntity.class))).thenReturn(new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
 
@@ -126,11 +130,10 @@ class UsuarioDataSourceTest {
     void deveAlterarUsuario() {
         // Arrange
         UsuarioAlteracaoDTO usuarioAlteracaoDTO = new UsuarioAlteracaoDTO("nome", "email", "login", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
-        usuarioEntity.setTipoUsuario(new TipoUsuarioEntity());
+        UsuarioEntity usuarioEntity = createUsuarioEntity();
         when(usuarioRepository.findByLogin("login")).thenReturn(usuarioEntity);
         when(enderecoDataSource.updateFromUsuario(any(EnderecoDTO.class), any())).thenReturn(new EnderecoEntity());
-        when(tipoUsuarioDataSource.buscarTipoUsuario("TIPO")).thenReturn(new TipoUsuarioEntity());
+        when(tipoUsuarioDataSource.buscarTipoUsuario(anyString())).thenReturn(new TipoUsuarioEntity());
         when(usuarioRepository.save(any(UsuarioEntity.class))).thenAnswer(i -> i.getArgument(0));
         when(enderecoDataSource.usuarioEntityToEnderecoDTO(any(UsuarioEntity.class))).thenReturn(new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
 
@@ -146,7 +149,7 @@ class UsuarioDataSourceTest {
     @Test
     void deveDeletarUsuario() {
         // Arrange
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
+        UsuarioEntity usuarioEntity = createUsuarioEntity();
         when(usuarioRepository.findByLogin("login")).thenReturn(usuarioEntity);
         doNothing().when(usuarioRepository).delete(usuarioEntity);
 
@@ -161,7 +164,7 @@ class UsuarioDataSourceTest {
     void deveAlterarSenhaUsuario() {
         // Arrange
         UsuarioSenhaDTO usuarioSenhaDTO = new UsuarioSenhaDTO("login", "nova_senha");
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
+        UsuarioEntity usuarioEntity = createUsuarioEntity();
         when(usuarioRepository.findByLogin("login")).thenReturn(usuarioEntity);
         when(usuarioRepository.save(any(UsuarioEntity.class))).thenAnswer(i -> i.getArgument(0));
 
@@ -175,7 +178,7 @@ class UsuarioDataSourceTest {
     @Test
     void deveBuscarDadosUsuarioPorLogin() {
         // Arrange
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
+        UsuarioEntity usuarioEntity = createUsuarioEntity();
         usuarioEntity.setLogin("login");
         usuarioEntity.setSenha("senha");
         when(usuarioRepository.findByLogin("login")).thenReturn(usuarioEntity);

@@ -1,7 +1,10 @@
 package br.com.fiap.lunchtech.domain.gateway;
 
+import br.com.fiap.lunchtech.core.dto.endereco.EnderecoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
+import br.com.fiap.lunchtech.core.entities.Endereco;
+import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import br.com.fiap.lunchtech.core.gateway.TipoUsuarioGateway;
 import br.com.fiap.lunchtech.core.gateway.UsuarioGateway;
@@ -32,7 +35,8 @@ class UsuarioGatewayTest {
 
     @Test
     void deveBuscarPorLoginExistente() {
-        when(dataSource.obterUsuarioPorLogin("login")).thenReturn(mock(UsuarioDTO.class));
+        when(dataSource.obterUsuarioPorLogin("login")).thenReturn(new UsuarioDTO("nome", "email@test.com", "login", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000")));
+        when(tipoUsuarioGateway.buscarTipoUsuarioPorNome(anyString())).thenReturn(mock(TipoUsuario.class));
         Usuario result = usuarioGateway.buscarPorLoginExistente("login");
         assertNotNull(result);
     }
@@ -46,7 +50,7 @@ class UsuarioGatewayTest {
 
     @Test
     void deveBuscarPorEmail() {
-        when(dataSource.buscarUsuarioPorEmail("email@teste.com")).thenReturn(mock(UsuarioDTO.class));
+        when(dataSource.buscarUsuarioPorEmail("email@teste.com")).thenReturn(new UsuarioDTO("nome", "email@test.com", "login", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000")));
         assertTrue(usuarioGateway.buscarPorEmail("email@teste.com"));
     }
 
@@ -59,7 +63,10 @@ class UsuarioGatewayTest {
     @Test
     void deveIncluirUsuario() {
         Usuario usuario = mock(Usuario.class);
-        when(dataSource.incluirNovoUsuario(any(NovoUsuarioDTO.class))).thenReturn(mock(UsuarioDTO.class));
+        when(usuario.getEndereco()).thenReturn(mock(Endereco.class));
+        when(usuario.getTipoDeUsuario()).thenReturn(mock(TipoUsuario.class));
+        when(dataSource.incluirNovoUsuario(any(NovoUsuarioDTO.class))).thenReturn(new UsuarioDTO("nome", "email@test.com", "login", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000")));
+        when(tipoUsuarioGateway.buscarTipoUsuarioPorNome(anyString())).thenReturn(mock(TipoUsuario.class));
         Usuario result = usuarioGateway.incluir(usuario);
         assertNotNull(result);
         verify(dataSource, times(1)).incluirNovoUsuario(any(NovoUsuarioDTO.class));

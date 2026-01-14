@@ -5,6 +5,7 @@ import br.com.fiap.lunchtech.core.dto.endereco.EnderecoDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.NovoRestauranteDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteDTO;
+import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDonoRestauranteDTO;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
 import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
@@ -41,6 +42,7 @@ class RestauranteControllerTest {
     void deveCadastrarRestaurante() {
         // Arrange
         NovoRestauranteDTO novoRestauranteDTO = new NovoRestauranteDTO("nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome"));
+        when(usuarioDataSource.obterUsuarioPorLogin(anyString())).thenReturn(new UsuarioDTO("nome", "email@test.com", "login", "DONO_RESTAURANTE", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000")));
         when(restauranteDataSource.incluirNovoRestaurante(any(NovoRestauranteDTO.class))).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
 
         // Act
@@ -55,6 +57,7 @@ class RestauranteControllerTest {
     void deveBuscarRestaurantePorNome() {
         // Arrange
         when(restauranteDataSource.buscarRestaurantePorNome("nome")).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
+        when(usuarioDataSource.obterUsuarioPorLogin(anyString())).thenReturn(new UsuarioDTO("nome", "email@test.com", "login", "DONO_RESTAURANTE", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000")));
 
         // Act
         RestauranteDTO result = restauranteController.buscarRestaurantePorNome("nome");
@@ -68,6 +71,8 @@ class RestauranteControllerTest {
     void deveAlterarRestaurante() {
         // Arrange
         RestauranteAlteracaoDTO restauranteAlteracaoDTO = new RestauranteAlteracaoDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome"));
+        when(restauranteDataSource.buscarRestaurantePorId(anyLong())).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
+        when(usuarioDataSource.obterUsuarioPorLogin(anyString())).thenReturn(new UsuarioDTO("nome", "email@test.com", "login", "DONO_RESTAURANTE", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000")));
         when(restauranteDataSource.alterarRestaurante(any(RestauranteAlteracaoDTO.class))).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
 
         // Act
@@ -81,6 +86,17 @@ class RestauranteControllerTest {
     @Test
     void deveDeletarRestaurante() {
         // Arrange
+        when(restauranteDataSource.buscarRestaurantePorNome("nome")).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
+        when(usuarioDataSource.obterUsuarioPorLogin(anyString())).thenReturn(new UsuarioDTO("nome",
+                "email@test.com",
+                "login",
+                "DONO_RESTAURANTE",
+                new EnderecoDTO("logradouro",
+                        1,
+                        "bairro",
+                        "cidade",
+                        "estado",
+                        "01001000")));
         doNothing().when(restauranteDataSource).deletarRestaurante("nome");
 
         // Act
