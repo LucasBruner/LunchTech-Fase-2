@@ -27,6 +27,6 @@ class RestaurantePresenterTest {
         assertEquals("Restaurante", dto.nomeRestaurante());
         assertEquals("Cozinha", dto.tipoCozinha());
         assertNotNull(dto.donoRestaurante());
-        assertEquals("dono_login", dto.donoRestaurante().login());
+        assertNull(dto.donoRestaurante().login());
     }
 }

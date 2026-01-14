@@ -41,6 +41,6 @@ public class RestaurantePresenter {
         if (usuario == null) {
             return null;
         }
-        return new UsuarioDonoRestauranteDTO(usuario.getLogin(), usuario.getNome());
+        return new UsuarioDonoRestauranteDTO(null, usuario.getNome());
     }
 }

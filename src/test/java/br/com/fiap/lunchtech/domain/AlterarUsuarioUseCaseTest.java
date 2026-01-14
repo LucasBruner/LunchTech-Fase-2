@@ -77,7 +77,7 @@ class AlterarUsuarioUseCaseTest {
                         1, "bairro",
                         "cidade",
                         "estado",
-                        "cep"));
+                        "12344555"));
         when(usuarioGateway.buscarPorLogin("login")).thenReturn(mock(Usuario.class));
         when(usuarioGateway.buscarPorEmail("novo_email@teste.com")).thenReturn(false);
         when(usuarioGateway.alterar(any(Usuario.class))).thenAnswer(i -> i.getArgument(0));
