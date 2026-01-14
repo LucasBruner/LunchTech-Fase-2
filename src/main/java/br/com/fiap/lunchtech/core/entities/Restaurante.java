@@ -1,21 +1,21 @@
 package br.com.fiap.lunchtech.core.entities;
 
-import java.util.Date;
+import java.time.LocalTime;
 
 public class Restaurante {
     private Long id;
     private String nome;
     private String tipoCozinha;
-    private Date horarioFuncionamentoInicio;
-    private Date horarioFuncionamentoFim;
+    private LocalTime horarioFuncionamentoInicio;
+    private LocalTime horarioFuncionamentoFim;
     private Endereco endereco;
     private Cardapio cardapio;
     private Usuario donoRestaurante;
 
     public static Restaurante create(String nome,
                                      String tipoCozinha,
-                                     Date horarioFuncionamentoInicio,
-                                     Date horarioFuncionamentoFim,
+                                     LocalTime horarioFuncionamentoInicio,
+                                     LocalTime horarioFuncionamentoFim,
                                      Endereco endereco,
                                      Cardapio cardapio,
                                      Usuario donoRestaurante) {
@@ -47,8 +47,8 @@ public class Restaurante {
     public static Restaurante create(Long id,
                                      String nomeRestaurante,
                                      String tipoCozinha,
-                                     Date horarioFuncionamentoInicio,
-                                     Date horarioFuncionamentoFim,
+                                     LocalTime horarioFuncionamentoInicio,
+                                     LocalTime horarioFuncionamentoFim,
                                      Endereco enderecoRestaurante,
                                      Usuario donoRestaurante) {
         Restaurante restaurante = new Restaurante();
@@ -74,8 +74,8 @@ public class Restaurante {
 
     public static Restaurante create(String nomeRestaurante,
                                      String tipoCozinha,
-                                     Date horarioFuncionamentoInicio,
-                                     Date horarioFuncionamentoFim,
+                                     LocalTime horarioFuncionamentoInicio,
+                                     LocalTime horarioFuncionamentoFim,
                                      Endereco enderecoRestaurante,
                                      Usuario donoRestaurante) {
         Restaurante restaurante = new Restaurante();
@@ -107,11 +107,11 @@ public class Restaurante {
         return tipoCozinha;
     }
 
-    public Date getHorarioFuncionamentoInicio() {
+    public LocalTime getHorarioFuncionamentoInicio() {
         return horarioFuncionamentoInicio;
     }
 
-    public Date getHorarioFuncionamentoFim() {
+    public LocalTime getHorarioFuncionamentoFim() {
         return horarioFuncionamentoFim;
     }
 
@@ -151,11 +151,11 @@ public class Restaurante {
         this.tipoCozinha = tipoCozinha;
     }
 
-    private void setHorarioFuncionamentoInicio(Date horarioFuncionamentoInicio) {
+    private void setHorarioFuncionamentoInicio(LocalTime horarioFuncionamentoInicio) {
         this.horarioFuncionamentoInicio = horarioFuncionamentoInicio;
     }
 
-    private void setHorarioFuncionamentoFim(Date horarioFuncionamentoFim) {
+    private void setHorarioFuncionamentoFim(LocalTime horarioFuncionamentoFim) {
         this.horarioFuncionamentoFim = horarioFuncionamentoFim;
     }
 
