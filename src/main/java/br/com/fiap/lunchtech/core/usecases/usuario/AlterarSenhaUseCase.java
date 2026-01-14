@@ -2,7 +2,7 @@ package br.com.fiap.lunchtech.core.usecases.usuario;
 
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioSenhaDTO;
 import br.com.fiap.lunchtech.core.entities.Usuario;
-import br.com.fiap.lunchtech.core.exceptions.UsuarioJaExisteException;
+import br.com.fiap.lunchtech.core.exceptions.UsuarioNaoEncontradoException;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioGateway;
 
 public class AlterarSenhaUseCase {
@@ -20,14 +20,12 @@ public class AlterarSenhaUseCase {
         Usuario usuarioExistente = usuarioGateway.buscarPorLogin(usuarioSenhaDTO.login());
 
         if (usuarioExistente == null) {
-            throw new UsuarioJaExisteException("Usuário não possuí cadastro!");
+            throw new UsuarioNaoEncontradoException("Usuário não possuí cadastro!");
         }
 
         Usuario usuarioAlteracao = Usuario.create(usuarioSenhaDTO.login(),
                 usuarioSenhaDTO.senha());
 
-        Usuario usuario = usuarioGateway.alterarSenha(usuarioAlteracao);
-
-        return usuario;
+        return usuarioGateway.alterarSenha(usuarioAlteracao);
     }
 }
