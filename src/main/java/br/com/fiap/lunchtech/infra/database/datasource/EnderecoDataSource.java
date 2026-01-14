@@ -17,7 +17,7 @@ public class EnderecoDataSource {
         this.enderecoRepository = enderecoRepository;
     }
 
-    EnderecoEntity save(EnderecoDTO endereco){
+    public EnderecoEntity save(EnderecoDTO endereco){
         EnderecoEntity enderecoSalvar = new EnderecoEntity();
         enderecoSalvar.setLogradouro(endereco.logradouro());
         enderecoSalvar.setBairro(endereco.bairro());
@@ -31,7 +31,7 @@ public class EnderecoDataSource {
         return enderecoSalvar;
     }
 
-    EnderecoEntity updateFromUsuario(EnderecoDTO endereco, Long idUsuario){
+    public EnderecoEntity updateFromUsuario(EnderecoDTO endereco, Long idUsuario){
         EnderecoEntity enderecoSalvar = enderecoRepository.findByUsuarioId(idUsuario);
 
         enderecoSalvar.setLogradouro(endereco.logradouro());
@@ -46,7 +46,7 @@ public class EnderecoDataSource {
         return enderecoSalvar;
     }
 
-    EnderecoEntity updateFromRestaurante(EnderecoDTO endereco, Long idRestaurante){
+    public EnderecoEntity updateFromRestaurante(EnderecoDTO endereco, Long idRestaurante){
         EnderecoEntity enderecoSalvar = enderecoRepository.findByRestauranteId(idRestaurante);
 
         enderecoSalvar.setLogradouro(endereco.logradouro());
@@ -61,7 +61,7 @@ public class EnderecoDataSource {
         return enderecoSalvar;
     }
 
-    EnderecoDTO usuarioEntityToEnderecoDTO(UsuarioEntity usuario){
+    public EnderecoDTO usuarioEntityToEnderecoDTO(UsuarioEntity usuario){
         if (usuario == null || usuario.getEndereco() == null) return null;
 
         return new EnderecoDTO(usuario.getEndereco().getLogradouro(),
@@ -72,7 +72,7 @@ public class EnderecoDataSource {
                 usuario.getEndereco().getCep());
     }
 
-    EnderecoDTO entityToDtoEndereco(EnderecoEntity enderecoEntity){
+    public EnderecoDTO entityToDtoEndereco(EnderecoEntity enderecoEntity){
         return new EnderecoDTO(enderecoEntity.getLogradouro(),
                 enderecoEntity.getNumero(),
                 enderecoEntity.getBairro(),
@@ -81,7 +81,7 @@ public class EnderecoDataSource {
                 enderecoEntity.getCep());
     }
 
-    EnderecoDTO restauranteEntityToEnderecoDTO(RestauranteEntity restauranteAlterar) {
+    public EnderecoDTO restauranteEntityToEnderecoDTO(RestauranteEntity restauranteAlterar) {
         return new EnderecoDTO(restauranteAlterar.getEndereco().getLogradouro(),
                 restauranteAlterar.getEndereco().getNumero(),
                 restauranteAlterar.getEndereco().getBairro(),
@@ -90,7 +90,7 @@ public class EnderecoDataSource {
                 restauranteAlterar.getEndereco().getCep());
     }
 
-    RestauranteDTO mapToDomainRestaurante(RestauranteEntity restauranteAlterar,
+    public RestauranteDTO mapToDomainRestaurante(RestauranteEntity restauranteAlterar,
                                           EnderecoDTO enderecoDTO,
                                           UsuarioDonoRestauranteDTO donoRestauranteDTO) {
         return new RestauranteDTO(restauranteAlterar.getId(),

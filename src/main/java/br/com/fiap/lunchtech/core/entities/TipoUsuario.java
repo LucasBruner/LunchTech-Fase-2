@@ -1,9 +1,7 @@
 package br.com.fiap.lunchtech.core.entities;
 
 import br.com.fiap.lunchtech.core.exceptions.UsuarioComInformacaoInvalidaException;
-import lombok.Getter;
 
-@Getter
 public class TipoUsuario {
     private String tipoUsuario;
 
@@ -25,5 +23,9 @@ public class TipoUsuario {
     public void setTipoUsuario(String tipoUsuario) {
         validaTipoUsuario(tipoUsuario);
         this.tipoUsuario = tipoUsuario.toUpperCase();
+    }
+
+    public String getTipoUsuario() {
+        return tipoUsuario;
     }
 }

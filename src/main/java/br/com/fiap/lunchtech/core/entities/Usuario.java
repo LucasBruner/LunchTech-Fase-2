@@ -1,12 +1,10 @@
 package br.com.fiap.lunchtech.core.entities;
 
 import br.com.fiap.lunchtech.core.exceptions.UsuarioComInformacaoInvalidaException;
-import lombok.Getter;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import java.time.LocalDateTime;
 
-@Getter
 public class Usuario {
     private String nome;
     private String email;
@@ -152,5 +150,33 @@ public class Usuario {
         if (tipoUsuario == null || tipoUsuario.getTipoUsuario().trim().isEmpty()) {
             throw new UsuarioComInformacaoInvalidaException("Tipo de usuário não pode ser vazio ou nulo!");
         }
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public LocalDateTime getDataAtualizacao() {
+        return dataAtualizacao;
+    }
+
+    public TipoUsuario getTipoDeUsuario() {
+        return tipoDeUsuario;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
     }
 }

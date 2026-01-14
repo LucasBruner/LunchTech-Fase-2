@@ -38,6 +38,12 @@ public class Restaurante {
         }
     }
 
+    private static void validateTipoCozinha(String tipoCozinha) {
+        if (tipoCozinha == null || tipoCozinha.trim().isEmpty()) {
+            throw new IllegalArgumentException("Tipo de cozinha inválido");
+        }
+    }
+
     public static Restaurante create(Long id,
                                      String nomeRestaurante,
                                      String tipoCozinha,
@@ -132,12 +138,16 @@ public class Restaurante {
     }
 
     private static void validaUsuario(Usuario donoRestaurante) {
+        if (donoRestaurante == null) {
+            throw new IllegalArgumentException("Dono do restaurante não pode ser nulo");
+        }
         if ("CLIENTE".equals(donoRestaurante.getTipoDeUsuario().getTipoUsuario())) {
             throw new IllegalArgumentException("Um usuário cadastrado como cliente não pode ser atribuído como dono de restaurante");
         }
     }
 
     private void setTipoCozinha(String tipoCozinha) {
+        validateTipoCozinha(tipoCozinha);
         this.tipoCozinha = tipoCozinha;
     }
 

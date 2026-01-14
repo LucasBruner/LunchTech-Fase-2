@@ -76,7 +76,7 @@ public class TipoUsuarioDataSource implements ITipoUsuarioDataSource {
         }
     }
 
-    TipoUsuarioEntity buscarTipoUsuario(String tipo){
+    public TipoUsuarioEntity buscarTipoUsuario(String tipo){
         return tipoUsuarioRepository.findByTipoUsuario(tipo);
     }
 
