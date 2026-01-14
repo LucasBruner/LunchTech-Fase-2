@@ -15,6 +15,7 @@ import br.com.fiap.lunchtech.infra.database.repositories.IRestauranteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -108,7 +109,7 @@ public class RestauranteDataSource implements IRestauranteDataSource {
         List<RestauranteEntity> restaurantes = usuario.getRestaurantes();
 
         if (restaurantes.isEmpty()) {
-            throw new EntityNotFoundException("Restaurante não encontrado!");
+            return Collections.emptyList();
         }
         UsuarioDonoRestauranteDTO  donoRestauranteDTO = entityToDonoDtoUsuario(usuario);
 

@@ -1,9 +1,11 @@
 package br.com.fiap.lunchtech.infra.http.controller;
 
 import br.com.fiap.lunchtech.core.controllers.UsuarioController;
-import br.com.fiap.lunchtech.core.dto.restaurante.NovoRestauranteDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.NovoUsuarioDTO;
+import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDTO;
+import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
+import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,8 +23,10 @@ public class UsuarioApiController {
 
     private final UsuarioController usuarioController;
 
-    public UsuarioApiController(IUsuarioDataSource usuarioDataSource) {
-        this.usuarioController = UsuarioController.create(usuarioDataSource);
+    public UsuarioApiController(IUsuarioDataSource usuarioDataSource,
+                                IRestauranteDataSource restauranteDataSource,
+                                ITipoUsuarioDataSource tipoUsuarioDataSource) {
+        this.usuarioController = UsuarioController.create(usuarioDataSource, restauranteDataSource, tipoUsuarioDataSource);
     }
 
     @Operation(
@@ -47,6 +51,32 @@ public class UsuarioApiController {
     @PostMapping
     public ResponseEntity<Void> criarUsuario(@Valid @RequestBody NovoUsuarioDTO usuario) {
         usuarioController.cadastrar(usuario);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(
+            summary = "Exclusão de usuário",
+            description = "Exclusão de usuário. Deve-se informar o login do usuário que será excluído. Exemplo: http://localhost:8080/usuario/LOGIN",
+            responses = {
+                    @ApiResponse(description = "Ok", responseCode = "200"),
+                    @ApiResponse(description = "Not found", responseCode = "404")})
+    @DeleteMapping("/{login}")
+        public ResponseEntity<Void> deletarUsuario(@PathVariable("login") String login) {
+        usuarioController.deletarUsuario(login);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(
+            summary = "Alteração de informações do usuário",
+            description = "Alteração de informações do usuário, onde são feitas as validações das regras dos campos e atualiza as informações do usuário. " +
+                    "Deve-se informar um JSON com as informações do usuário. " +
+                    "Exemplo: http://localhost:8080/v1/usuarios",
+            responses = {
+                    @ApiResponse(description = "Ok", responseCode = "200"),
+                    @ApiResponse(description = "Not found", responseCode = "404")})
+    @PutMapping
+    public ResponseEntity<Void> updateUsuario(@Valid @RequestBody UsuarioAlteracaoDTO usuarioAlteracaoDTO) {
+        usuarioController.alterarUsuario(usuarioAlteracaoDTO);
         return ResponseEntity.ok().build();
     }
 

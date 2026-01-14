@@ -1,6 +1,7 @@
 package br.com.fiap.lunchtech.core.usecases.usuario;
 
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteracaoDTO;
+import br.com.fiap.lunchtech.core.entities.Endereco;
 import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioComEmailJaCadastradoException;
@@ -22,22 +23,28 @@ public class AlterarUsuarioUseCase {
         Usuario usuarioExistente = usuarioGateway.buscarPorLogin(usuarioAlteracaoDTO.login());
 
         if (usuarioExistente == null) {
-            throw new UsuarioNaoEncontradoException("Usuário não encontrado para a ação solicitada!");
+            throw new UsuarioNaoEncontradoException("Usuário não encontrado para a ação solicitada! O login não pode ser alterado!");
         }
 
         boolean emailJaCadastrado = usuarioGateway.buscarPorEmail(usuarioAlteracaoDTO.enderecoEmail());
 
-        if(emailJaCadastrado) {
+        if (emailJaCadastrado) {
             throw new UsuarioComEmailJaCadastradoException("Esse e-mail já está sendo utilizado por outro usuário.");
         }
+
+        Endereco endereco = Endereco.create(usuarioAlteracaoDTO.endereco().logradouro(),
+                usuarioAlteracaoDTO.endereco().numero(),
+                usuarioAlteracaoDTO.endereco().bairro(),
+                usuarioAlteracaoDTO.endereco().cidade(),
+                usuarioAlteracaoDTO.endereco().estado(),
+                usuarioAlteracaoDTO.endereco().cep());
 
         Usuario usuarioAlteracao = Usuario.create(usuarioAlteracaoDTO.nomeUsuario(),
                 usuarioAlteracaoDTO.enderecoEmail(),
                 usuarioAlteracaoDTO.login(),
-                TipoUsuario.create(usuarioAlteracaoDTO.tipoDeUsuario()));
+                TipoUsuario.create(usuarioAlteracaoDTO.tipoDeUsuario()),
+                endereco);
 
-        Usuario usuario = usuarioGateway.alterar(usuarioAlteracao);
-
-        return usuario;
+        return usuarioGateway.alterar(usuarioAlteracao);
     }
 }

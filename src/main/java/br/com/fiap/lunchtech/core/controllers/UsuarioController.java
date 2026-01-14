@@ -40,6 +40,12 @@ public class UsuarioController {
         this.tipoUsuarioDataSource = tipoUsuarioDataSource;
     }
 
+    private UsuarioController(IUsuarioDataSource dataSource,
+                              ITipoUsuarioDataSource tipoUsuarioDataSource) {
+        this.dataStorageSource = dataSource;
+        this.tipoUsuarioDataSource = tipoUsuarioDataSource;
+    }
+
     public static UsuarioController create(IUsuarioDataSource dataSource) {
         return new UsuarioController(dataSource);
     }
@@ -55,6 +61,11 @@ public class UsuarioController {
         return new UsuarioController(dataSource,
                 restauranteDataSource,
                 tipoUsuarioDataSource);
+    }
+
+    public static UsuarioController create(IUsuarioDataSource dataSource,
+                                           ITipoUsuarioDataSource tipoUsuarioDataSource) {
+        return new UsuarioController(dataSource, tipoUsuarioDataSource);
     }
 
     public UsuarioDTO cadastrar(NovoUsuarioDTO novoUsuarioDTO) {

@@ -27,7 +27,7 @@ public class TipoUsuarioApiController {
 
     @Operation(
             summary = "Busca de tipos de usuários",
-            description = "Busca tipos de usuários a partir do nome ou todos. Exemplo: http://localhost:8080/v1/tipo-usuario",
+            description = "Busca tipos de usuários a partir do nome ou todos. Exemplo: http://localhost:8080/v1/tipo-usuario/buscar",
             responses = {
                     @ApiResponse(description =  "Ok", responseCode = "200"),
                     @ApiResponse(description = "Not found", responseCode = "404")})
@@ -69,6 +69,7 @@ public class TipoUsuarioApiController {
                     "Exemplo: http://localhost:8080/v1/tipo-usuario/TIPO",
             responses = {
                     @ApiResponse(description = "Ok", responseCode = "200"),
+                    @ApiResponse(description = "Not found", responseCode = "404"),
                     @ApiResponse(description = "Bad request", responseCode = "400")})
 
     @PutMapping
