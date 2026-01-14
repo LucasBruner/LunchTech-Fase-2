@@ -16,9 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,7 +46,7 @@ class UsuarioControllerTest {
     @Test
     void deveCadastrarUsuario() {
         // Arrange
-        NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO("nome", "email@test.com", "login", "senha", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
+        NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO("nome", "email@test.com", "login", "senha", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), LocalDateTime.now());
         when(usuarioDataSource.incluirNovoUsuario(any(NovoUsuarioDTO.class))).thenReturn(new UsuarioDTO("nome", "email@test.com", "login", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000")));
         when(tipoUsuarioDataSource.buscarTipoUsuarioPorNome(anyString())).thenReturn(new TipoUsuarioDTO("TIPO"));
         // Act
@@ -85,10 +86,10 @@ class UsuarioControllerTest {
     @Test
     void deveAlterarUsuario() {
         // Arrange
-        UsuarioAlteracaoDTO usuarioAlteracaoDTO = new UsuarioAlteracaoDTO("nome", "email@test.com", "login", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
+        UsuarioAlteracaoDTO usuarioAlteracaoDTO = new UsuarioAlteracaoDTO("nome", "email@test.com", "login", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), LocalDateTime.now());
         when(usuarioDataSource.obterUsuarioPorLogin(anyString())).thenReturn(new UsuarioDTO("nome", "email@test.com", "login", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000")));
         when(usuarioDataSource.alterarUsuario(any(UsuarioAlteracaoDTO.class))).thenReturn(new UsuarioDTO("nome", "email@test.com", "login", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000")));
-        when(restauranteDataSource.buscarRestaurantePorNome("nome")).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
+        when(restauranteDataSource.buscarRestaurantePorNome("nome")).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", LocalTime.now(), LocalTime.now(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
         when(tipoUsuarioDataSource.buscarTipoUsuarioPorNome(anyString())).thenReturn(new TipoUsuarioDTO("TIPO"));
 
         // Act
@@ -116,7 +117,7 @@ class UsuarioControllerTest {
     @Test
     void deveAlterarSenhaUsuario() {
         // Arrange
-        UsuarioSenhaDTO usuarioSenhaDTO = new UsuarioSenhaDTO("login", "nova_senha");
+        UsuarioSenhaDTO usuarioSenhaDTO = new UsuarioSenhaDTO("login", "nova_senha", LocalDateTime.now());
         when(usuarioDataSource.obterUsuarioPorLogin("login")).thenReturn(new UsuarioDTO("nome", "email@test.com", "login", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000")));
         doNothing().when(usuarioDataSource).alterarSenhaUsuario(any(UsuarioSenhaDTO.class));
 
@@ -127,8 +128,8 @@ class UsuarioControllerTest {
     @Test
     void deveValidarLoginUsuario() {
         // Arrange
-        UsuarioSenhaDTO usuarioSenhaDTO = new UsuarioSenhaDTO("login", "senha");
-        when(usuarioDataSource.buscarDadosUsuarioPorLogin("login")).thenReturn(new UsuarioSenhaDTO("login", "senha"));
+        UsuarioSenhaDTO usuarioSenhaDTO = new UsuarioSenhaDTO("login", "senha", null);
+        when(usuarioDataSource.buscarDadosUsuarioPorLogin("login")).thenReturn(new UsuarioSenhaDTO("login", "senha", LocalDateTime.now()));
 
         // Act
         boolean result = usuarioController.validarLoginUsuario(usuarioSenhaDTO);

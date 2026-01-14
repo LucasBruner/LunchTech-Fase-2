@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,7 +65,7 @@ class UsuarioDataSourceTest {
     @Test
     void deveIncluirNovoUsuario() {
         // Arrange
-        NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO("nome", "email", "login", "senha", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
+        NovoUsuarioDTO novoUsuarioDTO = new NovoUsuarioDTO("nome", "email", "login", "senha", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), LocalDateTime.now());
         when(tipoUsuarioDataSource.buscarTipoUsuario(anyString())).thenReturn(new TipoUsuarioEntity());
         when(enderecoDataSource.save(any(EnderecoDTO.class))).thenReturn(new EnderecoEntity());
         when(usuarioRepository.save(any(UsuarioEntity.class))).thenAnswer(i -> i.getArgument(0));
@@ -126,7 +127,7 @@ class UsuarioDataSourceTest {
     @Test
     void deveAlterarUsuario() {
         // Arrange
-        UsuarioAlteracaoDTO usuarioAlteracaoDTO = new UsuarioAlteracaoDTO("nome", "email", "login", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"));
+        UsuarioAlteracaoDTO usuarioAlteracaoDTO = new UsuarioAlteracaoDTO("nome", "email", "login", "TIPO", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), LocalDateTime.now());
         UsuarioEntity usuarioEntity = createUsuarioEntity();
         when(usuarioRepository.findByLogin("login")).thenReturn(usuarioEntity);
         when(enderecoDataSource.updateFromUsuario(any(EnderecoDTO.class), any())).thenReturn(new EnderecoEntity());
@@ -160,7 +161,7 @@ class UsuarioDataSourceTest {
     @Test
     void deveAlterarSenhaUsuario() {
         // Arrange
-        UsuarioSenhaDTO usuarioSenhaDTO = new UsuarioSenhaDTO("login", "nova_senha");
+        UsuarioSenhaDTO usuarioSenhaDTO = new UsuarioSenhaDTO("login", "nova_senha", LocalDateTime.now());
         UsuarioEntity usuarioEntity = createUsuarioEntity();
         when(usuarioRepository.findByLogin("login")).thenReturn(usuarioEntity);
         when(usuarioRepository.save(any(UsuarioEntity.class))).thenAnswer(i -> i.getArgument(0));

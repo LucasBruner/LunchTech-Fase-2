@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Date;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,9 +40,9 @@ class RestauranteControllerTest {
     @Test
     void deveCadastrarRestaurante() {
         // Arrange
-        NovoRestauranteDTO novoRestauranteDTO = new NovoRestauranteDTO("nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome"));
+        NovoRestauranteDTO novoRestauranteDTO = new NovoRestauranteDTO("nome", "cozinha", LocalTime.now(), LocalTime.now(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome"));
         when(usuarioDataSource.obterUsuarioPorLogin(anyString())).thenReturn(new UsuarioDTO("nome", "email@test.com", "login", "DONO_RESTAURANTE", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000")));
-        when(restauranteDataSource.incluirNovoRestaurante(any(NovoRestauranteDTO.class))).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
+        when(restauranteDataSource.incluirNovoRestaurante(any(NovoRestauranteDTO.class))).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", LocalTime.now(), LocalTime.now(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
 
         // Act
         RestauranteDTO result = restauranteController.cadastrarRestaurante(novoRestauranteDTO);
@@ -55,7 +55,7 @@ class RestauranteControllerTest {
     @Test
     void deveBuscarRestaurantePorNome() {
         // Arrange
-        when(restauranteDataSource.buscarRestaurantePorNome("nome")).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
+        when(restauranteDataSource.buscarRestaurantePorNome("nome")).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", LocalTime.now(), LocalTime.now(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
         when(usuarioDataSource.obterUsuarioPorLogin(anyString())).thenReturn(new UsuarioDTO("nome", "email@test.com", "login", "DONO_RESTAURANTE", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000")));
 
         // Act
@@ -69,10 +69,10 @@ class RestauranteControllerTest {
     @Test
     void deveAlterarRestaurante() {
         // Arrange
-        RestauranteAlteracaoDTO restauranteAlteracaoDTO = new RestauranteAlteracaoDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome"));
-        when(restauranteDataSource.buscarRestaurantePorId(anyLong())).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
+        RestauranteAlteracaoDTO restauranteAlteracaoDTO = new RestauranteAlteracaoDTO(1L, "nome", "cozinha", LocalTime.now(), LocalTime.now(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome"));
+        when(restauranteDataSource.buscarRestaurantePorId(anyLong())).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", LocalTime.now(), LocalTime.now(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
         when(usuarioDataSource.obterUsuarioPorLogin(anyString())).thenReturn(new UsuarioDTO("nome", "email@test.com", "login", "DONO_RESTAURANTE", new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000")));
-        when(restauranteDataSource.alterarRestaurante(any(RestauranteAlteracaoDTO.class))).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
+        when(restauranteDataSource.alterarRestaurante(any(RestauranteAlteracaoDTO.class))).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", LocalTime.now(), LocalTime.now(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
 
         // Act
         RestauranteDTO result = restauranteController.alterarRestaurante(restauranteAlteracaoDTO);
@@ -85,7 +85,7 @@ class RestauranteControllerTest {
     @Test
     void deveDeletarRestaurante() {
         // Arrange
-        when(restauranteDataSource.buscarRestaurantePorNome("nome")).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
+        when(restauranteDataSource.buscarRestaurantePorNome("nome")).thenReturn(new RestauranteDTO(1L, "nome", "cozinha", LocalTime.now(), LocalTime.now(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome")));
         when(usuarioDataSource.obterUsuarioPorLogin(anyString())).thenReturn(new UsuarioDTO("nome",
                 "email@test.com",
                 "login",

@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,16 +42,8 @@ class CadastrarRestauranteUseCaseTest {
     @Test
     void deveLancarExcecaoQuandoRestauranteJaExiste() {
         // Arrange
-        Date horarioFuncionamentoInicio = null;
-        Date horarioFuncionamentoFim = null;
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            horarioFuncionamentoInicio = sdf.parse("10:00");
-            horarioFuncionamentoFim = sdf.parse("22:00");
-        } catch (ParseException e){
-            e.printStackTrace();
-        }
-
+        LocalTime horarioFuncionamentoInicio = LocalTime.parse("11:30:00");
+        LocalTime horarioFuncionamentoFim = LocalTime.parse("22:00:00");
         NovoRestauranteDTO novoRestauranteDTO = new NovoRestauranteDTO("restaurante",
                 "cozinha",
                 horarioFuncionamentoInicio,
@@ -71,15 +64,8 @@ class CadastrarRestauranteUseCaseTest {
     @Test
     void deveCadastrarRestauranteComSucesso() {
         // Arrange
-        Date horarioFuncionamentoInicio = null;
-        Date horarioFuncionamentoFim = null;
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            horarioFuncionamentoInicio = sdf.parse("10:00");
-            horarioFuncionamentoFim = sdf.parse("22:00");
-        } catch (ParseException e){
-            e.printStackTrace();
-        }
+        LocalTime horarioFuncionamentoInicio = LocalTime.parse("11:30:00");
+        LocalTime horarioFuncionamentoFim = LocalTime.parse("22:00:00");
         NovoRestauranteDTO novoRestauranteDTO = new NovoRestauranteDTO("restaurante",
                 "cozinha",
                 horarioFuncionamentoInicio,

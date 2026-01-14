@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -29,7 +31,7 @@ class ValidarLoginUseCaseTest {
     @Test
     void deveRetornarTrueQuandoLoginValido() {
         // Arrange
-        UsuarioSenhaDTO usuarioSenhaDTO = new UsuarioSenhaDTO("login", "senha");
+        UsuarioSenhaDTO usuarioSenhaDTO = new UsuarioSenhaDTO("login", "senha", null);
         Usuario usuario = mock(Usuario.class);
         when(usuario.getLogin()).thenReturn("login");
         when(usuario.getSenha()).thenReturn("senha");
@@ -45,7 +47,7 @@ class ValidarLoginUseCaseTest {
     @Test
     void deveLancarExcecaoQuandoUsuarioNaoEncontrado() {
         // Arrange
-        UsuarioSenhaDTO usuarioSenhaDTO = new UsuarioSenhaDTO("login_invalido", "senha");
+        UsuarioSenhaDTO usuarioSenhaDTO = new UsuarioSenhaDTO("login_invalido", "senha", null);
         when(usuarioGateway.buscarDadosLogin("login_invalido")).thenReturn(null);
 
         // Act & Assert
@@ -55,7 +57,7 @@ class ValidarLoginUseCaseTest {
     @Test
     void deveLancarExcecaoQuandoSenhaIncorreta() {
         // Arrange
-        UsuarioSenhaDTO usuarioSenhaDTO = new UsuarioSenhaDTO("login", "senha_incorreta");
+        UsuarioSenhaDTO usuarioSenhaDTO = new UsuarioSenhaDTO("login", "senha_incorreta", null);
         Usuario usuario = mock(Usuario.class);
         when(usuario.getLogin()).thenReturn("login");
         when(usuario.getSenha()).thenReturn("senha_correta");

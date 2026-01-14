@@ -14,10 +14,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Date;
+import java.time.LocalTime;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -83,7 +84,7 @@ class RestauranteDataSourceTest {
     @Test
     void deveAlterarRestaurante() {
         // Arrange
-        RestauranteAlteracaoDTO restauranteAlteracaoDTO = new RestauranteAlteracaoDTO(1L, "nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome"));
+        RestauranteAlteracaoDTO restauranteAlteracaoDTO = new RestauranteAlteracaoDTO(1L, "nome", "cozinha", LocalTime.now(), LocalTime.now(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome"));
         when(usuarioDataSource.findByLogin(anyString())).thenReturn(new UsuarioEntity());
         when(enderecoDataSource.updateFromRestaurante(any(), anyLong())).thenReturn(createEnderecoEntity());
         when(restauranteRepository.save(any(RestauranteEntity.class))).thenAnswer(i -> i.getArgument(0));
@@ -104,7 +105,7 @@ class RestauranteDataSourceTest {
     @Test
     void deveIncluirNovoRestaurante() {
         // Arrange
-        NovoRestauranteDTO novoRestauranteDTO = new NovoRestauranteDTO("nome", "cozinha", new Date(), new Date(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome"));
+        NovoRestauranteDTO novoRestauranteDTO = new NovoRestauranteDTO("nome", "cozinha", LocalTime.now(), LocalTime.now(), new EnderecoDTO("logradouro", 1, "bairro", "cidade", "estado", "01001000"), new UsuarioDonoRestauranteDTO("login", "nome"));
         when(usuarioDataSource.findByLogin(anyString())).thenReturn(new UsuarioEntity());
         when(enderecoDataSource.save(any(EnderecoDTO.class))).thenReturn(createEnderecoEntity());
         when(restauranteRepository.save(any(RestauranteEntity.class))).thenAnswer(i -> i.getArgument(0));

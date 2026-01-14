@@ -2,7 +2,7 @@ package br.com.fiap.lunchtech.core.entities;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,8 +13,8 @@ class RestauranteTest {
         Endereco endereco = Endereco.create("Rua Teste", 123, "Bairro Teste", "Cidade Teste", "Estado Teste", "12345678");
         TipoUsuario tipoUsuario = TipoUsuario.create("DONO_RESTAURANTE");
         Usuario dono = Usuario.create("Dono", "dono@restaurante.com", "dono_login", "senha", tipoUsuario, endereco);
-        Date inicio = new Date();
-        Date fim = new Date();
+        LocalTime inicio = LocalTime.now();
+        LocalTime fim = LocalTime.now();
 
         Restaurante restaurante = Restaurante.create("Restaurante Teste", "Cozinha Teste", inicio, fim, endereco, dono);
 
@@ -27,9 +27,9 @@ class RestauranteTest {
     @Test
     void deveLancarExcecaoParaNomeInvalido() {
         Endereco endereco = Endereco.create("Rua", 1, "Bairro", "Cidade", "Estado", "12345678");
-        TipoUsuario tipoUsuario = TipoUsuario.create("DONO_RESTAURANTE");
+        TipoUsuario tipoUsuario = TipoUsuario.create("DONO_RESTAURANT");
         Usuario dono = Usuario.create("Dono", "dono@restaurante.com", "dono_login", "senha", tipoUsuario, endereco);
-        assertThrows(IllegalArgumentException.class, () -> Restaurante.create(null, "Cozinha", new Date(), new Date(), endereco, dono));
+        assertThrows(IllegalArgumentException.class, () -> Restaurante.create(null, "Cozinha", LocalTime.now(), LocalTime.now(), endereco, dono));
     }
 
     @Test
@@ -37,13 +37,13 @@ class RestauranteTest {
         Endereco endereco = Endereco.create("Rua", 1, "Bairro", "Cidade", "Estado", "12345678");
         TipoUsuario tipoUsuario = TipoUsuario.create("DONO_RESTAURANTE");
         Usuario dono = Usuario.create("Dono", "dono@restaurante.com", "dono_login", "senha", tipoUsuario, endereco);
-        assertThrows(IllegalArgumentException.class, () -> Restaurante.create("Restaurante", null, new Date(), new Date(), endereco, dono));
+        assertThrows(IllegalArgumentException.class, () -> Restaurante.create("Restaurante", null, LocalTime.now(), LocalTime.now(), endereco, dono));
     }
 
     @Test
     void deveLancarExcecaoParaDonoInvalido() {
         Endereco endereco = Endereco.create("Rua", 1, "Bairro", "Cidade", "Estado", "12345678");
-        assertThrows(IllegalArgumentException.class, () -> Restaurante.create("Restaurante", "Cozinha", new Date(), new Date(), endereco, null));
+        assertThrows(IllegalArgumentException.class, () -> Restaurante.create("Restaurante", "Cozinha", LocalTime.now(), LocalTime.now(), endereco, null));
     }
 
     @Test
@@ -51,6 +51,6 @@ class RestauranteTest {
         Endereco endereco = Endereco.create("Rua", 1, "Bairro", "Cidade", "Estado", "12345678");
         TipoUsuario tipoUsuario = TipoUsuario.create("CLIENTE");
         Usuario cliente = Usuario.create("Cliente", "cliente@email.com", "cliente_login", "senha", tipoUsuario, endereco);
-        assertThrows(IllegalArgumentException.class, () -> Restaurante.create("Restaurante", "Cozinha", new Date(), new Date(), endereco, cliente));
+        assertThrows(IllegalArgumentException.class, () -> Restaurante.create("Restaurante", "Cozinha", LocalTime.now(), LocalTime.now(), endereco, cliente));
     }
 }

@@ -5,9 +5,12 @@ import br.com.fiap.lunchtech.core.dto.cardapio.CardapioAlteradoDTO;
 import br.com.fiap.lunchtech.core.dto.cardapio.CardapioBuscarDTO;
 import br.com.fiap.lunchtech.core.dto.cardapio.CardapioDTO;
 import br.com.fiap.lunchtech.core.dto.cardapio.NovoCardapioDTO;
+import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteCardapioDTO;
 import br.com.fiap.lunchtech.core.interfaces.ICardapioDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
+import br.com.fiap.lunchtech.infra.http.controller.json.CardapioItemJson;
+import br.com.fiap.lunchtech.infra.http.controller.json.CardapioJson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,8 +46,8 @@ public class CardapioApiController {
                     "Exemplo: http://localhost:8080/v1/cardapio/nome",
             responses = {@ApiResponse(description =  "Ok", responseCode = "200")})
     @GetMapping
-    public ResponseEntity<CardapioDTO> buscarPorNome(@Valid @RequestBody CardapioBuscarDTO cardapioDTO) {
-        CardapioDTO cardapio = cardapioController.buscarProduto(cardapioDTO);
+    public ResponseEntity<CardapioDTO> buscarPorNome(@Valid @RequestBody CardapioItemJson cardapioItemJson) {
+        CardapioDTO cardapio = cardapioController.buscarProduto(mapToCardapioBuscarDTO(cardapioItemJson));
         return ResponseEntity.ok(cardapio);
     }
 
@@ -58,8 +61,8 @@ public class CardapioApiController {
                     @ApiResponse(description = "Conflict", responseCode = "409"),
                     @ApiResponse(description = "Not found", responseCode = "404")})
     @PostMapping
-    public ResponseEntity<Void> criarItemCardapio(@Valid @RequestBody NovoCardapioDTO cardapio) {
-        cardapioController.cadastrarProdutoCardapio(cardapio);
+    public ResponseEntity<Void> criarItemCardapio(@Valid @RequestBody CardapioJson cardapio) {
+        cardapioController.cadastrarProdutoCardapio(mapToNovoCardapioDTO(cardapio));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -72,8 +75,8 @@ public class CardapioApiController {
                     @ApiResponse(description = "Conflict", responseCode = "409"),
                     @ApiResponse(description = "Not found", responseCode = "404")})
     @PutMapping
-    public ResponseEntity<Void> alterarRestaurante(@Valid @RequestBody CardapioAlteradoDTO alteracaoCardapio) {
-        cardapioController.alterarProdutoCardapio(alteracaoCardapio);
+    public ResponseEntity<Void> alterarRestaurante(@Valid @RequestBody CardapioJson alteracaoCardapio) {
+        cardapioController.alterarProdutoCardapio(mapToCardapioAlteradoDTO(alteracaoCardapio));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -98,5 +101,30 @@ public class CardapioApiController {
     public ResponseEntity<List<CardapioDTO>> buscarCardapioRestaurante(@PathVariable String nome) {
         List<CardapioDTO> cardapio = cardapioController.buscarListaDoCardapio(nome);
         return ResponseEntity.ok(cardapio);
+    }
+
+    private CardapioBuscarDTO mapToCardapioBuscarDTO(CardapioItemJson cardapio) {
+        return new CardapioBuscarDTO(cardapio.getNomeProduto(), cardapio.getNomeRestaurante());
+    }
+
+    private NovoCardapioDTO mapToNovoCardapioDTO(CardapioJson cardapioJson) {
+        return new NovoCardapioDTO(
+                cardapioJson.getNomeProduto(),
+                cardapioJson.getDescricao(),
+                cardapioJson.getPreco(),
+                cardapioJson.isApenasPresencial(),
+                cardapioJson.getFotoPrato(),
+                new RestauranteCardapioDTO(null, cardapioJson.getRestauranteId()));
+    }
+
+    private CardapioAlteradoDTO mapToCardapioAlteradoDTO(CardapioJson cardapioJson) {
+        return new CardapioAlteradoDTO(
+                cardapioJson.getId(),
+                cardapioJson.getNomeProduto(),
+                cardapioJson.getDescricao(),
+                cardapioJson.getPreco(),
+                cardapioJson.isApenasPresencial(),
+                cardapioJson.getFotoPrato(),
+                new RestauranteCardapioDTO(null, cardapioJson.getRestauranteId()));
     }
 }

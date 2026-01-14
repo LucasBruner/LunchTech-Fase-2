@@ -12,26 +12,6 @@ public class Restaurante {
     private Cardapio cardapio;
     private Usuario donoRestaurante;
 
-    public static Restaurante create(String nome,
-                                     String tipoCozinha,
-                                     LocalTime horarioFuncionamentoInicio,
-                                     LocalTime horarioFuncionamentoFim,
-                                     Endereco endereco,
-                                     Cardapio cardapio,
-                                     Usuario donoRestaurante) {
-        Restaurante restaurante = new Restaurante();
-
-        restaurante.setNome(nome);
-        restaurante.setTipoCozinha(tipoCozinha);
-        restaurante.setHorarioFuncionamentoInicio(horarioFuncionamentoInicio);
-        restaurante.setHorarioFuncionamentoFim(horarioFuncionamentoFim);
-        restaurante.setEndereco(endereco);
-        restaurante.setCardapio(cardapio);
-        restaurante.setDonoRestaurante(donoRestaurante);
-
-        return restaurante;
-    }
-
     private static void validateNome(String nome) {
         if (nome == null || nome.trim().isEmpty()) {
             throw new IllegalArgumentException("Nome inválido");

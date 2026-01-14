@@ -9,8 +9,11 @@ import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteCardapioDTO;
 import br.com.fiap.lunchtech.core.interfaces.ICardapioDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
+import br.com.fiap.lunchtech.infra.http.controller.json.CardapioItemJson;
+import br.com.fiap.lunchtech.infra.http.controller.json.CardapioJson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +23,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class CardapioApiControllerTest {
@@ -50,12 +55,15 @@ class CardapioApiControllerTest {
 
     @Test
     void buscarPorNome() {
-        CardapioBuscarDTO cardapioBuscarDTO = new CardapioBuscarDTO("Pizza", "Restaurante");
+        CardapioItemJson cardapioItemJson = new CardapioItemJson();
+        setField(cardapioItemJson, "nomeProduto", "Pizza");
+        setField(cardapioItemJson, "nomeRestaurante", "Restaurante");
+
         RestauranteCardapioDTO restauranteCardapioDTO = new RestauranteCardapioDTO("Restaurante", 1L);
         CardapioDTO cardapioDTO = new CardapioDTO(1L, "Pizza", "Calabresa", 30.0, false, "foto.jpg", restauranteCardapioDTO);
-        when(cardapioController.buscarProduto(cardapioBuscarDTO)).thenReturn(cardapioDTO);
+        when(cardapioController.buscarProduto(any(CardapioBuscarDTO.class))).thenReturn(cardapioDTO);
 
-        ResponseEntity<CardapioDTO> response = cardapioApiController.buscarPorNome(cardapioBuscarDTO);
+        ResponseEntity<CardapioDTO> response = cardapioApiController.buscarPorNome(cardapioItemJson);
 
         assertEquals(200, response.getStatusCode().value());
         assertEquals("Pizza", response.getBody().nomeProduto());
@@ -63,26 +71,49 @@ class CardapioApiControllerTest {
 
     @Test
     void criarItemCardapio() {
-        RestauranteCardapioDTO restauranteCardapioDTO = new RestauranteCardapioDTO("Restaurante", 1L);
-        NovoCardapioDTO novoCardapioDTO = new NovoCardapioDTO("Pizza", "Calabresa", 30.0, false, "foto.jpg", restauranteCardapioDTO);
-        CardapioDTO cardapioDTO = new CardapioDTO(1L, "Pizza", "Calabresa", 30.0, false, "foto.jpg", restauranteCardapioDTO);
-        when(cardapioController.cadastrarProdutoCardapio(novoCardapioDTO)).thenReturn(cardapioDTO);
+        CardapioJson cardapioJson = new CardapioJson();
+        setField(cardapioJson, "nomeProduto", "Pizza");
+        setField(cardapioJson, "descricao", "Calabresa");
+        setField(cardapioJson, "preco", 30.0);
+        setField(cardapioJson, "apenasPresencial", false);
+        setField(cardapioJson, "fotoPrato", "foto.jpg");
+        setField(cardapioJson, "restauranteId", 1L);
 
-        ResponseEntity<Void> response = cardapioApiController.criarItemCardapio(novoCardapioDTO);
+        RestauranteCardapioDTO restauranteCardapioDTO = new RestauranteCardapioDTO("Restaurante", 1L);
+        CardapioDTO cardapioDTO = new CardapioDTO(1L, "Pizza", "Calabresa", 30.0, false, "foto.jpg", restauranteCardapioDTO);
+        when(cardapioController.cadastrarProdutoCardapio(any(NovoCardapioDTO.class))).thenReturn(cardapioDTO);
+
+        ResponseEntity<Void> response = cardapioApiController.criarItemCardapio(cardapioJson);
 
         assertEquals(201, response.getStatusCode().value());
+        
+        ArgumentCaptor<NovoCardapioDTO> captor = ArgumentCaptor.forClass(NovoCardapioDTO.class);
+        verify(cardapioController).cadastrarProdutoCardapio(captor.capture());
+        assertEquals("Pizza", captor.getValue().nomeProduto());
     }
 
     @Test
     void alterarRestaurante() {
-        RestauranteCardapioDTO restauranteCardapioDTO = new RestauranteCardapioDTO("Restaurante", 1L);
-        CardapioAlteradoDTO cardapioAlteradoDTO = new CardapioAlteradoDTO(1L, "Pizza", "Calabresa", 35.0, false, "foto.jpg", restauranteCardapioDTO);
-        CardapioDTO cardapioDTO = new CardapioDTO(1L, "Pizza", "Calabresa", 35.0, false, "foto.jpg", restauranteCardapioDTO);
-        when(cardapioController.alterarProdutoCardapio(cardapioAlteradoDTO)).thenReturn(cardapioDTO);
+        CardapioJson cardapioJson = new CardapioJson();
+        setField(cardapioJson, "id", 1L);
+        setField(cardapioJson, "nomeProduto", "Pizza");
+        setField(cardapioJson, "descricao", "Calabresa");
+        setField(cardapioJson, "preco", 35.0);
+        setField(cardapioJson, "apenasPresencial", false);
+        setField(cardapioJson, "fotoPrato", "foto.jpg");
+        setField(cardapioJson, "restauranteId", 1L);
 
-        ResponseEntity<Void> response = cardapioApiController.alterarRestaurante(cardapioAlteradoDTO);
+        RestauranteCardapioDTO restauranteCardapioDTO = new RestauranteCardapioDTO("Restaurante", 1L);
+        CardapioDTO cardapioDTO = new CardapioDTO(1L, "Pizza", "Calabresa", 35.0, false, "foto.jpg", restauranteCardapioDTO);
+        when(cardapioController.alterarProdutoCardapio(any(CardapioAlteradoDTO.class))).thenReturn(cardapioDTO);
+
+        ResponseEntity<Void> response = cardapioApiController.alterarRestaurante(cardapioJson);
 
         assertEquals(200, response.getStatusCode().value());
+        
+        ArgumentCaptor<CardapioAlteradoDTO> captor = ArgumentCaptor.forClass(CardapioAlteradoDTO.class);
+        verify(cardapioController).alterarProdutoCardapio(captor.capture());
+        assertEquals("Pizza", captor.getValue().nomeProduto());
     }
 
     @Test
@@ -104,5 +135,15 @@ class CardapioApiControllerTest {
 
         assertEquals(200, response.getStatusCode().value());
         assertEquals(1, response.getBody().size());
+    }
+
+    private void setField(Object target, String fieldName, Object value) {
+        try {
+            Field field = target.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(target, value);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

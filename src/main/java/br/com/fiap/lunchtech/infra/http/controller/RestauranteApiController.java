@@ -1,12 +1,15 @@
 package br.com.fiap.lunchtech.infra.http.controller;
 
 import br.com.fiap.lunchtech.core.controllers.RestauranteController;
+import br.com.fiap.lunchtech.core.dto.endereco.EnderecoDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.NovoRestauranteDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteDTO;
+import br.com.fiap.lunchtech.core.dto.usuario.UsuarioDonoRestauranteDTO;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
 import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
+import br.com.fiap.lunchtech.infra.http.controller.json.RestauranteJson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -54,8 +57,8 @@ public class RestauranteApiController {
                     @ApiResponse(description = "Conflict", responseCode = "409"),
                     @ApiResponse(description = "Not found", responseCode = "404")})
     @PostMapping
-    public ResponseEntity<Void> criarRestaurante(@Valid @RequestBody NovoRestauranteDTO restaurante) {
-        restauranteController.cadastrarRestaurante(restaurante);
+    public ResponseEntity<Void> criarRestaurante(@Valid @RequestBody RestauranteJson restaurante) {
+        restauranteController.cadastrarRestaurante(mapToNovoRestauranteDTO(restaurante));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -68,8 +71,8 @@ public class RestauranteApiController {
                     @ApiResponse(description = "Conflict", responseCode = "409"),
                     @ApiResponse(description = "Not found", responseCode = "404")})
     @PutMapping
-    public ResponseEntity<Void> alterarRestaurante(@Valid @RequestBody RestauranteAlteracaoDTO restaurante) {
-        restauranteController.alterarRestaurante(restaurante);
+    public ResponseEntity<Void> alterarRestaurante(@Valid @RequestBody RestauranteJson restauranteJson) {
+        restauranteController.alterarRestaurante(mapToRestauranteAlteracaoDTO(restauranteJson));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -81,5 +84,48 @@ public class RestauranteApiController {
     public ResponseEntity<Void> deletarRestaurante(@PathVariable String nome) {
         restauranteController.deletarRestaurante(nome);
         return ResponseEntity.ok().build();
+    }
+
+    private NovoRestauranteDTO mapToNovoRestauranteDTO(RestauranteJson restaurante) {
+        return new NovoRestauranteDTO(
+                restaurante.getNomeRestaurante(),
+                restaurante.getTipoCozinha(),
+                restaurante.getHorarioFuncionamentoInicio(),
+                restaurante.getHorarioFuncionamentoFim(),
+                new EnderecoDTO(
+                        restaurante.getEndereco().getLogradouro(),
+                        restaurante.getEndereco().getNumero(),
+                        restaurante.getEndereco().getBairro(),
+                        restaurante.getEndereco().getCidade(),
+                        restaurante.getEndereco().getEstado(),
+                        restaurante.getEndereco().getCep()
+                        ),
+                new UsuarioDonoRestauranteDTO(
+                        restaurante.getLogin(),
+                        null
+                )
+        );
+    }
+
+    private RestauranteAlteracaoDTO mapToRestauranteAlteracaoDTO(RestauranteJson restaurante) {
+        return new RestauranteAlteracaoDTO(
+                restaurante.getIdRestaurante(),
+                restaurante.getNomeRestaurante(),
+                restaurante.getTipoCozinha(),
+                restaurante.getHorarioFuncionamentoInicio(),
+                restaurante.getHorarioFuncionamentoFim(),
+                new EnderecoDTO(
+                        restaurante.getEndereco().getLogradouro(),
+                        restaurante.getEndereco().getNumero(),
+                        restaurante.getEndereco().getBairro(),
+                        restaurante.getEndereco().getCidade(),
+                        restaurante.getEndereco().getEstado(),
+                        restaurante.getEndereco().getCep()
+                ),
+                new UsuarioDonoRestauranteDTO(
+                        restaurante.getLogin(),
+                        null
+                )
+        );
     }
 }

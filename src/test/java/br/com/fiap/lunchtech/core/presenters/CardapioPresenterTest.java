@@ -8,9 +8,10 @@ import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
+import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class CardapioPresenterTest {
 
@@ -19,7 +20,7 @@ class CardapioPresenterTest {
         Endereco endereco = Endereco.create("Rua", 1, "Bairro", "Cidade", "Estado", "12345678");
         TipoUsuario tipoUsuario = TipoUsuario.create("DONO_RESTAURANTE");
         Usuario dono = Usuario.create("Dono", "dono@email.com", "dono_login", "senha", tipoUsuario, endereco);
-        Restaurante restaurante = Restaurante.create("Restaurante", "Cozinha", new Date(), new Date(), endereco, dono);
+        Restaurante restaurante = Restaurante.create("Restaurante", "Cozinha", LocalTime.now(), LocalTime.now(), endereco, dono);
         Cardapio cardapio = Cardapio.create("Produto", "Desc", 10.0, false, "foto.jpg", restaurante);
 
         CardapioDTO dto = CardapioPresenter.toDto(cardapio);
