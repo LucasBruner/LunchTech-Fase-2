@@ -6,8 +6,6 @@ public class TipoUsuario {
     private String tipoUsuario;
 
     public static TipoUsuario create(String tipoUsuario) {
-        validaTipoUsuario(tipoUsuario);
-
         TipoUsuario tipoDeUsuario = new TipoUsuario();
         tipoDeUsuario.setTipoUsuario(tipoUsuario);
 
@@ -22,7 +20,7 @@ public class TipoUsuario {
 
     public void setTipoUsuario(String tipoUsuario) {
         validaTipoUsuario(tipoUsuario);
-        this.tipoUsuario = tipoUsuario.toUpperCase();
+        this.tipoUsuario = tipoUsuario;
     }
 
     public String getTipoUsuario() {
