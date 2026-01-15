@@ -108,7 +108,7 @@ public class RestauranteDataSource implements IRestauranteDataSource {
         UsuarioEntity usuario = buscarUsuarioPorLogin(login);
         List<RestauranteEntity> restaurantes = usuario.getRestaurantes();
 
-        if (restaurantes.isEmpty()) {
+        if (restaurantes == null || restaurantes.isEmpty()) {
             return Collections.emptyList();
         }
         UsuarioDonoRestauranteDTO  donoRestauranteDTO = entityToDonoDtoUsuario(usuario);
