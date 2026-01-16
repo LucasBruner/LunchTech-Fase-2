@@ -2,6 +2,7 @@ package br.com.fiap.lunchtech.core.usecases.usuario;
 
 import br.com.fiap.lunchtech.core.dto.endereco.EnderecoDTO;
 import br.com.fiap.lunchtech.core.dto.usuario.UsuarioAlteracaoDTO;
+import br.com.fiap.lunchtech.core.entities.TipoUsuario;
 import br.com.fiap.lunchtech.core.entities.Usuario;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioComEmailJaCadastradoException;
 import br.com.fiap.lunchtech.core.exceptions.UsuarioNaoEncontradoException;
@@ -60,10 +61,17 @@ class AlterarUsuarioUseCaseTest {
                         1, "bairro",
                         "cidade",
                         "estado",
-                        "cep"),
+                        "12344555"),
                 LocalDateTime.now());
-        when(usuarioGateway.buscarPorLogin("login")).thenReturn(mock(Usuario.class));
-        when(usuarioGateway.buscarPorEmail("email@teste.com")).thenReturn(true);
+
+        Usuario usuario = Usuario.create(
+                "nome",
+                "email@teste.com",
+                "login",
+                TipoUsuario.create("tipo"));
+
+        when(usuarioGateway.buscarPorLogin("login")).thenReturn(usuario);
+        when(usuarioGateway.buscarSeEmailExistente("email@teste.com", "login")).thenReturn(true);
 
         // Act & Assert
         assertThrows(UsuarioComEmailJaCadastradoException.class, () -> alterarUsuarioUseCase.run(usuarioAlteracaoDTO));
@@ -83,7 +91,7 @@ class AlterarUsuarioUseCaseTest {
                         "12344555"),
                 LocalDateTime.now());
         when(usuarioGateway.buscarPorLogin("login")).thenReturn(mock(Usuario.class));
-        when(usuarioGateway.buscarPorEmail("novo_email@teste.com")).thenReturn(false);
+        when(usuarioGateway.buscarSeEmailExistente("novo_email@teste.com", "login")).thenReturn(false);
         when(usuarioGateway.alterar(any(Usuario.class))).thenAnswer(i -> i.getArgument(0));
 
         // Act

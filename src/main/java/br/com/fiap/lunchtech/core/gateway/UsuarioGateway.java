@@ -122,6 +122,12 @@ public class UsuarioGateway implements IUsuarioGateway {
     }
 
     @Override
+    public boolean buscarSeEmailExistente(String emailAlteracao, String login) {
+        UsuarioDTO usuarioDTO = this.dataSource.buscarUsuarioPorEmail(emailAlteracao);
+        return usuarioDTO != null && !usuarioDTO.login().equals(login);
+    }
+
+    @Override
     public Usuario alterar(Usuario usuarioAlteracao) {
 
         final UsuarioAlteracaoDTO usuarioAlteracaoDTO = mapearUsuarioAlteracaoDTO(usuarioAlteracao);
