@@ -18,19 +18,18 @@ public class CadastrarTipoUsuarioUseCase {
     }
 
     public TipoUsuario run(TipoUsuarioDTO tipoUsuarioCriado) {
+        TipoUsuario tipoUsuarioExistente;
         try {
-            TipoUsuario tipoUsuarioExistente = tipoUsuarioGateway.buscarTipoUsuarioPorNome(tipoUsuarioCriado.tipoUsuario());
-
-            if(tipoUsuarioExistente != null) {
-                throw new TipoUsuarioJaExisteException("O tipo de usuário solicitado para adicionar já existe!.");
-            }
-
+            tipoUsuarioExistente = tipoUsuarioGateway.buscarTipoUsuarioPorNome(tipoUsuarioCriado.tipoUsuario());
         } catch (TipoUsuarioNaoExisteException e) {
-            TipoUsuario alterarTipoUsuario = TipoUsuario.create(tipoUsuarioCriado.tipoUsuario().toUpperCase());
-
-            return tipoUsuarioGateway.incluir(alterarTipoUsuario);
+            tipoUsuarioExistente = null;
         }
 
-        return null;
+        if(tipoUsuarioExistente != null) {
+            throw new TipoUsuarioJaExisteException("O tipo de usuário solicitado para adicionar já existe!.");
+        }
+        TipoUsuario alterarTipoUsuario = TipoUsuario.create(tipoUsuarioCriado.tipoUsuario().toUpperCase());
+
+        return tipoUsuarioGateway.incluir(alterarTipoUsuario);
     }
 }

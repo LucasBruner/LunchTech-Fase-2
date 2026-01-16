@@ -34,7 +34,7 @@ class RestauranteControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        restauranteController = RestauranteController.create(restauranteDataSource, usuarioDataSource, tipoUsuarioDataSource);
+        restauranteController = RestauranteController.create(restauranteDataSource, usuarioDataSource);
     }
 
     @Test
