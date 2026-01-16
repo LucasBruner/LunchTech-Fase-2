@@ -23,7 +23,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/restaurantes")
@@ -33,15 +36,15 @@ public class RestauranteApiController {
     private final RestauranteController restauranteController;
 
     public RestauranteApiController(IRestauranteDataSource restauranteDataSource,
-                                    IUsuarioDataSource usuarioDataSource,
-                                    ITipoUsuarioDataSource tipoUsuarioDataSource) {
-        this.restauranteController = RestauranteController.create(restauranteDataSource, usuarioDataSource, tipoUsuarioDataSource);
+                                    IUsuarioDataSource usuarioDataSource) {
+        this.restauranteController = RestauranteController.create(restauranteDataSource, usuarioDataSource);
     }
 
     @Operation(
             summary = "Busca de restaurante",
             description = "Busca o restaurante a partir do nome. Retorna o restaurante pesquisado. Exemplo: http://localhost:8080/v1/restaurantes/nome",
-            responses = {@ApiResponse(description =  "Ok", responseCode = "200")})
+            responses = {@ApiResponse(description =  "Ok", responseCode = "200"),
+                    @ApiResponse(description = "Not found", responseCode = "404")})
     @GetMapping("/{nome}")
     public ResponseEntity<RestauranteDTO> buscarPorNome(@PathVariable String nome) {
         RestauranteDTO restaurante = restauranteController.buscarRestaurantePorNome(nome);
@@ -84,6 +87,19 @@ public class RestauranteApiController {
     public ResponseEntity<Void> deletarRestaurante(@PathVariable String nome) {
         restauranteController.deletarRestaurante(nome);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(
+            summary = "Busca todos os restaurantes",
+            description = "Busca todos os restaurantes de acordo com a páginação e tamanho da lista. O padrão é page 0 e size 10." +
+                    " Exemplo: http://localhost:8080/v1/restaurantes/lista?page=0&size=10",
+            responses = { @ApiResponse(description = "Ok", responseCode = "200"), @ApiResponse(description = "Not found", responseCode = "404")}
+    )
+    @GetMapping("/lista")
+    public ResponseEntity<List<RestauranteDTO>> buscarListaRestaurantes(@RequestParam(value = "page", required = false) Integer page,
+                                                                        @RequestParam(value = "size", required = false) Integer size) {
+        List<RestauranteDTO> restaurantes = restauranteController.buscarListaRestaurantes(page, size);
+        return ResponseEntity.ok(restaurantes);
     }
 
     private NovoRestauranteDTO mapToNovoRestauranteDTO(RestauranteJson restaurante) {

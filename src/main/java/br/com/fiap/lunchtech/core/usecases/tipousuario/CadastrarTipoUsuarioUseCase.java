@@ -26,7 +26,7 @@ public class CadastrarTipoUsuarioUseCase {
             }
 
         } catch (TipoUsuarioNaoExisteException e) {
-            TipoUsuario alterarTipoUsuario = TipoUsuario.create(tipoUsuarioCriado.tipoUsuario());
+            TipoUsuario alterarTipoUsuario = TipoUsuario.create(tipoUsuarioCriado.tipoUsuario().toUpperCase());
 
             return tipoUsuarioGateway.incluir(alterarTipoUsuario);
         }

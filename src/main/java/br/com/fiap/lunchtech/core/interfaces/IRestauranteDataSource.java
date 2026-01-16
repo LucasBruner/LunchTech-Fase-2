@@ -3,6 +3,8 @@ package br.com.fiap.lunchtech.core.interfaces;
 import br.com.fiap.lunchtech.core.dto.restaurante.NovoRestauranteDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteAlteracaoDTO;
 import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -18,4 +20,6 @@ public interface IRestauranteDataSource {
     List<RestauranteDTO> buscarRestaurantesPorLogin(String login);
 
     RestauranteDTO buscarRestaurantePorId(Long id);
+
+    Page<RestauranteDTO> buscarRestaurantes(Pageable pageable);
 }

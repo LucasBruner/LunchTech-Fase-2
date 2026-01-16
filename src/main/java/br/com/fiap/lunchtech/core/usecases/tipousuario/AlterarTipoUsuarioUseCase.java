@@ -35,7 +35,7 @@ public class AlterarTipoUsuarioUseCase {
             throw new TipoDeUsuarioExisteException("Tipo de usuário já está cadastrado.");
         }
 
-        TipoUsuario alterarTipoUsuario = TipoUsuario.create(tipoUsuarioAlteradoDTO.novoTipoUsuario());
+        TipoUsuario alterarTipoUsuario = TipoUsuario.create(tipoUsuarioAlteradoDTO.novoTipoUsuario().toUpperCase());
 
         return tipoUsuarioGateway.alterar(alterarTipoUsuario, tipoUsuarioAlteradoDTO.tipoUsuario());
     }

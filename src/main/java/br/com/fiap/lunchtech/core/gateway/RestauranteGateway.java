@@ -12,6 +12,9 @@ import br.com.fiap.lunchtech.core.exceptions.RestauranteNaoEncontradoException;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteGateway;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioGateway;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -103,7 +106,7 @@ public class RestauranteGateway implements IRestauranteGateway {
     }
 
     @Override
-    public List<Restaurante> buscarRestaurantesPorLogin(Usuario usuario) {
+    public List<Restaurante> buscarRestaurantesPorLoginDoUsuario(Usuario usuario) {
         List<RestauranteDTO> restaurantesDTO = this.restauranteDataSource.buscarRestaurantesPorLogin(usuario.getLogin());
 
         return restaurantesDTO.stream()
@@ -136,6 +139,28 @@ public class RestauranteGateway implements IRestauranteGateway {
                 restauranteDTO.horarioFuncionamentoInicio(),
                 enderecoRestaurante,
                 donoRestaurante);
+    }
+
+    @Override
+    public List<Restaurante> buscarRestaurantes(Integer page,
+                                                Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<RestauranteDTO> restaurantesDTO = this.restauranteDataSource.buscarRestaurantes(pageable);
+
+        if(restaurantesDTO == null) {
+            throw new RestauranteNaoEncontradoException("Não possuí nenhum restaurante cadastrado!");
+        }
+
+        return restaurantesDTO.stream()
+                .map(r -> Restaurante.create(
+                        r.id(),
+                        r.nomeRestaurante(),
+                        r.tipoCozinha(),
+                        r.horarioFuncionamentoInicio(),
+                        r.horarioFuncionamentoFim(),
+                        mapearEnderecoRestaurante(r.endereco()),
+                        buscarUsuarioDonoRestaurante(r.donoRestaurante())
+                )).toList();
     }
 
     private Endereco mapearEnderecoRestaurante(EnderecoDTO endereco) {

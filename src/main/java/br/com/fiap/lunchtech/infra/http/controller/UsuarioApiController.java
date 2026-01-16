@@ -35,7 +35,7 @@ public class UsuarioApiController {
 
     @Operation(
             summary = "Busca de usuários",
-            description = "Busca usuários a partir do nome ou todos. Exemplo: http://localhost:8080/v1/usuarios?nome=NOME",
+            description = "Busca usuários a partir do nome ou todos. Exemplo: http:/lo//localhost:8080/v1/usuarios?nome=NOME",
             responses = {
                     @ApiResponse(description =  "Ok", responseCode = "200"),
                     @ApiResponse(description = "Not found", responseCode = "404")})
