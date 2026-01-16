@@ -6,32 +6,30 @@ import br.com.fiap.lunchtech.core.dto.restaurante.RestauranteDTO;
 import br.com.fiap.lunchtech.core.gateway.RestauranteGateway;
 import br.com.fiap.lunchtech.core.gateway.UsuarioGateway;
 import br.com.fiap.lunchtech.core.interfaces.IRestauranteDataSource;
-import br.com.fiap.lunchtech.core.interfaces.ITipoUsuarioDataSource;
 import br.com.fiap.lunchtech.core.interfaces.IUsuarioDataSource;
 import br.com.fiap.lunchtech.core.presenters.RestaurantePresenter;
 import br.com.fiap.lunchtech.core.usecases.restaurante.AlterarRestauranteUseCase;
+import br.com.fiap.lunchtech.core.usecases.restaurante.BuscarListaRestaurantesUseCase;
 import br.com.fiap.lunchtech.core.usecases.restaurante.BuscarRestaurantePorNomeUseCase;
 import br.com.fiap.lunchtech.core.usecases.restaurante.CadastrarRestauranteUseCase;
 import br.com.fiap.lunchtech.core.usecases.restaurante.DeletarRestauranteUseCase;
+
+import java.util.List;
 
 public class RestauranteController {
 
     private IUsuarioDataSource usuarioDataSource;
     private final IRestauranteDataSource restauranteDataSource;
-    private final ITipoUsuarioDataSource tipoUsuarioDataSource;
 
     private RestauranteController(IUsuarioDataSource usuarioDataSource,
-                                  IRestauranteDataSource restauranteDataSource,
-                                  ITipoUsuarioDataSource tipoUsuarioDataSource) {
+                                  IRestauranteDataSource restauranteDataSource) {
         this.usuarioDataSource = usuarioDataSource;
         this.restauranteDataSource = restauranteDataSource;
-        this.tipoUsuarioDataSource = tipoUsuarioDataSource;
     }
 
     public static RestauranteController create(IRestauranteDataSource restauranteDataSource,
-                                               IUsuarioDataSource usuarioDataSource,
-                                               ITipoUsuarioDataSource tipoUsuarioDataSource) {
-        return new RestauranteController(usuarioDataSource, restauranteDataSource, tipoUsuarioDataSource);
+                                               IUsuarioDataSource usuarioDataSource) {
+        return new RestauranteController(usuarioDataSource, restauranteDataSource);
     }
 
     public RestauranteDTO cadastrarRestaurante(NovoRestauranteDTO novoRestauranteDTO) {
@@ -58,9 +56,7 @@ public class RestauranteController {
         var useCaseAlterarRestaurante = AlterarRestauranteUseCase.create(restauranteGateway, usuarioGateway);
 
         var restauranteAlterado = useCaseAlterarRestaurante.run(restauranteAlteracaoDTO);
-        var restaurantePresenter = RestaurantePresenter.toDto(restauranteAlterado);
-
-        return restaurantePresenter;
+        return RestaurantePresenter.toDto(restauranteAlterado);
     }
 
     public void deletarRestaurante(String nomeRestaurante) {
@@ -69,5 +65,17 @@ public class RestauranteController {
         var useCaseDeletarRestaurante = DeletarRestauranteUseCase.create(restauranteGateway);
 
         useCaseDeletarRestaurante.run(nomeRestaurante);
+    }
+
+    public List<RestauranteDTO> buscarListaRestaurantes(Integer page,
+                                                        Integer size) {
+        var usuarioGateway = UsuarioGateway.create(usuarioDataSource);
+        var restauranteGateway = RestauranteGateway.create(restauranteDataSource, usuarioGateway);
+        var useCaseBuscarListaRestaurantes = BuscarListaRestaurantesUseCase.create(restauranteGateway);
+
+        var listaRestaurantes = useCaseBuscarListaRestaurantes.run(page, size);
+        return listaRestaurantes.stream()
+                .map(RestaurantePresenter::toDto)
+                .toList();
     }
 }

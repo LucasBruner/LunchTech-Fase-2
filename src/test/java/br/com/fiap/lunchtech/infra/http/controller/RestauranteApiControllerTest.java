@@ -46,7 +46,7 @@ class RestauranteApiControllerTest {
     @BeforeEach
     void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
-        restauranteApiController = new RestauranteApiController(restauranteDataSource, usuarioDataSource, tipoUsuarioDataSource);
+        restauranteApiController = new RestauranteApiController(restauranteDataSource, usuarioDataSource);
         Field controllerField = RestauranteApiController.class.getDeclaredField("restauranteController");
         controllerField.setAccessible(true);
         controllerField.set(restauranteApiController, restauranteController);

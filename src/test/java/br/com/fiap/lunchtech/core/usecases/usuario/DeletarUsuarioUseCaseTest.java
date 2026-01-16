@@ -46,7 +46,7 @@ class DeletarUsuarioUseCaseTest {
         String login = "login";
         Usuario usuario = mock(Usuario.class);
         when(usuarioGateway.buscarPorLogin(login)).thenReturn(null);
-        when(restauranteGateway.buscarRestaurantesPorLogin(usuario)).thenReturn(Arrays.asList(mock(Restaurante.class)));
+        when(restauranteGateway.buscarRestaurantesPorLoginDoUsuario(usuario)).thenReturn(Arrays.asList(mock(Restaurante.class)));
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> deletarUsuarioUseCase.run(login));
@@ -58,7 +58,7 @@ class DeletarUsuarioUseCaseTest {
         String login = "login";
         Usuario usuario = mock(Usuario.class);
         when(usuarioGateway.buscarPorLogin(login)).thenReturn(usuario);
-        when(restauranteGateway.buscarRestaurantesPorLogin(usuario)).thenReturn(Collections.emptyList());
+        when(restauranteGateway.buscarRestaurantesPorLoginDoUsuario(usuario)).thenReturn(Collections.emptyList());
         doNothing().when(usuarioGateway).deletar(login);
 
         // Act

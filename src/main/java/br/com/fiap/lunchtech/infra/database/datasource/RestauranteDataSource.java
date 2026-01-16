@@ -13,7 +13,9 @@ import br.com.fiap.lunchtech.infra.database.entities.RestauranteEntity;
 import br.com.fiap.lunchtech.infra.database.entities.UsuarioEntity;
 import br.com.fiap.lunchtech.infra.database.repositories.IRestauranteRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Collections;
 import java.util.List;
@@ -132,6 +134,21 @@ public class RestauranteDataSource implements IRestauranteDataSource {
             return entityToDtoRestaurante(restaurante);
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Restaurante não encontrado!", e);
+        }
+    }
+
+    @Override
+    public Page<RestauranteDTO> buscarRestaurantes(Pageable pageable) {
+        try {
+            Page<RestauranteEntity> restaurantes = restauranteRepository.findAll(pageable);
+
+            if (restaurantes == null) {
+                throw new RestauranteNaoEncontradoException("Restaurantes não encontrado!");
+            }
+
+            return restaurantes.map(this::entityToDtoRestaurante);
+        } catch (EntityNotFoundException e) {
+            throw new EntityNotFoundException("Restaurantes não encontrado!");
         }
     }
 

@@ -34,7 +34,7 @@ public class DeletarUsuarioUseCase {
     }
 
     private void verificaUsuarioPossuiRestaurante(Usuario usuario) {
-        List<Restaurante> restaurantes = restauranteGateway.buscarRestaurantesPorLogin(usuario);
+        List<Restaurante> restaurantes = restauranteGateway.buscarRestaurantesPorLoginDoUsuario(usuario);
 
         if(!restaurantes.isEmpty()) {
             throw new IllegalArgumentException("Usuário vinculado a um restaurante, não é possível realizar a exclusão!");

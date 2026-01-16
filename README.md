@@ -10,7 +10,7 @@ Como objetivo final, o projeto deve ser um sistema robusto que permita a restaur
 ## Tecnologias Utilizadas
 - Java
 - Spring Boot
-- Spring Data JDBC
+- Spring Data JPA
 - Maven
 - MySQL
 - Docker e Docker Compose
