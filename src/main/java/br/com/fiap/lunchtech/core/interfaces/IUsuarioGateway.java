@@ -17,6 +17,8 @@ public interface IUsuarioGateway {
 
     boolean buscarPorEmail(String emailUsuario);
 
+    boolean buscarSeEmailExistente(String emailUsuario, String login);
+
     Usuario alterar(Usuario usuarioAlteracao);
 
     void deletar(String login);

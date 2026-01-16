@@ -26,7 +26,7 @@ public class AlterarUsuarioUseCase {
             throw new UsuarioNaoEncontradoException("Usuário não encontrado para a ação solicitada! O login não pode ser alterado!");
         }
 
-        boolean emailJaCadastrado = usuarioGateway.buscarPorEmail(usuarioAlteracaoDTO.enderecoEmail());
+        boolean emailJaCadastrado = usuarioGateway.buscarSeEmailExistente(usuarioAlteracaoDTO.enderecoEmail(), usuarioExistente.getLogin());
 
         if (emailJaCadastrado) {
             throw new UsuarioComEmailJaCadastradoException("Esse e-mail já está sendo utilizado por outro usuário.");
