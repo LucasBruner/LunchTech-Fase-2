@@ -39,7 +39,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(TipoUsuarioNaoExisteException.class)
-    public ProblemDetail handlerUsuarioNaoEncontradoException(TipoUsuarioNaoExisteException e) {
+    public ProblemDetail handlerTipoUsuarioNaoExisteException(TipoUsuarioNaoExisteException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
         problemDetail.setTitle("Tipo de usuário não encontrado!");
         problemDetail.setDetail(e.getMessage());
@@ -48,7 +48,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(TipoUsuarioJaExisteException.class)
-    public ProblemDetail handlerUsuarioNaoEncontradoException(TipoUsuarioJaExisteException e) {
+    public ProblemDetail handlerTipoUsuarioJaExisteException(TipoUsuarioJaExisteException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
         problemDetail.setTitle("Tipo de usuário já existe!");
         problemDetail.setDetail(e.getMessage());
@@ -57,7 +57,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(UsuarioJaExisteException.class)
-    public ProblemDetail handlerUsuarioNaoEncontradoException(UsuarioJaExisteException e) {
+    public ProblemDetail handlerUsuarioJaExisteException(UsuarioJaExisteException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
         problemDetail.setTitle("Tipo de usuário já existe!");
         problemDetail.setDetail(e.getMessage());
@@ -66,7 +66,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(UsuarioComInformacaoInvalidaException.class)
-    public ProblemDetail handlerUsuarioNaoEncontradoException(UsuarioComInformacaoInvalidaException e) {
+    public ProblemDetail handlerUsuarioComInformacaoInvalidaException(UsuarioComInformacaoInvalidaException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle("Tipo de usuário inválido!");
         problemDetail.setDetail(e.getMessage());
@@ -75,7 +75,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(UsuarioComEmailJaCadastradoException.class)
-    public ProblemDetail handlerUsuarioNaoEncontradoException(UsuarioComEmailJaCadastradoException e) {
+    public ProblemDetail handlerUsuarioComEmailJaCadastradoException(UsuarioComEmailJaCadastradoException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.CONFLICT);
         problemDetail.setTitle("Email já cadastrado!");
         problemDetail.setDetail(e.getMessage());
