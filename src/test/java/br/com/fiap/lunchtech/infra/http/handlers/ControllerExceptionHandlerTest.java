@@ -44,7 +44,7 @@ class ControllerExceptionHandlerTest {
     @Test
     void handlerTipoUsuarioNaoExisteException() {
         TipoUsuarioNaoExisteException e = new TipoUsuarioNaoExisteException("Tipo de usuário não existe");
-        ProblemDetail problemDetail = controllerExceptionHandler.handlerUsuarioNaoEncontradoException(e);
+        ProblemDetail problemDetail = controllerExceptionHandler.handlerTipoUsuarioNaoExisteException(e);
         assertEquals(HttpStatus.NOT_FOUND.value(), problemDetail.getStatus());
         assertEquals("Tipo de usuário não encontrado!", problemDetail.getTitle());
     }
@@ -52,7 +52,7 @@ class ControllerExceptionHandlerTest {
     @Test
     void handlerTipoUsuarioJaExisteException() {
         TipoUsuarioJaExisteException e = new TipoUsuarioJaExisteException("Tipo de usuário já existe");
-        ProblemDetail problemDetail = controllerExceptionHandler.handlerUsuarioNaoEncontradoException(e);
+        ProblemDetail problemDetail = controllerExceptionHandler.handlerTipoUsuarioJaExisteException(e);
         assertEquals(HttpStatus.CONFLICT.value(), problemDetail.getStatus());
         assertEquals("Tipo de usuário já existe!", problemDetail.getTitle());
     }
@@ -60,7 +60,7 @@ class ControllerExceptionHandlerTest {
     @Test
     void handlerUsuarioJaExisteException() {
         UsuarioJaExisteException e = new UsuarioJaExisteException("Usuário já existe");
-        ProblemDetail problemDetail = controllerExceptionHandler.handlerUsuarioNaoEncontradoException(e);
+        ProblemDetail problemDetail = controllerExceptionHandler.handlerUsuarioJaExisteException(e);
         assertEquals(HttpStatus.CONFLICT.value(), problemDetail.getStatus());
         assertEquals("Tipo de usuário já existe!", problemDetail.getTitle());
     }
@@ -68,7 +68,7 @@ class ControllerExceptionHandlerTest {
     @Test
     void handlerUsuarioComInformacaoInvalidaException() {
         UsuarioComInformacaoInvalidaException e = new UsuarioComInformacaoInvalidaException("Informação inválida");
-        ProblemDetail problemDetail = controllerExceptionHandler.handlerUsuarioNaoEncontradoException(e);
+        ProblemDetail problemDetail = controllerExceptionHandler.handlerUsuarioComInformacaoInvalidaException(e);
         assertEquals(HttpStatus.BAD_REQUEST.value(), problemDetail.getStatus());
         assertEquals("Tipo de usuário inválido!", problemDetail.getTitle());
     }
@@ -76,7 +76,7 @@ class ControllerExceptionHandlerTest {
     @Test
     void handlerUsuarioComEmailJaCadastradoException() {
         UsuarioComEmailJaCadastradoException e = new UsuarioComEmailJaCadastradoException("Email já cadastrado");
-        ProblemDetail problemDetail = controllerExceptionHandler.handlerUsuarioNaoEncontradoException(e);
+        ProblemDetail problemDetail = controllerExceptionHandler.handlerUsuarioComEmailJaCadastradoException(e);
         assertEquals(HttpStatus.CONFLICT.value(), problemDetail.getStatus());
         assertEquals("Email já cadastrado!", problemDetail.getTitle());
     }
@@ -119,5 +119,13 @@ class ControllerExceptionHandlerTest {
         ProblemDetail problemDetail = controllerExceptionHandler.handlerTipoDeUsuarioNaoPodeSerExcluidoException(e);
         assertEquals(HttpStatus.NOT_FOUND.value(), problemDetail.getStatus());
         assertEquals("Tipo de usuário não pode ser excluído!", problemDetail.getTitle());
+    }
+
+    @Test
+    void handlerLoginInvalidoException() {
+        LoginInvalidoException e = new LoginInvalidoException("Login inválido!");
+        ProblemDetail problemDetail = controllerExceptionHandler.handlerLoginInvalidoException(e);
+        assertEquals(HttpStatus.UNAUTHORIZED.value(), problemDetail.getStatus());
+        assertEquals("Login inválido!", problemDetail.getTitle());
     }
 }
